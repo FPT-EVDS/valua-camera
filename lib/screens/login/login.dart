@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                   RoundButton(
                     onPressed: () {
                       // FIXME: call api instead of hardcode
-                      Get.toNamed(AppRoutes.home);
+                      Get.offAllNamed(AppRoutes.main);
                     },
                     height: 45,
                     width: double.infinity,

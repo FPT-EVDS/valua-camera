@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'EVDS Staff',
-      theme: AppThemes.defaultTheme,
+      theme: AppThemes(context).defaultTheme,
       defaultTransition: Transition.fade,
       initialRoute: AppRoutes.login,
       debugShowCheckedModeBanner: false,
