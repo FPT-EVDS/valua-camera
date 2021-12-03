@@ -38,28 +38,24 @@ class MainScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Obx(
-            () => PageTransitionSwitcher(
-              transitionBuilder:
-                  (child, primaryAnimation, secondaryAnimation) =>
-                      FadeThroughTransition(
-                child: child,
-                animation: primaryAnimation,
-                secondaryAnimation: secondaryAnimation,
-              ),
-              child: IndexedStack(
-                key: ValueKey<int>(controller.tabIndex.value),
-                index: controller.tabIndex.value,
-                children: const [
-                  HomeScreen(),
-                  ViolationScreen(),
-                  EvidenceScreen(),
-                  NotificationScreen(),
-                  ProfileScreen(),
-                ],
-              ),
+        child: Obx(
+          () => PageTransitionSwitcher(
+            transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+                FadeThroughTransition(
+              child: child,
+              animation: primaryAnimation,
+              secondaryAnimation: secondaryAnimation,
+            ),
+            child: IndexedStack(
+              key: ValueKey<int>(controller.tabIndex.value),
+              index: controller.tabIndex.value,
+              children: const [
+                HomeScreen(),
+                ViolationScreen(),
+                EvidenceScreen(),
+                NotificationScreen(),
+                ProfileScreen(),
+              ],
             ),
           ),
         ),
@@ -69,6 +65,8 @@ class MainScreen extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           onTap: controller.changeTabIndex,
           currentIndex: controller.tabIndex.value,
+          unselectedFontSize: 12,
+          selectedFontSize: 12,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(CommunityMaterialIcons.home_outline),

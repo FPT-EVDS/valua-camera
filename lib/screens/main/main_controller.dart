@@ -7,7 +7,7 @@ class MainController extends GetxController {
     "",
     "Violation",
     "Evidence",
-    "Notification",
+    "Notifications",
     ""
   ];
 
