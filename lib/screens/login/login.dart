@@ -43,7 +43,6 @@ class LoginScreen extends StatelessWidget {
                     height: 30,
                   ),
                   TextFormField(
-                    autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: "Email",
@@ -53,7 +52,6 @@ class LoginScreen extends StatelessWidget {
                     height: 30,
                   ),
                   TextFormField(
-                    autofocus: true,
                     obscureText: true,
                     decoration: const InputDecoration(
                       labelText: "Password",

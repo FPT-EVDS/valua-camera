@@ -15,85 +15,94 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MainController>();
+    print("hihi");
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Obx(
-          () => controller.tabIndex.value == 0
-              ? Image.asset(
-                  "assets/icons/evds_logo_right.png",
-                  height: 96,
-                  width: 96,
-                )
-              : Text(
-                  controller.appBarTitle.value,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
-        ),
-      ),
-      body: SafeArea(
-        child: Obx(
-          () => PageTransitionSwitcher(
-            transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
-                FadeThroughTransition(
-              child: child,
-              animation: primaryAnimation,
-              secondaryAnimation: secondaryAnimation,
-            ),
-            child: IndexedStack(
-              key: ValueKey<int>(controller.tabIndex.value),
-              index: controller.tabIndex.value,
-              children: const [
-                HomeScreen(),
-                ViolationScreen(),
-                EvidenceScreen(),
-                NotificationScreen(),
-                ProfileScreen(),
-              ],
+    return Obx(
+      () => Scaffold(
+        appBar: PreferredSize(
+          preferredSize: controller.tabIndex.value == 4
+              ? const Size(0, 0)
+              : AppBar().preferredSize,
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            title: Obx(
+              () => controller.tabIndex.value == 0
+                  ? Image.asset(
+                      "assets/icons/evds_logo_right.png",
+                      height: 96,
+                      width: 96,
+                    )
+                  : Text(
+                      controller.appBarTitle.value,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: controller.changeTabIndex,
-          currentIndex: controller.tabIndex.value,
-          unselectedFontSize: 12,
-          selectedFontSize: 12,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.home_outline),
-              activeIcon: Icon(CommunityMaterialIcons.home),
-              label: 'Home',
+        body: SafeArea(
+          child: Obx(
+            () => PageTransitionSwitcher(
+              transitionBuilder:
+                  (child, primaryAnimation, secondaryAnimation) =>
+                      FadeThroughTransition(
+                child: child,
+                animation: primaryAnimation,
+                secondaryAnimation: secondaryAnimation,
+              ),
+              child: IndexedStack(
+                key: ValueKey<int>(controller.tabIndex.value),
+                index: controller.tabIndex.value,
+                children: const [
+                  HomeScreen(),
+                  ViolationScreen(),
+                  EvidenceScreen(),
+                  NotificationScreen(),
+                  ProfileScreen(),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.alarm_light_outline),
-              activeIcon: Icon(CommunityMaterialIcons.alarm_light),
-              label: 'Violation',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.archive_outline),
-              activeIcon: Icon(CommunityMaterialIcons.archive),
-              label: 'Evidence',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.bell_outline),
-              activeIcon: Icon(CommunityMaterialIcons.bell),
-              label: 'Notification',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.account_circle_outline),
-              activeIcon: Icon(CommunityMaterialIcons.account_circle),
-              label: 'Profile',
-            ),
-          ],
+          ),
+        ),
+        bottomNavigationBar: Obx(
+          () => BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            onTap: controller.changeTabIndex,
+            currentIndex: controller.tabIndex.value,
+            unselectedFontSize: 12,
+            selectedFontSize: 12,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.home_outline),
+                activeIcon: Icon(CommunityMaterialIcons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.alarm_light_outline),
+                activeIcon: Icon(CommunityMaterialIcons.alarm_light),
+                label: 'Violation',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.archive_outline),
+                activeIcon: Icon(CommunityMaterialIcons.archive),
+                label: 'Evidence',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.bell_outline),
+                activeIcon: Icon(CommunityMaterialIcons.bell),
+                label: 'Notification',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.account_circle_outline),
+                activeIcon: Icon(CommunityMaterialIcons.account_circle),
+                label: 'Profile',
+              ),
+            ],
+          ),
         ),
       ),
     );
