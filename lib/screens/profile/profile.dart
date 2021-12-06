@@ -128,7 +128,10 @@ class ProfileScreen extends StatelessWidget {
                     // do something with token
                     Get.offAllNamed(_menuData[index].to);
                   }
-                  Get.toNamed(_menuData[index].to);
+                  // FIXME: Remove if when settings and term is initialize
+                  if (_menuData[index].to == AppRoutes.resetPassword) {
+                    Get.toNamed(_menuData[index].to);
+                  }
                 },
                 leading: CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
