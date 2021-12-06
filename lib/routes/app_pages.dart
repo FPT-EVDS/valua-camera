@@ -1,11 +1,14 @@
 import 'package:evds_staff/screens/detail_profile/detail_profile.dart';
 import 'package:evds_staff/screens/detail_profile/detail_profile_binding.dart';
+import 'package:evds_staff/screens/detail_shift/detail_shift.dart';
 import 'package:evds_staff/screens/home/home.dart';
 import 'package:evds_staff/screens/login/login.dart';
 import 'package:evds_staff/screens/login/login_binding.dart';
 import 'package:evds_staff/screens/main/main_screen.dart';
 import 'package:evds_staff/screens/main/main_binding.dart';
 import 'package:evds_staff/screens/reset_password/reset_password.dart';
+import 'package:evds_staff/screens/shift/shift.dart';
+import 'package:evds_staff/screens/shift/shift_binding.dart';
 import 'package:get/get.dart';
 
 part 'app_routes.dart';
@@ -23,6 +26,15 @@ class AppPages {
     GetPage(
       name: AppRoutes.home,
       page: () => const HomeScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.shift,
+      page: () => const ShiftScreen(),
+      binding: ShiftBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.detailShift,
+      page: () => const DetailShiftScreen(),
     ),
     GetPage(
       name: AppRoutes.detailProfile,

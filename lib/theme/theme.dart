@@ -11,7 +11,16 @@ class AppThemes {
     return ThemeData(
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
+        centerTitle: true,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          size: 18,
+          color: Colors.black, //change your color here
+        ),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
       ),
       primaryColor: primaryColor,
       primarySwatch: Colors.blue,

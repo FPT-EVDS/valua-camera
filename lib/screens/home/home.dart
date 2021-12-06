@@ -1,7 +1,9 @@
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:evds_staff/routes/app_pages.dart';
 import 'package:evds_staff/widgets/shift_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -68,7 +70,9 @@ class HomeScreen extends StatelessWidget {
             elevation: 2,
             child: InkWell(
               splashColor: Colors.blue.withAlpha(30),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(AppRoutes.shift);
+              },
               child: SizedBox(
                 width: double.infinity,
                 height: 150,
