@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         color: Colors.transparent,

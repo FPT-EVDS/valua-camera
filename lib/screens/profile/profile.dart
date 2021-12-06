@@ -1,20 +1,42 @@
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:evds_staff/routes/app_pages.dart';
 import 'package:evds_staff/widgets/cached_circle_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MenuItem {
   final IconData icon;
   final String title;
+  final String to;
 
-  MenuItem({required this.icon, required this.title});
+  MenuItem({
+    required this.icon,
+    required this.title,
+    required this.to,
+  });
 }
 
 final List<MenuItem> _menuData = [
-  MenuItem(icon: CommunityMaterialIcons.lock_reset, title: "Reset password"),
-  MenuItem(icon: CommunityMaterialIcons.cog, title: "Settings"),
   MenuItem(
-      icon: CommunityMaterialIcons.file_document, title: "Terms & Policies"),
-  MenuItem(icon: CommunityMaterialIcons.logout_variant, title: "Logout"),
+    icon: CommunityMaterialIcons.lock_reset,
+    title: "Reset password",
+    to: AppRoutes.resetPassword,
+  ),
+  MenuItem(
+    icon: CommunityMaterialIcons.cog,
+    title: "Settings",
+    to: "#",
+  ),
+  MenuItem(
+    icon: CommunityMaterialIcons.file_document,
+    title: "Terms & Policies",
+    to: "#",
+  ),
+  MenuItem(
+    icon: CommunityMaterialIcons.logout_variant,
+    title: "Logout",
+    to: AppRoutes.login,
+  ),
 ];
 
 class ProfileScreen extends StatelessWidget {
@@ -82,7 +104,9 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           color: Theme.of(context).primaryColor,
                           splashColor: Colors.blue.withAlpha(30),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.detailProfile);
+                          },
                         ),
                       ),
                     ),
@@ -99,6 +123,13 @@ class ProfileScreen extends StatelessWidget {
             itemBuilder: (context, index) => Card(
               elevation: 2,
               child: ListTile(
+                onTap: () {
+                  if (_menuData[index].to == AppRoutes.login) {
+                    // do something with token
+                    Get.offAllNamed(_menuData[index].to);
+                  }
+                  Get.toNamed(_menuData[index].to);
+                },
                 leading: CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,

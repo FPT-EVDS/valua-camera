@@ -15,7 +15,6 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MainController>();
-    print("hihi");
 
     return Obx(
       () => Scaffold(

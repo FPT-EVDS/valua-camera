@@ -9,6 +9,10 @@ class AppThemes {
 
   ThemeData get defaultTheme {
     return ThemeData(
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+      ),
       primaryColor: primaryColor,
       primarySwatch: Colors.blue,
       fontFamily: 'Inter',
