@@ -19,6 +19,7 @@ class AppThemes {
         ),
         titleTextStyle: TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
       ),

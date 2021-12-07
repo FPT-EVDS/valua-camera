@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:evds_staff/screens/detail_profile/detail_profile_controller.dart';
 import 'package:evds_staff/widgets/round_button.dart';
 import 'package:flutter/material.dart';
@@ -47,19 +48,19 @@ class DetailProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  DropdownButtonFormField(
-                    items: ["Male", "Female"]
-                        .map((String category) => DropdownMenuItem(
-                              value: category,
-                              child: Text(category),
-                            ))
-                        .toList(),
-                    onChanged: (newValue) {},
-                    value: "Male",
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    showSelectedItems: true,
+                    items: const ["Male", "Female"],
+                    dropdownSearchDecoration: const InputDecoration(
                       labelText: "Gender",
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
                     ),
+                    onChanged: print,
+                    selectedItem: "Male",
                   ),
                   const SizedBox(
                     height: 20,
