@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EvidenceCard extends StatelessWidget {
+  final void Function()? onTap;
   final Widget thumbnail;
   final DateTime date;
   final DateTime capturedAt;
@@ -11,6 +12,7 @@ class EvidenceCard extends StatelessWidget {
 
   const EvidenceCard({
     Key? key,
+    this.onTap,
     required this.thumbnail,
     required this.date,
     required this.capturedAt,
@@ -24,7 +26,7 @@ class EvidenceCard extends StatelessWidget {
       elevation: 4,
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
           width: double.infinity,
@@ -89,7 +91,11 @@ class EvidenceCard extends StatelessWidget {
                             width: double.infinity,
                             height: 30,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (onTap != null) {
+                                  onTap!();
+                                }
+                              },
                               child: const Text("Evaluate"),
                             ),
                           ),

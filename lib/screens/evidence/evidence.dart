@@ -1,3 +1,4 @@
+import 'package:evds_staff/routes/app_pages.dart';
 import 'package:evds_staff/screens/evidence/evidence_controller.dart';
 import 'package:evds_staff/widgets/evidence_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,14 +31,17 @@ class EvidenceScreen extends StatelessWidget {
           child: ListView.separated(
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.all(8.0),
-              child: EvidenceCard(
-                thumbnail: Image.network(
-                  "https://suachuamaytinhtannoigiare.com/kcfinder/upload/images/maxresdefault%282%29.jpg",
+              child: Obx(
+                () => EvidenceCard(
+                  onTap: () => Get.toNamed(AppRoutes.detailEvidence),
+                  thumbnail: Image.network(
+                    "https://suachuamaytinhtannoigiare.com/kcfinder/upload/images/maxresdefault%282%29.jpg",
+                  ),
+                  date: DateTime.now(),
+                  capturedAt: DateTime.now(),
+                  lastUpdatedAt: DateTime.now(),
+                  status: _controller.fakeStatus.value,
                 ),
-                date: DateTime.now(),
-                capturedAt: DateTime.now(),
-                lastUpdatedAt: DateTime.now(),
-                status: 0,
               ),
             ),
             separatorBuilder: (context, index) => const SizedBox(height: 5),

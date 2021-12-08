@@ -38,20 +38,6 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
               ),
             ),
             Positioned(
-              top: 0,
-              right: 0,
-              child: IconButton(
-                onPressed: () {
-                  open(context, _current, widget.itemList);
-                },
-                icon: const Icon(
-                  CommunityMaterialIcons.fullscreen,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-            ),
-            Positioned(
               left: 0,
               top: 0,
               bottom: 0,
@@ -76,6 +62,20 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                 },
                 icon: const Icon(
                   CommunityMaterialIcons.chevron_right,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: IconButton(
+                onPressed: () {
+                  open(context, _current, widget.itemList);
+                },
+                icon: const Icon(
+                  CommunityMaterialIcons.fullscreen,
                   color: Colors.white,
                   size: 28,
                 ),
