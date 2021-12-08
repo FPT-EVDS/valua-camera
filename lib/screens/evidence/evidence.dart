@@ -32,7 +32,7 @@ class EvidenceScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: EvidenceCard(
                 thumbnail: Image.network(
-                  "http://josephtuan.com/wp-content/uploads/2020/08/lap-dat-camera-giam-sat-truong-hoc-02.jpg",
+                  "https://suachuamaytinhtannoigiare.com/kcfinder/upload/images/maxresdefault%282%29.jpg",
                 ),
                 date: DateTime.now(),
                 capturedAt: DateTime.now(),
