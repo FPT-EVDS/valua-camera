@@ -1,7 +1,8 @@
-import 'package:evds_staff/routes/app_pages.dart';
+import 'package:evds_staff/screens/login/login_controller.dart';
 import 'package:evds_staff/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _controller = Get.find<LoginController>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: BottomAppBar(
@@ -37,39 +39,52 @@ class LoginScreen extends StatelessWidget {
                   height: 200,
                 ),
               ),
-              Column(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
+              Form(
+                key: _controller.formKey,
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
+                    TextFormField(
+                      controller: _controller.emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                      ),
+                      validator: MultiValidator([
+                        EmailValidator(errorText: "Invalid email"),
+                        RequiredValidator(errorText: "Email is required")
+                      ]),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  RoundButton(
-                    onPressed: () {
-                      // FIXME: call api instead of hardcode
-                      Get.offAllNamed(AppRoutes.main);
-                    },
-                    height: 45,
-                    width: double.infinity,
-                    label: "Login",
-                  )
-                ],
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      controller: _controller.passwordController,
+                      decoration: const InputDecoration(
+                        labelText: "Password",
+                      ),
+                      validator:
+                          RequiredValidator(errorText: "Password is required"),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Obx(
+                      () => RoundButton(
+                        onPressed: () {
+                          _controller.login();
+                        },
+                        height: 45,
+                        width: double.infinity,
+                        label: "Login",
+                        isLoading: _controller.isLoading.value,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),

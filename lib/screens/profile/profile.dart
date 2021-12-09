@@ -1,8 +1,10 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evds_staff/routes/app_pages.dart';
+import 'package:evds_staff/screens/profile/profile_controller.dart';
 import 'package:evds_staff/widgets/cached_circle_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class MenuItem {
   final IconData icon;
@@ -124,9 +126,11 @@ class ProfileScreen extends StatelessWidget {
               elevation: 2,
               child: ListTile(
                 onTap: () {
+                  // if to route is login
                   if (_menuData[index].to == AppRoutes.login) {
-                    // do something with token
-                    Get.offAllNamed(_menuData[index].to);
+                    GetStorage _storage = GetStorage();
+                    _storage.remove("access_token");
+                    _storage.remove("refresh_token");
                   }
                   // FIXME: Remove if when settings and term is initialize
                   if (_menuData[index].to == AppRoutes.resetPassword) {
