@@ -4,42 +4,6 @@ import 'package:evds_staff/screens/profile/profile_controller.dart';
 import 'package:evds_staff/widgets/cached_circle_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-class MenuItem {
-  final IconData icon;
-  final String title;
-  final String to;
-
-  MenuItem({
-    required this.icon,
-    required this.title,
-    required this.to,
-  });
-}
-
-final List<MenuItem> _menuData = [
-  MenuItem(
-    icon: CommunityMaterialIcons.lock_reset,
-    title: "Reset password",
-    to: AppRoutes.resetPassword,
-  ),
-  MenuItem(
-    icon: CommunityMaterialIcons.cog,
-    title: "Settings",
-    to: "#",
-  ),
-  MenuItem(
-    icon: CommunityMaterialIcons.file_document,
-    title: "Terms & Policies",
-    to: "#",
-  ),
-  MenuItem(
-    icon: CommunityMaterialIcons.logout_variant,
-    title: "Logout",
-    to: AppRoutes.login,
-  ),
-];
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -50,6 +14,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const top = coverHeight - profileHeight / 2 - 20;
     const bottom = profileHeight / 2;
+    final _controller = Get.find<ProfileController>();
 
     return Column(
       children: [
@@ -78,16 +43,16 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           CachedCircleAvatar(
                             imageUrl:
-                                "https://images.unsplash.com/photo-1514846326710-096e4a8035e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                _controller.currentUser.imageUrl.toString(),
                             radius: 45,
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
-                            "John Smith",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            _controller.currentUser.fullName,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -126,29 +91,20 @@ class ProfileScreen extends StatelessWidget {
               elevation: 2,
               child: ListTile(
                 onTap: () {
-                  // if to route is login
-                  if (_menuData[index].to == AppRoutes.login) {
-                    GetStorage _storage = GetStorage();
-                    _storage.remove("access_token");
-                    _storage.remove("refresh_token");
-                  }
-                  // FIXME: Remove if when settings and term is initialize
-                  if (_menuData[index].to == AppRoutes.resetPassword) {
-                    Get.toNamed(_menuData[index].to);
-                  }
+                  _controller.handleMenuTap(index);
                 },
                 leading: CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
                   child: Icon(
-                    _menuData[index].icon,
+                    _controller.menuData[index].icon,
                   ),
                 ),
-                title: Text(_menuData[index].title),
+                title: Text(_controller.menuData[index].title),
               ),
             ),
             separatorBuilder: (context, index) => const SizedBox(height: 25),
-            itemCount: _menuData.length,
+            itemCount: _controller.menuData.length,
           ),
         )
       ],

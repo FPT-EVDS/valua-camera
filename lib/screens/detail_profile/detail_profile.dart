@@ -1,7 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:evds_staff/screens/detail_profile/detail_profile_controller.dart';
+import 'package:evds_staff/widgets/cached_circle_avatar.dart';
 import 'package:evds_staff/widgets/round_button.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
 class DetailProfileScreen extends StatelessWidget {
@@ -17,7 +19,6 @@ class DetailProfileScreen extends StatelessWidget {
         title: const Text("Update profile"),
         centerTitle: true,
       ),
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -28,72 +29,91 @@ class DetailProfileScreen extends StatelessWidget {
                 Center(
                   child: GestureDetector(
                     onTap: () {},
-                    child: const CircleAvatar(
+                    child: CachedCircleAvatar(
+                      imageUrl: _controller.currentUser.imageUrl.toString(),
                       radius: 45,
-                      backgroundImage: NetworkImage(
-                          "https://images.unsplash.com/photo-1514846326710-096e4a8035e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"),
                     ),
                   ),
                 ),
-                Column(
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: "Email",
+                Form(
+                  key: _controller.formKey,
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      showSelectedItems: true,
-                      items: const ["Male", "Female"],
-                      dropdownSearchDecoration: const InputDecoration(
-                        labelText: "Gender",
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 4.0,
+                      TextFormField(
+                        controller: _controller.emailController,
+                        readOnly: true,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: "Email",
                         ),
                       ),
-                      onChanged: print,
-                      selectedItem: "Male",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.phone,
-                      decoration: const InputDecoration(
-                        labelText: "Phone number",
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.datetime,
-                      decoration: const InputDecoration(
-                        labelText: "Date of birth",
+                      Obx(
+                        () => DropdownSearch<String>(
+                          mode: Mode.MENU,
+                          showSelectedItems: true,
+                          items: _controller.genders,
+                          maxHeight: 120,
+                          dropdownSearchDecoration: const InputDecoration(
+                            labelText: "Gender",
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                          ),
+                          onChanged: (gender) {
+                            _controller.gender.value = gender;
+                          },
+                          selectedItem: _controller.gender.value,
+                        ),
                       ),
-                      readOnly: true,
-                      onTap: () {
-                        _controller.selectDate(context);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Address",
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                  ],
+                      TextFormField(
+                        controller: _controller.phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: const InputDecoration(
+                          labelText: "Phone number",
+                        ),
+                        validator: MultiValidator([
+                          RequiredValidator(
+                              errorText: "Phone number is required"),
+                          MinLengthValidator(10, errorText: "Min length is 10"),
+                        ]),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _controller.birthdateController,
+                        keyboardType: TextInputType.datetime,
+                        decoration: const InputDecoration(
+                          labelText: "Date of birth",
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          _controller.selectDate(context);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _controller.addressController,
+                        decoration: const InputDecoration(
+                          labelText: "Address",
+                        ),
+                        validator:
+                            RequiredValidator(errorText: "Address is required"),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -105,9 +125,14 @@ class DetailProfileScreen extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           height: 50,
-          child: RoundButton(
-            onPressed: () {},
-            label: "Update",
+          child: Obx(
+            () => RoundButton(
+              isLoading: _controller.isLoading.value,
+              onPressed: () async {
+                await _controller.updateProfile(context);
+              },
+              label: "Update",
+            ),
           ),
         ),
       ),

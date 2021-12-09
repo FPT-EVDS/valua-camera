@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:evds_staff/models/account.dart';
 import 'package:evds_staff/models/app_user.dart';
 import 'package:evds_staff/providers/base_provider.dart';
@@ -40,5 +42,30 @@ class AuthProvider extends BaseProvider implements AuthRepository {
       throw (response.body);
     }
     return Account.fromJson(response.body);
+  }
+
+  @override
+  Future<Account> updateProfile(Account newProfile) async {
+    final response = await put(
+      "/authentication/profile",
+      jsonEncode(newProfile),
+    );
+    if (response.status.hasError) {
+      throw (response.body);
+    }
+    return Account.fromJson(response.body);
+  }
+
+  @override
+  Future<String> changePassword(
+      String currentPassword, String newPassword) async {
+    final response = await post("/authentication/changePassword", {
+      'currentPassword': currentPassword,
+      'newPassword': newPassword,
+    });
+    if (response.status.hasError) {
+      throw (response.body);
+    }
+    return response.body;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:evds_staff/providers/auth_provider.dart';
 import 'package:evds_staff/repository/auth_repository.dart';
 import 'package:evds_staff/routes/routes.dart';
@@ -34,9 +36,14 @@ class LoginController extends GetxController {
       try {
         isLoading.value = true;
         final data = await _provider.login(email, password);
-        _storage.write("access_token", data.token);
-        _storage.write("refresh_token", data.appUser.refreshToken);
-        Get.offAllNamed(AppRoutes.main);
+        if (data.appUser.role == "Staff") {
+          _storage.write("user", jsonEncode(data.appUser));
+          _storage.write("access_token", data.token);
+          _storage.write("refresh_token", data.appUser.refreshToken);
+          Get.offAllNamed(AppRoutes.main);
+        } else {
+          throw ("Invalid role!");
+        }
       } catch (e) {
         Fluttertoast.showToast(
           msg: e.toString(),

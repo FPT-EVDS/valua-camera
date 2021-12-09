@@ -14,5 +14,5 @@ abstract class AppRoutes {
   static const shiftViolation = '/violation/:id';
   static const notification = '/notification';
   static const detailProfile = '/profile/detail';
-  static const resetPassword = '/password/reset';
+  static const changePassword = '/password/change';
 }

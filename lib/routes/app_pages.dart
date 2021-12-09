@@ -1,3 +1,5 @@
+import 'package:evds_staff/screens/change_password/change_password.dart';
+import 'package:evds_staff/screens/change_password/change_password_binding.dart';
 import 'package:evds_staff/screens/confirm_violation/confirm_violation.dart';
 import 'package:evds_staff/screens/create_violation/create_violation.dart';
 import 'package:evds_staff/screens/detail_evidence/detail_evidence.dart';
@@ -13,7 +15,6 @@ import 'package:evds_staff/screens/login/login_binding.dart';
 import 'package:evds_staff/screens/main/main_screen.dart';
 import 'package:evds_staff/screens/main/main_binding.dart';
 import 'package:evds_staff/screens/position/position.dart';
-import 'package:evds_staff/screens/reset_password/reset_password.dart';
 import 'package:evds_staff/screens/shift/shift.dart';
 import 'package:evds_staff/screens/shift/shift_binding.dart';
 import 'package:evds_staff/screens/shift_violation/shift_violation.dart';
@@ -76,9 +77,9 @@ class AppPages {
       page: () => const ShiftViolationScreen(),
     ),
     GetPage(
-      name: AppRoutes.resetPassword,
-      page: () => const ResetPasswordScreen(),
-      binding: DetailProfileBinding(),
+      name: AppRoutes.changePassword,
+      page: () => const ChangePasswordScreen(),
+      binding: ChangePasswordBinding(),
     ),
     GetPage(
       name: AppRoutes.main,

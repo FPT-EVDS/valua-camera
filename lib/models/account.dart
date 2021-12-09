@@ -6,7 +6,7 @@ class Account {
   String appUserId;
   String email;
   String fullName;
-  String gender;
+  dynamic gender;
   String role;
   String birthdate;
   String address;

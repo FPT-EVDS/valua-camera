@@ -10,7 +10,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       appUserId: json['appUserId'] as String,
       email: json['email'] as String,
       fullName: json['fullName'] as String,
-      gender: json['gender'] as String,
+      gender: json['gender'],
       role: json['role'] as String,
       birthdate: json['birthdate'] as String,
       address: json['address'] as String,
