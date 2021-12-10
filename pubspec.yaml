@@ -1,4 +1,4 @@
-name: evds_staff
+name: valua_staff
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -49,7 +49,13 @@ dependencies:
   fluttertoast: ^8.0.8
   form_field_validator: ^1.1.0
   cool_alert: ^1.1.0
+  pie_chart: ^5.1.0
+  camera: ^0.8.1+7
+  video_player: ^2.1.14
+  path_provider: ^2.0.2
+  
 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -67,13 +73,13 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/icons/evds_logo_under.png
+  image: "assets/icons/valua.png"
   android: true
   ios: true
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/evds_logo.png"
+  image_path: "assets/icons/valua.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

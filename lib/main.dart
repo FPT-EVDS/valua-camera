@@ -1,7 +1,7 @@
-import 'package:evds_staff/providers/auth_provider.dart';
-import 'package:evds_staff/routes/routes.dart';
-import 'package:evds_staff/services/auth_service.dart';
-import 'package:evds_staff/theme/theme.dart';
+import 'package:valua_staff/providers/auth_provider.dart';
+import 'package:valua_staff/routes/routes.dart';
+import 'package:valua_staff/services/auth_service.dart';
+import 'package:valua_staff/theme/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +18,7 @@ Future<void> initServices() async {
     final license = await rootBundle.loadString('assets/font/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  await Get.putAsync(() => GetStorage.init());
+  await Get.putAsync(() => GetStorage.init('valua_staff'));
 }
 
 class AppBinding extends Bindings {
@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final GetStorage _storage = GetStorage();
+    final GetStorage _storage = GetStorage('valua_staff');
     return GetMaterialApp(
-      title: 'EVDS Staff',
+      title: 'VALUA Staff',
       theme: AppThemes(context).defaultTheme,
       defaultTransition: Transition.fade,
       initialBinding: AppBinding(),

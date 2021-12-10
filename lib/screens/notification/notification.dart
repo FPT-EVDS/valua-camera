@@ -1,4 +1,4 @@
-import 'package:evds_staff/screens/notification/notification_controller.dart';
+import 'package:valua_staff/screens/notification/notification_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
