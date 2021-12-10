@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:evds_staff/models/account.dart';
-import 'package:evds_staff/providers/auth_provider.dart';
-import 'package:evds_staff/repository/auth_repository.dart';
-import 'package:evds_staff/routes/app_pages.dart';
+import 'package:evds_examinee/models/account.dart';
+import 'package:evds_examinee/providers/auth_provider.dart';
+import 'package:evds_examinee/repository/auth_repository.dart';
+import 'package:evds_examinee/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -46,7 +46,7 @@ class ProfileController extends GetxController {
   ];
   final AuthRepository authRepository = Get.find<AuthProvider>();
   late final Account currentUser;
-  final GetStorage _storage = GetStorage();
+  final GetStorage _storage = GetStorage('evds_examinee');
 
   @override
   void onInit() {
@@ -57,7 +57,7 @@ class ProfileController extends GetxController {
   void handleMenuTap(int index) {
     // if logout
     if (menuData[index].to == AppRoutes.login) {
-      GetStorage _storage = GetStorage();
+      GetStorage _storage = GetStorage('evds_examinee');
       _storage.remove("access_token");
       _storage.remove("refresh_token");
       _storage.remove("user");

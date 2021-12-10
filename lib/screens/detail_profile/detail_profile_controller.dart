@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:cool_alert/cool_alert.dart';
-import 'package:evds_staff/models/account.dart';
-import 'package:evds_staff/providers/auth_provider.dart';
-import 'package:evds_staff/repository/auth_repository.dart';
+import 'package:evds_examinee/models/account.dart';
+import 'package:evds_examinee/providers/auth_provider.dart';
+import 'package:evds_examinee/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,7 +20,7 @@ class DetailProfileController extends GetxController {
   late final dynamic gender;
   final AuthRepository _provider = Get.find<AuthProvider>();
   final isLoading = false.obs;
-  final GetStorage _storage = GetStorage();
+  final GetStorage _storage = GetStorage('evds_examinee');
   final DateFormat _dateFormat = DateFormat("dd/MM/yyyy");
 
   @override

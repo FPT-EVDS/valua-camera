@@ -1,6 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:evds_staff/routes/app_pages.dart';
-import 'package:evds_staff/screens/shift/shift_controller.dart';
+import 'package:evds_examinee/routes/app_pages.dart';
+import 'package:evds_examinee/screens/shift/shift_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';

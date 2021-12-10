@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:evds_staff/screens/detail_profile/detail_profile_controller.dart';
-import 'package:evds_staff/widgets/cached_circle_avatar.dart';
-import 'package:evds_staff/widgets/round_button.dart';
+import 'package:evds_examinee/screens/detail_profile/detail_profile_controller.dart';
+import 'package:evds_examinee/widgets/cached_circle_avatar.dart';
+import 'package:evds_examinee/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';

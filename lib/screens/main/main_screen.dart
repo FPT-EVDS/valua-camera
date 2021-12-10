@@ -1,11 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:evds_staff/screens/evidence/evidence.dart';
-import 'package:evds_staff/screens/home/home.dart';
-import 'package:evds_staff/screens/main/main_controller.dart';
-import 'package:evds_staff/screens/notification/notification.dart';
-import 'package:evds_staff/screens/profile/profile.dart';
-import 'package:evds_staff/screens/violation/violation.dart';
+import 'package:evds_examinee/screens/home/home.dart';
+import 'package:evds_examinee/screens/main/main_controller.dart';
+import 'package:evds_examinee/screens/notification/notification.dart';
+import 'package:evds_examinee/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +17,7 @@ class MainScreen extends StatelessWidget {
     return Obx(
       () => Scaffold(
         appBar: PreferredSize(
-          preferredSize: controller.tabIndex.value == 4
+          preferredSize: controller.tabIndex.value == 2
               ? const Size(0, 0)
               : AppBar().preferredSize,
           child: AppBar(
@@ -58,8 +56,6 @@ class MainScreen extends StatelessWidget {
                 index: controller.tabIndex.value,
                 children: const [
                   HomeScreen(),
-                  ViolationScreen(),
-                  EvidenceScreen(),
                   NotificationScreen(),
                   ProfileScreen(),
                 ],
@@ -79,16 +75,6 @@ class MainScreen extends StatelessWidget {
                 icon: Icon(CommunityMaterialIcons.home_outline),
                 activeIcon: Icon(CommunityMaterialIcons.home),
                 label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(CommunityMaterialIcons.alarm_light_outline),
-                activeIcon: Icon(CommunityMaterialIcons.alarm_light),
-                label: 'Violation',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(CommunityMaterialIcons.archive_outline),
-                activeIcon: Icon(CommunityMaterialIcons.archive),
-                label: 'Evidence',
               ),
               BottomNavigationBarItem(
                 icon: Icon(CommunityMaterialIcons.bell_outline),

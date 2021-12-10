@@ -1,5 +1,5 @@
-import 'package:evds_staff/widgets/carousel_with_indicator.dart';
-import 'package:evds_staff/widgets/round_button.dart';
+import 'package:evds_examinee/widgets/carousel_with_indicator.dart';
+import 'package:evds_examinee/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmViolationScreen extends StatelessWidget {

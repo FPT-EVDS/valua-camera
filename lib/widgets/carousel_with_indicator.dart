@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:evds_staff/widgets/carousel_item.dart';
-import 'package:evds_staff/widgets/gallery_photo_view_wrapper.dart';
+import 'package:evds_examinee/widgets/carousel_item.dart';
+import 'package:evds_examinee/widgets/gallery_photo_view_wrapper.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:evds_staff/widgets/carousel_item.dart';
+import 'package:evds_examinee/widgets/carousel_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';

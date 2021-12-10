@@ -1,4 +1,4 @@
-package com.example.evds_staff
+package com.example.evds_examinee
 
 import io.flutter.embedding.android.FlutterActivity
 

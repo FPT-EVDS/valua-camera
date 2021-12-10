@@ -1,4 +1,4 @@
-import 'package:evds_staff/screens/login/login_controller.dart';
+import 'package:evds_examinee/screens/login/login_controller.dart';
 import 'package:get/get.dart';
 
 class LoginBinding extends Bindings {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:evds_staff/providers/auth_provider.dart';
-import 'package:evds_staff/repository/auth_repository.dart';
-import 'package:evds_staff/routes/routes.dart';
+import 'package:evds_examinee/providers/auth_provider.dart';
+import 'package:evds_examinee/repository/auth_repository.dart';
+import 'package:evds_examinee/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,7 @@ class LoginController extends GetxController {
   late TextEditingController emailController, passwordController;
   final isLoading = false.obs;
   final AuthRepository _provider = Get.find<AuthProvider>();
-  final GetStorage _storage = GetStorage();
+  final GetStorage _storage = GetStorage('evds_examinee');
 
   @override
   void onInit() {
@@ -36,7 +36,7 @@ class LoginController extends GetxController {
       try {
         isLoading.value = true;
         final data = await _provider.login(email, password);
-        if (data.appUser.role == "Staff") {
+        if (data.appUser.role == "Examinee") {
           _storage.write("user", jsonEncode(data.appUser));
           _storage.write("access_token", data.token);
           _storage.write("refresh_token", data.appUser.refreshToken);

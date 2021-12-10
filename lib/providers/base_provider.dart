@@ -1,11 +1,11 @@
-import 'package:evds_staff/providers/auth_provider.dart';
+import 'package:evds_examinee/providers/auth_provider.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class BaseProvider extends GetConnect {
   final _baseUrl = 'http://10.0.2.2:8080';
   // final _baseUrlOnRealDevice = "http://192.168.1.91:8080";
-  final _storage = GetStorage();
+  final _storage = GetStorage('evds_examinee');
 
   @override
   void onInit() {

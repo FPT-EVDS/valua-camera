@@ -1,4 +1,4 @@
-import 'package:evds_staff/screens/shift/shift_controller.dart';
+import 'package:evds_examinee/screens/shift/shift_controller.dart';
 import 'package:get/get.dart';
 
 class ShiftBinding extends Bindings {

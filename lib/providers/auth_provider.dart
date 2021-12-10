@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:evds_staff/models/account.dart';
-import 'package:evds_staff/models/app_user.dart';
-import 'package:evds_staff/providers/base_provider.dart';
-import 'package:evds_staff/repository/auth_repository.dart';
+import 'package:evds_examinee/models/account.dart';
+import 'package:evds_examinee/models/app_user.dart';
+import 'package:evds_examinee/providers/base_provider.dart';
+import 'package:evds_examinee/repository/auth_repository.dart';
 import 'package:get_storage/get_storage.dart';
 
 class AuthProvider extends BaseProvider implements AuthRepository {
-  final GetStorage _storage = GetStorage();
+  final GetStorage _storage = GetStorage('evds_examinee');
 
   @override
   Future<AppUser> login(String email, String password) async {

@@ -1,5 +1,5 @@
-import 'package:evds_staff/screens/login/login_controller.dart';
-import 'package:evds_staff/widgets/round_button.dart';
+import 'package:evds_examinee/screens/login/login_controller.dart';
+import 'package:evds_examinee/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "\u00a9 EVDS for Staff 2021, All rights reserved",
+            "\u00a9 EVDS for Examinee 2021, All rights reserved",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey.shade500,

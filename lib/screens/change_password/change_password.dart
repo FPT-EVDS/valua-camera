@@ -1,6 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:evds_staff/screens/change_password/change_password_controller.dart';
-import 'package:evds_staff/widgets/round_button.dart';
+import 'package:evds_examinee/screens/change_password/change_password_controller.dart';
+import 'package:evds_examinee/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';

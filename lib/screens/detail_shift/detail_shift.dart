@@ -1,5 +1,5 @@
-import 'package:evds_staff/widgets/avatar_with_title.dart';
-import 'package:evds_staff/widgets/rich_text_item.dart';
+import 'package:evds_examinee/widgets/avatar_with_title.dart';
+import 'package:evds_examinee/widgets/rich_text_item.dart';
 import 'package:flutter/material.dart';
 
 class DetailShiftScreen extends StatelessWidget {
