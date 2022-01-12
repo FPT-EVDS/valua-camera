@@ -28,8 +28,23 @@ class AppPages {
       page: () => const IncidentScreen(),
     ),
     GetPage(
+<<<<<<< HEAD
       name: AppRoutes.attendance,
       page: () => const AttendanceScreen(),
+=======
+      name: AppRoutes.detailShift,
+      page: () => const DetailShiftScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.detailProfile,
+      page: () => const DetailProfileScreen(),
+      binding: DetailProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.changePassword,
+      page: () => const ChangePasswordScreen(),
+      binding: ChangePasswordBinding(),
+>>>>>>> 71e6696b1c463261fc7c9c044ce0de68c636f558
     ),
     GetPage(
       name: AppRoutes.main,
