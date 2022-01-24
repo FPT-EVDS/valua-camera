@@ -1,16 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:valua_staff/routes/app_pages.dart';
 import 'package:valua_staff/screens/login/login_controller.dart';
+import 'package:valua_staff/screens/login/login_view.dart';
 import 'package:valua_staff/screens/main/main_screen.dart';
 import 'package:valua_staff/widgets/round_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> implements LoginView {
+  final _formKey = GlobalKey<FormState>();
+  late LoginPresenter _presenter;
+  String _errorMessage = "";
+  bool _isLoading = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  _LoginScreenState() {
+    _presenter = LoginPresenter(this);
+  }
+  @override
+  void loginFail(errorMessage) {
+    Fluttertoast.showToast(msg: "Email or password is incorrect");
+    setState(() {
+      _isLoading = false;
+      _errorMessage = errorMessage;
+    });
+  }
+
+  @override
+  void loginSuccess(user) {
+    Fluttertoast.showToast(msg: "Login successful");
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pushNamedAndRemoveUntil(
+        context, AppRoutes.main, (route) => false);
+  }
+
+  void submitForm() {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      print("dô dô");
+      _presenter.login(email, password);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.find<LoginController>();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -69,14 +115,14 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Form(
-                        key: _controller.formKey,
+                        key: _formKey,
                         child: Column(
                           children: <Widget>[
                             const SizedBox(
                               height: 30,
                             ),
                             TextFormField(
-                              controller: _controller.emailController,
+                              controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: const InputDecoration(
                                 labelText: "Email",
@@ -92,7 +138,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             TextFormField(
                               obscureText: true,
-                              controller: _controller.passwordController,
+                              controller: _passwordController,
                               decoration: const InputDecoration(
                                 labelText: "Password",
                               ),
@@ -102,33 +148,30 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(
                               height: 30,
                             ),
-                            Obx(
-                              () => RoundButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MainScreen()));
-                                },
-                                height: 45,
-                                width: double.infinity,
-                                label: "Login",
-                                isLoading: _controller.isLoading.value,
-                              ),
+                            RoundButton(
+                              onPressed: () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => MainScreen()));
+                                submitForm();
+                              },
+                              height: 45,
+                              width: double.infinity,
+                              label: "Login",
+                              isLoading: _isLoading,
                             ),
                             const SizedBox(
-                              height: 30,
+                              height: 20,
                             ),
-                            Obx(
-                              () => RoundButton(
-                                onPressed: () {},
-                                height: 45,
-                                width: double.infinity,
-                                label: "Log in with Google",
-                                isLoading: _controller.isLoading.value,
-                                color: Colors.red,
-                              ),
-                            )
+                            RoundButton(
+                              onPressed: () {},
+                              height: 45,
+                              width: double.infinity,
+                              label: "Log in with Google",
+                              isLoading: _isLoading,
+                              color: Colors.red,
+                            ),
                           ],
                         ),
                       ),

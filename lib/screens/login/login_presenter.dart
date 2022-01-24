@@ -17,7 +17,6 @@ class LoginPresenter {
     try {
       if (email.isNotEmpty) {
         AuthUser user = await _authRepository.login(email, password);
-        print(user);
         _loginView.loginSuccess(user);
       }
     } on DioError catch (e) {

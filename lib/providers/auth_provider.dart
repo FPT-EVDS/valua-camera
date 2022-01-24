@@ -1,16 +1,16 @@
 import 'dart:convert';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:valua_staff/models/account.dart';
-import 'package:valua_staff/models/app_user.dart';
+import 'package:valua_staff/models/auth_user.dart';
 import 'package:valua_staff/providers/base_provider.dart';
 import 'package:valua_staff/repository/auth_repository.dart';
-import 'package:get_storage/get_storage.dart';
 
 class AuthProvider extends BaseProvider implements AuthRepository {
   final GetStorage _storage = GetStorage('evds_examinee');
 
   @override
-  Future<AppUser> login(String email, String password) async {
+  Future<AuthUser> login(String email, String password) async {
     final response = await post("/authentication/login", {
       'email': email,
       'password': password,
@@ -18,7 +18,7 @@ class AuthProvider extends BaseProvider implements AuthRepository {
     if (response.status.hasError) {
       throw (response.body);
     }
-    return AppUser.fromJson(response.body);
+    return AuthUser.fromJson(response.body);
   }
 
   @override

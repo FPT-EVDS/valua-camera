@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:valua_staff/screens/attendance/attendance_view.dart';
+import 'package:valua_staff/screens/dashboard/dashboard.dart';
 import 'package:valua_staff/widgets/custom_list_tile.dart';
 import 'package:valua_staff/widgets/header_attendance.dart';
+import 'package:valua_staff/widgets/round_button.dart';
 
-class AttendanceScreen extends StatelessWidget {
+class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key}) : super(key: key);
 
+  @override
+  _AttendanceScreenState createState() => _AttendanceScreenState();
+}
+
+class _AttendanceScreenState extends State<AttendanceScreen>
+    implements AttendanceView {
+  _AttendanceScreenState() {}
   @override
   Widget build(BuildContext context) {
     ChartType? _chartType = ChartType.ring;
@@ -15,8 +25,8 @@ class AttendanceScreen extends StatelessWidget {
       "Unattended": 3,
     };
     final colorList = <Color>[
-      const Color.fromRGBO(76, 175, 80, 80),
-      const Color.fromRGBO(244, 105, 54, 80),
+      const Color.fromRGBO(0, 180, 0, 40),
+      const Color.fromRGBO(255, 0, 0, 40),
     ];
     bool _showChartValuesOutside = true;
     bool _showLegendsInRow = true;
@@ -25,7 +35,71 @@ class AttendanceScreen extends StatelessWidget {
     bool _showChartValueBackground = false;
 
     LegendPosition? _legendPosition = LegendPosition.bottom;
+
+    void _settingModalBottomSheet(context) {
+      showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+          ),
+          context: context,
+          builder: (context) => Container(
+                height: 200,
+                child: new Container(
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20),
+                        Text('Authorization required',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900, fontSize: 15)),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                          child: TextFormField(
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              labelText: "Staff password",
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        RoundButton(
+                          height: 45,
+                          width: 300,
+                          color: Colors.blue,
+                          label: "Submit",
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DashboardScreen()));
+                          },
+                        )
+                      ],
+                    )),
+              ));
+    }
+
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: RoundButton(
+          height: 40,
+          width: 150,
+          color: Colors.blue,
+          label: "Finish checking",
+          onPressed: () {
+            _settingModalBottomSheet(context);
+          },
+        ),
+      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -115,6 +189,13 @@ class AttendanceScreen extends StatelessWidget {
                     imageUrl: "https://picsum.photos/200",
                     leadingNumber: 7,
                     subtitle: "Lam Hau Huong",
+                    title: "SE140129",
+                  ),
+                  CustomListTile(
+                    attended: true,
+                    imageUrl: "https://picsum.photos/200",
+                    leadingNumber: 8,
+                    subtitle: "Ho Thi Ky",
                     title: "SE140129",
                   ),
                 ],
