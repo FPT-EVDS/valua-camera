@@ -21,7 +21,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.incident,
-      page: () => const IncidentScreen(),
+      page: () => IncidentScreen(),
     ),
     GetPage(
       name: AppRoutes.attendance,

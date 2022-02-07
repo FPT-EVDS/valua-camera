@@ -1,0 +1,34 @@
+import 'package:dio/dio.dart';
+import 'package:valua_staff/di/injection.dart';
+import 'package:valua_staff/repository/auth_repository.dart';
+import 'package:valua_staff/screens/incident/Incident_view.dart';
+
+import 'incident_view.dart';
+
+class IncidentPresenter {
+  IncidentView _incidentView;
+
+  RegisterPresenter(this._registerView) {
+    //Inject auth repo
+    _authRepository = new Injector().authRepository;
+  }
+
+  Future<void> register(
+      String email, String password, String firstName, String lastName) async {
+    try {
+      if (email.isNotEmpty &&
+          password.isNotEmpty &&
+          firstName.isNotEmpty &&
+          lastName.isNotEmpty) {
+        await _authRepository.register(email, password, firstName, lastName);
+        AuthUser user = await _authRepository.login(email, password);
+        _registerView.registerSuccess(user);
+      }
+    } on DioError {
+      _incidentView.registerFail("Email đã tồn tại");
+    } catch (e) {
+      print(e);
+      _incidentView.registerFail("Lỗi không xác định");
+    }
+  }
+}
