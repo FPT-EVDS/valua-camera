@@ -1,18 +1,12 @@
-import 'package:valua_staff/routes/app_pages.dart';
-import 'package:valua_staff/screens/camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:valua_staff/screens/report/incident.dart';
 import 'package:valua_staff/widgets/card_button.dart';
-import 'package:valua_staff/widgets/round_button.dart';
-import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = PageController();
-
     void _settingModalBottomSheet(context) {
       showModalBottomSheet(
           shape: RoundedRectangleBorder(
@@ -50,7 +44,12 @@ class DashboardScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => IncidentScreen()));
+                          },
                           leading: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.blue[600],
