@@ -46,12 +46,10 @@ dependencies:
   cool_alert: ^1.1.0
   pie_chart: ^5.1.0
   camera: ^0.8.1+7
-  dio: ^4.0.0
   flutter_secure_storage: ^4.2.0
   pull_to_refresh: ^2.0.0
   get: ^4.6.1
   get_storage: ^2.0.3
-  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +74,7 @@ flutter_native_splash:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/valua.png"
+  image_path: "assets/icons/app_icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -87,9 +85,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/images/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

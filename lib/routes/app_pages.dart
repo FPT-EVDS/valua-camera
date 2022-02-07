@@ -4,6 +4,7 @@ import 'package:valua_camera/screens/login/login.dart';
 import 'package:valua_camera/screens/login/login_binding.dart';
 import 'package:valua_camera/screens/main/main.dart';
 import 'package:get/get.dart';
+import 'package:valua_camera/screens/main/main_binding.dart';
 import 'package:valua_camera/screens/report/incident.dart';
 
 part 'app_routes.dart';
@@ -32,6 +33,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.main,
       page: () => const MainScreen(),
+      binding: MainBinding(),
     ),
   ];
 }

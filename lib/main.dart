@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/providers/auth_provider.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/services/auth_service.dart';
@@ -18,7 +19,7 @@ Future<void> initServices() async {
     final license = await rootBundle.loadString('assets/font/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  await Get.putAsync(() => GetStorage.init('evds_examinee'));
+  await Get.putAsync(() => GetStorage.init(AppConstant.storageKey));
 }
 
 class AppBinding extends Bindings {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final GetStorage _storage = GetStorage('evds_examinee');
+    final GetStorage _storage = GetStorage(AppConstant.storageKey);
     return GetMaterialApp(
       title: 'Valua Camera',
       theme: AppThemes(context).defaultTheme,
