@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "\u00a9 Valua camera 2021, All rights reserved",
+              "\u00a9 Valua Camera 2021, All rights reserved",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade500,
@@ -111,20 +111,17 @@ class LoginScreen extends StatelessWidget {
                               isLoading: _controller.isLoading.value,
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Obx(
-                            () => RoundButton(
-                              onPressed: () {},
-                              height: 45,
-                              icon: const Icon(CommunityMaterialIcons.google),
-                              width: double.infinity,
-                              label: "Login with Google",
-                              isLoading: _controller.isLoading.value,
-                              color: Colors.red,
-                            ),
-                          )
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // RoundButton(
+                          //   onPressed: () {},
+                          //   height: 45,
+                          //   icon: const Icon(CommunityMaterialIcons.google),
+                          //   width: double.infinity,
+                          //   label: "Login with Google",
+                          //   color: Colors.red,
+                          // ),
                         ],
                       ),
                     ),

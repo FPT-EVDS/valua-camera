@@ -1,12 +1,31 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:valua_camera/constants/app.dart';
+import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/providers/exam_room_provider.dart';
+import 'package:valua_camera/repository/exam_room_repository.dart';
 
 class MainController extends GetxController {
-  final tabIndex = 0.obs;
-  final appBarTitle = "".obs;
-  final List<String> _listTitles = ["", "Notifications", ""];
+  final assignedExamRoom = Future<ExamRoom?>.value().obs;
+  final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
 
-  void changeTabIndex(int newTabIndex) {
-    tabIndex.value = newTabIndex;
-    appBarTitle.value = _listTitles[newTabIndex];
+  Future<void> getAssignedExamRoom({DateTime? date}) async {
+    try {
+      final data = _examRoomRepository.loadExamRoom();
+      assignedExamRoom.value = data;
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  void logout() {
+    final _storage = GetStorage(AppConstant.storageKey);
+    _storage.erase();
+  }
+
+  @override
+  void onInit() {
+    getAssignedExamRoom();
+    super.onInit();
   }
 }

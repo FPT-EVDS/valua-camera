@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
-import 'package:valua_camera/configs/http_service.dart';
+import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/models/account.dart';
 import 'package:valua_camera/models/app_user.dart';
+import 'package:valua_camera/providers/base_provider.dart';
 import 'package:valua_camera/repository/auth_repository.dart';
 
 class AuthProvider extends BaseProvider implements AuthRepository {
-  final GetStorage _storage = GetStorage('evds_examinee');
+  final GetStorage _storage = GetStorage(AppConstant.storageKey);
 
   @override
   Future<AppUser> login(String email, String password) async {
