@@ -1,4 +1,4 @@
-name: valua_staff
+name: valua_camera
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -33,31 +33,25 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  get: ^4.5.1
   google_fonts: ^2.1.0
   flutter_svg: ^0.23.0+1
   community_material_icon: ^5.9.55
   intl: ^0.17.0
   animations: ^2.0.2
   cached_network_image: ^3.2.0
-  table_calendar: ^3.0.3
   dropdown_search: ^2.0.1
-  carousel_slider: ^4.0.0
-  photo_view: ^0.13.0
-  get_storage: ^2.0.3
   json_annotation: ^4.4.0
   fluttertoast: ^8.0.8
   form_field_validator: ^1.1.0
   cool_alert: ^1.1.0
   pie_chart: ^5.1.0
   camera: ^0.8.1+7
-  video_player: ^2.1.14
-  path_provider: ^2.0.2
   dio: ^4.0.0
   flutter_secure_storage: ^4.2.0
-  shared_preferences: ^2.0.6
-  cloudinary_public: ^0.8.2
   pull_to_refresh: ^2.0.0
+  get: ^4.6.1
+  get_storage: ^2.0.3
+  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:

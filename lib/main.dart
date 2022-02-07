@@ -1,12 +1,12 @@
-import 'package:valua_staff/providers/auth_provider.dart';
-import 'package:valua_staff/routes/routes.dart';
-import 'package:valua_staff/services/auth_service.dart';
-import 'package:valua_staff/theme/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:valua_camera/providers/auth_provider.dart';
+import 'package:valua_camera/routes/routes.dart';
+import 'package:valua_camera/services/auth_service.dart';
+import 'package:valua_camera/theme/theme.dart';
 
 void main() async {
   await initServices();
@@ -18,14 +18,14 @@ Future<void> initServices() async {
     final license = await rootBundle.loadString('assets/font/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  await Get.putAsync(() => GetStorage.init('valua_staff'));
+  await Get.putAsync(() => GetStorage.init('evds_examinee'));
 }
 
 class AppBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(AuthService());
-    Get.put(AuthProvider());
+    Get.lazyPut(() => AuthProvider());
   }
 }
 
@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final GetStorage _storage = GetStorage('valua_staff');
+    final GetStorage _storage = GetStorage('evds_examinee');
     return GetMaterialApp(
-      title: 'VALUA Staff',
+      title: 'Valua Camera',
       theme: AppThemes(context).defaultTheme,
       defaultTransition: Transition.fade,
       initialBinding: AppBinding(),

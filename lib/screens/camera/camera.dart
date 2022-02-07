@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:valua_staff/screens/attendance/attendance.dart';
-import 'package:valua_staff/widgets/round_button.dart';
+import 'package:valua_camera/screens/attendance/attendance.dart';
+import 'package:valua_camera/widgets/round_button.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription>? cameras;
@@ -68,7 +68,7 @@ class _CameraScreenState extends State<CameraScreen> {
           });
         },
       ),
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
         child: Stack(
@@ -80,7 +80,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: CameraPreview(controller),
               ),
             ),
-            Container(
+            SizedBox(
               width: size.width,
               height: size.height,
               child: SafeArea(
@@ -98,7 +98,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          AttendanceScreen()));
+                                          const AttendanceScreen()));
                             },
                             child: Text("Attendance",
                                 style: TextStyle(
@@ -107,15 +107,15 @@ class _CameraScreenState extends State<CameraScreen> {
                                   fontWeight: FontWeight.w900,
                                 )),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text("|",
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.5),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w900,
                               )),
-                          SizedBox(width: 5),
-                          Text("Camera",
+                          const SizedBox(width: 5),
+                          const Text("Camera",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -137,14 +137,14 @@ class _CameraScreenState extends State<CameraScreen> {
 
 class DisplayPictureScreen extends StatelessWidget {
   final XFile? image;
-  DisplayPictureScreen({Key? key, this.image}) : super(key: key);
+  const DisplayPictureScreen({Key? key, this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
+      body: SizedBox(
           width: size.width,
           height: size.height,
           child: Image.file(
@@ -156,7 +156,7 @@ class DisplayPictureScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.check,
                 size: 60,
                 color: Colors.green,
@@ -164,9 +164,9 @@ class DisplayPictureScreen extends StatelessWidget {
               onPressed: () {
                 showAlertDialog(context);
               }),
-          SizedBox(width: 50),
+          const SizedBox(width: 50),
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.close,
                 size: 60,
                 color: Colors.red,
@@ -185,42 +185,42 @@ class DisplayPictureScreen extends StatelessWidget {
 showAlertDialog(BuildContext context) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
-    content: Container(
+    content: SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 320,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 60,
             backgroundImage: NetworkImage('https://picsum.photos/200?image=66'),
           ),
-          SizedBox(height: 30),
-          Text("Nguyen Huu Huy - SE140380"),
-          SizedBox(height: 10),
+          const SizedBox(height: 30),
+          const Text("Nguyen Huu Huy - SE140380"),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: const [
               Text("Attended at: ",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w900)),
               Text("23/08/2021 16:40"),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: const [
               Text("Seat position: ",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w900)),
               Text("02"),
             ],
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           RoundButton(
               label: "Confirm",
               width: double.infinity,

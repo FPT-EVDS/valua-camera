@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:valua_staff/models/attendances.dart';
-import 'package:valua_staff/models/auth_user.dart';
-import 'package:valua_staff/models/room.dart';
-import 'package:valua_staff/models/shift.dart';
-import 'package:valua_staff/models/subject.dart';
+import 'package:valua_camera/models/attendances.dart';
+import 'package:valua_camera/models/auth_user.dart';
+import 'package:valua_camera/models/room.dart';
+import 'package:valua_camera/models/shift.dart';
+import 'package:valua_camera/models/subject.dart';
 part 'exam_room.g.dart';
 
 @JsonSerializable()

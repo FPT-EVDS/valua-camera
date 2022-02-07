@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:valua_staff/screens/attendance/attendance_view.dart';
-import 'package:valua_staff/screens/dashboard/dashboard.dart';
-import 'package:valua_staff/widgets/custom_list_tile.dart';
-import 'package:valua_staff/widgets/header_attendance.dart';
-import 'package:valua_staff/widgets/round_button.dart';
+import 'package:valua_camera/screens/attendance/attendance_view.dart';
+import 'package:valua_camera/screens/dashboard/dashboard.dart';
+import 'package:valua_camera/widgets/custom_list_tile.dart';
+import 'package:valua_camera/widgets/header_attendance.dart';
+import 'package:valua_camera/widgets/round_button.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key}) : super(key: key);
@@ -15,7 +15,6 @@ class AttendanceScreen extends StatefulWidget {
 
 class _AttendanceScreenState extends State<AttendanceScreen>
     implements AttendanceView {
-  _AttendanceScreenState() {}
   @override
   Widget build(BuildContext context) {
     ChartType? _chartType = ChartType.ring;
@@ -38,29 +37,29 @@ class _AttendanceScreenState extends State<AttendanceScreen>
 
     void _settingModalBottomSheet(context) {
       showModalBottomSheet(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(20),
             ),
           ),
           context: context,
-          builder: (context) => Container(
+          builder: (context) => SizedBox(
                 height: 200,
-                child: new Container(
-                    decoration: new BoxDecoration(
+                child: Container(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
-                        Text('Authorization required',
+                        const SizedBox(height: 20),
+                        const Text('Authorization required',
                             style: TextStyle(
                                 fontWeight: FontWeight.w900, fontSize: 15)),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                           child: TextFormField(
                             obscureText: true,
                             decoration: const InputDecoration(
@@ -68,7 +67,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         RoundButton(
                           height: 45,
                           width: 300,
@@ -78,7 +77,8 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DashboardScreen()));
+                                    builder: (context) =>
+                                        const DashboardScreen()));
                           },
                         )
                       ],
@@ -141,7 +141,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                 ),
               ),
               Column(
-                children: [
+                children: const [
                   CustomListTile(
                     attended: true,
                     imageUrl: "https://picsum.photos/200",

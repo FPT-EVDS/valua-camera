@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:valua_staff/models/auth_user.dart';
-import 'package:valua_staff/models/semester.dart';
+
 part 'shift.g.dart';
 
 @JsonSerializable()

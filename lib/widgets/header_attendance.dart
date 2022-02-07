@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:valua_staff/screens/camera/camera.dart';
+import 'package:valua_camera/screens/camera/camera.dart';
 
 late List<CameraDescription> cameras = [];
 
@@ -24,7 +24,7 @@ class HeaderAttendance extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextButton(
-          child: Text(
+          child: const Text(
             "Attendance",
             style: TextStyle(
               color: Colors.black,
@@ -34,12 +34,12 @@ class HeaderAttendance extends StatelessWidget {
           ),
           onPressed: () {},
         ),
-        Text(
+        const Text(
           '|',
           style: TextStyle(color: Colors.black),
         ),
         TextButton(
-          child: Text(
+          child: const Text(
             "Camera",
             style: TextStyle(
                 color: Colors.grey, fontSize: 18, fontWeight: FontWeight.w100),

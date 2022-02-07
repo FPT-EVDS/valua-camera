@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:valua_staff/models/auth_user.dart';
+import 'package:valua_camera/models/auth_user.dart';
 
 part 'attendances.g.dart';
 
