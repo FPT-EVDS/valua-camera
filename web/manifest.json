@@ -1,6 +1,6 @@
 {
-  "name": "evds_examinee",
-  "short_name": "evds_examinee",
+  "name": "valua_camera",
+  "short_name": "valua_camera",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0175C2",

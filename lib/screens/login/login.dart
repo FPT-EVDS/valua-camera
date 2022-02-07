@@ -1,73 +1,27 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:valua_staff/routes/app_pages.dart';
-import 'package:valua_staff/screens/login/login_controller.dart';
-import 'package:valua_staff/screens/login/login_view.dart';
-import 'package:valua_staff/screens/main/main_screen.dart';
-import 'package:valua_staff/widgets/round_button.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:valua_camera/screens/login/login_controller.dart';
+import 'package:valua_camera/widgets/round_button.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> implements LoginView {
-  final _formKey = GlobalKey<FormState>();
-  late LoginPresenter _presenter;
-  String _errorMessage = "";
-  bool _isLoading = false;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-  _LoginScreenState() {
-    _presenter = LoginPresenter(this);
-  }
-  @override
-  void loginFail(errorMessage) {
-    Fluttertoast.showToast(msg: "Email or password is incorrect");
-    setState(() {
-      _isLoading = false;
-      _errorMessage = errorMessage;
-    });
-  }
-
-  @override
-  void loginSuccess(user) {
-    Fluttertoast.showToast(msg: "Login successful");
-    setState(() {
-      _isLoading = false;
-    });
-    Navigator.pushNamedAndRemoveUntil(
-        context, AppRoutes.main, (route) => false);
-  }
-
-  void submitForm() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      print("dô dô");
-      _presenter.login(email, password);
-    }
-  }
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _controller = Get.find<LoginController>();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(200),
+          preferredSize: const Size.fromHeight(200),
           child: AppBar(
             centerTitle: true,
             flexibleSpace: ClipRRect(
-              borderRadius: BorderRadius.only(),
+              borderRadius: const BorderRadius.only(),
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/icons/valua.png"),
                     fit: BoxFit.fitHeight,
@@ -75,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginView {
                 ),
               ),
             ),
-            bottom: TabBar(
+            bottom: const TabBar(
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
               labelStyle: TextStyle(
@@ -93,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginView {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "\u00a9 VALUA for Examinee 2021, All rights reserved",
+              "\u00a9 Valua Camera 2021, All rights reserved",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade500,
@@ -101,86 +55,81 @@ class _LoginScreenState extends State<LoginScreen> implements LoginView {
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            Center(
-              child: Image(
-                image: AssetImage("assets/icons/qr.png"),
-              ),
-            ),
-            Center(
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 30,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: TabBarView(
+              children: [
+                const Center(
+                  child: Image(
+                    image: AssetImage("assets/icons/qr.png"),
+                  ),
+                ),
+                Column(
+                  children: [
+                    Form(
+                      key: _controller.formKey,
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                            controller: _controller.emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
+                              labelText: "Email",
                             ),
-                            TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: "Email",
-                              ),
-                              validator: MultiValidator([
-                                EmailValidator(errorText: "Invalid email"),
-                                RequiredValidator(
-                                    errorText: "Email is required")
-                              ]),
+                            validator: MultiValidator([
+                              EmailValidator(errorText: "Invalid email"),
+                              RequiredValidator(errorText: "Email is required")
+                            ]),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            controller: _controller.passwordController,
+                            decoration: const InputDecoration(
+                              labelText: "Password",
                             ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            TextFormField(
-                              obscureText: true,
-                              controller: _passwordController,
-                              decoration: const InputDecoration(
-                                labelText: "Password",
-                              ),
-                              validator: RequiredValidator(
-                                  errorText: "Password is required"),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            RoundButton(
+                            validator: RequiredValidator(
+                                errorText: "Password is required"),
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Obx(
+                            () => RoundButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => MainScreen()));
-                                submitForm();
+                                _controller.login();
                               },
                               height: 45,
                               width: double.infinity,
                               label: "Login",
-                              isLoading: _isLoading,
+                              isLoading: _controller.isLoading.value,
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            RoundButton(
-                              onPressed: () {},
-                              height: 45,
-                              width: double.infinity,
-                              label: "Log in with Google",
-                              isLoading: _isLoading,
-                              color: Colors.red,
-                            ),
-                          ],
-                        ),
+                          ),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // RoundButton(
+                          //   onPressed: () {},
+                          //   height: 45,
+                          //   icon: const Icon(CommunityMaterialIcons.google),
+                          //   width: double.infinity,
+                          //   label: "Login with Google",
+                          //   color: Colors.red,
+                          // ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

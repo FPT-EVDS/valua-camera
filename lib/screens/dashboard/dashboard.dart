@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:valua_staff/screens/report/incident.dart';
-import 'package:valua_staff/widgets/card_button.dart';
+import 'package:valua_camera/widgets/card_button.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -9,56 +8,56 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     void _settingModalBottomSheet(context) {
       showModalBottomSheet(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(20),
             ),
           ),
           context: context,
-          builder: (context) => Container(
+          builder: (context) => SizedBox(
                 height: 200,
-                child: new Container(
-                    decoration: new BoxDecoration(
+                child: Container(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
-                        Text('Choose type of report',
+                        const SizedBox(height: 20),
+                        const Text('Choose type of report',
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 15)),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         ListTile(
                           onTap: () {},
                           leading: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.blue[400],
-                            child: Icon(
+                            child: const Icon(
                               Icons.file_copy_outlined,
                               color: Colors.white,
                             ),
                           ),
-                          title: Text('Exam regulation report'),
+                          title: const Text('Exam regulation report'),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ListTile(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => IncidentScreen()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => IncidentScreen()));
                           },
                           leading: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.blue[600],
-                            child: Icon(
+                            child: const Icon(
                               Icons.file_copy_outlined,
                               color: Colors.white,
                             ),
                           ),
-                          title: Text('Exam incident report'),
+                          title: const Text('Exam incident report'),
                         )
                       ],
                     )),
@@ -68,7 +67,7 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Exam room dashboard',
           )),
       body: SafeArea(
@@ -126,7 +125,7 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.add), onPressed: () {}),
+          FloatingActionButton(child: const Icon(Icons.add), onPressed: () {}),
     );
   }
 }
