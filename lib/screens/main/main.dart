@@ -1,67 +1,23 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:valua_staff/models/exam_room.dart';
-import 'package:valua_staff/screens/camera/camera.dart';
-import 'package:valua_staff/screens/main/main_presenter.dart';
-import 'package:valua_staff/screens/main/main_view.dart';
-import 'package:valua_staff/widgets/round_button.dart';
+import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/screens/camera/camera.dart';
+import 'package:valua_camera/widgets/round_button.dart';
 
 late List<CameraDescription> cameras = [];
+ExamRoom? _assignedExamRoom;
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> implements MainView {
-  late MainPresenter _presenter;
-  bool _showEmpty = false;
-  bool _isLoading = true;
-  ExamRoom? _assignedExamRoom;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  _MainScreenState() {
-    _presenter = MainPresenter(this);
-    _presenter.loadExamRoom();
-  }
-
-  @override
-  void loadExamRoom(examRoom) {
-    setState(() {
-      _isLoading = false;
-      _showEmpty = false;
-      this._assignedExamRoom = examRoom;
-    });
-  }
-
-  @override
-  void refesh() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    _presenter.loadExamRoom();
-    _refreshController.refreshCompleted();
-  }
-
-  @override
-  void showEmptyExamRoom() {
-    setState(() {
-      _isLoading = false;
-      _showEmpty = true;
-    });
-    _refreshController.refreshCompleted();
-  }
-
-  Future<void> main() async {
-    try {
-      WidgetsFlutterBinding.ensureInitialized();
-      cameras = await availableCameras();
-    } on CameraException catch (e) {
-      print('Error in fetching the cameras: $e');
-    }
-  }
+  // Future<void> main() async {
+  //   try {
+  //     WidgetsFlutterBinding.ensureInitialized();
+  //     cameras = await availableCameras();
+  //   } on CameraException catch (e) {
+  //     print('Error in fetching the cameras: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +35,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
                 _assignedExamRoom != null
                     ? _assignedExamRoom!.examRoomName
                     : 'FA Spring 2022',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
                 ),
@@ -110,7 +66,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Date: ',
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
@@ -121,7 +77,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
                     _assignedExamRoom != null
                         ? _assignedExamRoom!.createdDate
                         : 'date',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w200,
                       fontSize: 15,
                     ),
@@ -134,7 +90,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
               // time
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     'Time: ',
                     style: TextStyle(
@@ -157,7 +113,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
               // room
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     'Room: ',
                     style: TextStyle(
@@ -180,7 +136,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
               // subject
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     'Subject: ',
                     style: TextStyle(
@@ -203,7 +159,7 @@ class _MainScreenState extends State<MainScreen> implements MainView {
               // total examinees
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     'Total examinees: ',
                     style: TextStyle(

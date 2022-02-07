@@ -47,11 +47,11 @@ class CardButton extends StatelessWidget {
               )
             : Row(
                 children: [
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       border: Border.all(
                         color: Colors.blue,
                         width: 10,
@@ -63,7 +63,7 @@ class CardButton extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(width: 25),
+                  const SizedBox(width: 25),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,12 +76,12 @@ class CardButton extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                         detail,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w600,
                           fontSize: 12,

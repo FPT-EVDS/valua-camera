@@ -7,13 +7,14 @@ class CustomListTile extends StatelessWidget {
   final int leadingNumber;
   final bool attended;
 
-  CustomListTile({
+  const CustomListTile({
+    Key? key,
     required this.title,
     required this.subtitle,
     required this.imageUrl,
     required this.leadingNumber,
     required this.attended,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +24,12 @@ class CustomListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(leadingNumber.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 )),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             CircleAvatar(
               radius: 20,
               backgroundImage: NetworkImage(
@@ -38,7 +39,7 @@ class CustomListTile extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w900,
             fontSize: 17,
@@ -46,15 +47,15 @@ class CustomListTile extends StatelessWidget {
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w400,
             fontSize: 14,
           ),
         ),
         trailing: attended
-            ? Icon(Icons.check_circle, color: Colors.green)
-            : Icon(
+            ? const Icon(Icons.check_circle, color: Colors.green)
+            : const Icon(
                 Icons.cancel,
                 color: Colors.red,
               ));
