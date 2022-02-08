@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:valua_camera/enums/attendance_status.dart';
 import 'package:valua_camera/models/account_alternative.dart';
 
 part 'attendance.g.dart';
@@ -6,13 +7,13 @@ part 'attendance.g.dart';
 @JsonSerializable()
 class Attendance {
   String attendanceId;
-  AccountAlternative? examinee;
-  int? status;
+  AccountAlternative examinee;
+  AttendanceStatus? status;
   int position;
 
   Attendance({
     required this.attendanceId,
-    this.examinee,
+    required this.examinee,
     this.status,
     required this.position,
   });

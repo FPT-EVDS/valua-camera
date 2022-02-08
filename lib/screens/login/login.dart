@@ -2,6 +2,8 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:valua_camera/screens/login/login_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
@@ -60,11 +62,25 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: TabBarView(
               children: [
-                const Center(
-                  child: Image(
-                    image: AssetImage("assets/icons/qr.png"),
-                  ),
+                // QR Login
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    QrImage(
+                      // FIXME: Update data here
+                      data: "1234567890",
+                      version: QrVersions.auto,
+                      padding: const EdgeInsets.all(16.0),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Scan QR Code with Staff app to login",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
+                // Email Login
                 Column(
                   children: [
                     Form(
@@ -111,17 +127,30 @@ class LoginScreen extends StatelessWidget {
                               isLoading: _controller.isLoading.value,
                             ),
                           ),
-                          // const SizedBox(
-                          //   height: 20,
-                          // ),
-                          // RoundButton(
-                          //   onPressed: () {},
-                          //   height: 45,
-                          //   icon: const Icon(CommunityMaterialIcons.google),
-                          //   width: double.infinity,
-                          //   label: "Login with Google",
-                          //   color: Colors.red,
-                          // ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          RoundButton(
+                            onPressed: () async {
+                              // FIXME: Only for testing purpose
+                              GoogleSignIn _googleSignIn =
+                                  GoogleSignIn(scopes: ['email']);
+                              try {
+                                _googleSignIn.signIn().then((googleKey) {
+                                  print(googleKey);
+                                });
+                              } catch (error) {
+                                print(error);
+                              } finally {
+                                _googleSignIn.signOut();
+                              }
+                            },
+                            height: 45,
+                            icon: const Icon(CommunityMaterialIcons.google),
+                            width: double.infinity,
+                            label: "Login with Google",
+                            color: Colors.red,
+                          ),
                         ],
                       ),
                     ),

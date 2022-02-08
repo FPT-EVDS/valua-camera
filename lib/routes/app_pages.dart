@@ -1,4 +1,6 @@
 import 'package:valua_camera/screens/attendance/attendance.dart';
+import 'package:valua_camera/screens/check_in/check_in.dart';
+import 'package:valua_camera/screens/check_in/check_in_binding.dart';
 import 'package:valua_camera/screens/dashboard/dashboard.dart';
 import 'package:valua_camera/screens/login/login.dart';
 import 'package:valua_camera/screens/login/login_binding.dart';
@@ -21,6 +23,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.dashboard,
       page: () => const DashboardScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.checkIn,
+      page: () => const CheckInScreen(),
+      binding: CheckInBinding(),
     ),
     GetPage(
       name: AppRoutes.incident,

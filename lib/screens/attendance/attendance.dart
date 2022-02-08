@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
-import 'package:valua_camera/screens/attendance/attendance_view.dart';
 import 'package:valua_camera/screens/dashboard/dashboard.dart';
 import 'package:valua_camera/widgets/custom_list_tile.dart';
 import 'package:valua_camera/widgets/header_attendance.dart';
@@ -13,12 +11,9 @@ class AttendanceScreen extends StatefulWidget {
   _AttendanceScreenState createState() => _AttendanceScreenState();
 }
 
-class _AttendanceScreenState extends State<AttendanceScreen>
-    implements AttendanceView {
+class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
-    ChartType? _chartType = ChartType.ring;
-
     final dataMap = <String, double>{
       "Attended": 4,
       "Unattended": 3,
@@ -32,8 +27,6 @@ class _AttendanceScreenState extends State<AttendanceScreen>
     bool _showCenterText = true;
     double? _ringStrokeWidth = 30;
     bool _showChartValueBackground = false;
-
-    LegendPosition? _legendPosition = LegendPosition.bottom;
 
     void _settingModalBottomSheet(context) {
       showModalBottomSheet(
@@ -110,36 +103,36 @@ class _AttendanceScreenState extends State<AttendanceScreen>
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              PieChart(
-                ringStrokeWidth: _ringStrokeWidth,
-                chartType: _chartType,
-                // ignore: dead_code
-                centerText: _showCenterText ? "7" : null,
-                chartRadius: MediaQuery.of(context).size.width / 2.2 > 300
-                    ? 300
-                    : MediaQuery.of(context).size.width / 2.2,
-                dataMap: dataMap,
-                animationDuration: const Duration(milliseconds: 800),
-                colorList: colorList,
-                legendOptions: LegendOptions(
-                  legendPosition: _legendPosition,
-                  showLegendsInRow: _showLegendsInRow,
-                  legendTextStyle: const TextStyle(
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                chartValuesOptions: ChartValuesOptions(
-                  showChartValueBackground: _showChartValueBackground,
-                  showChartValuesOutside: _showChartValuesOutside,
-                  decimalPlaces: 0,
-                  chartValueStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    backgroundColor: Colors.transparent,
-                    fontSize: 22,
-                  ),
-                ),
-              ),
+              // PieChart(
+              //   ringStrokeWidth: _ringStrokeWidth,
+              //   chartType: _chartType,
+              //   // ignore: dead_code
+              //   centerText: _showCenterText ? "7" : null,
+              //   chartRadius: MediaQuery.of(context).size.width / 2.2 > 300
+              //       ? 300
+              //       : MediaQuery.of(context).size.width / 2.2,
+              //   dataMap: dataMap,
+              //   animationDuration: const Duration(milliseconds: 800),
+              //   colorList: colorList,
+              //   legendOptions: LegendOptions(
+              //     legendPosition: _legendPosition,
+              //     showLegendsInRow: _showLegendsInRow,
+              //     legendTextStyle: const TextStyle(
+              //       fontWeight: FontWeight.w300,
+              //     ),
+              //   ),
+              //   chartValuesOptions: ChartValuesOptions(
+              //     showChartValueBackground: _showChartValueBackground,
+              //     showChartValuesOutside: _showChartValuesOutside,
+              //     decimalPlaces: 0,
+              //     chartValueStyle: const TextStyle(
+              //       fontWeight: FontWeight.w500,
+              //       color: Colors.black,
+              //       backgroundColor: Colors.transparent,
+              //       fontSize: 22,
+              //     ),
+              //   ),
+              // ),
               Column(
                 children: const [
                   CustomListTile(

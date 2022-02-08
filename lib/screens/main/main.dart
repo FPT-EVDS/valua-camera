@@ -6,13 +6,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/routes/routes.dart';
-import 'package:valua_camera/screens/camera/camera.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 late List<CameraDescription> cameras = [];
-ExamRoom? _assignedExamRoom;
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -29,31 +27,15 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _controller = Get.find<MainController>();
-    // final controller = PageController();
-    // var dateTime = DateTime.parse(_assignedExamRoom!.createdDate);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Exam room name",
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'Logout') {
-                _controller.logout();
-                Get.offAndToNamed(AppRoutes.login);
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return {'Logout'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
+        title: Obx(
+          () => Text(
+            _controller.examRoomName.value.isNotEmpty
+                ? _controller.examRoomName.value
+                : "Exam room name",
           ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -138,15 +120,37 @@ class MainScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(
                             bottom: 16,
                           ),
-                          child: RoundButton(
-                            height: 45,
-                            width: double.infinity,
-                            color: Colors.blue,
-                            label: "Start attendance checking",
-                            onPressed: () {
-                              _controller.logout();
-                              Get.offAndToNamed(AppRoutes.login);
-                            },
+                          child: Column(
+                            children: [
+                              RoundButton(
+                                height: 45,
+                                width: double.infinity,
+                                color: Colors.blue,
+                                label: "Start attendance checking",
+                                onPressed: () {
+                                  Get.toNamed(
+                                    AppRoutes.checkIn,
+                                    arguments: data,
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              TextButton(
+                                onPressed: () {
+                                  _controller.logout();
+                                  Get.offAndToNamed(AppRoutes.login);
+                                },
+                                style: TextButton.styleFrom(
+                                  primary: Colors.red,
+                                ),
+                                child: const Text(
+                                  "Return to login screen",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

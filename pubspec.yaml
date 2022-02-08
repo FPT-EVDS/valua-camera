@@ -39,17 +39,17 @@ dependencies:
   intl: ^0.17.0
   animations: ^2.0.2
   cached_network_image: ^3.2.0
-  dropdown_search: ^2.0.1
   json_annotation: ^4.4.0
   fluttertoast: ^8.0.8
   form_field_validator: ^1.1.0
   cool_alert: ^1.1.0
-  pie_chart: ^5.1.0
   camera: ^0.8.1+7
-  flutter_secure_storage: ^4.2.0
   pull_to_refresh: ^2.0.0
   get: ^4.6.1
   get_storage: ^2.0.3
+  qr_flutter: ^4.0.0
+  google_sign_in: ^5.2.3
+  fl_chart: ^0.41.0
 
 dev_dependencies:
   flutter_test:

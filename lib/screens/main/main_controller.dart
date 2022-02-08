@@ -7,11 +7,15 @@ import 'package:valua_camera/repository/exam_room_repository.dart';
 
 class MainController extends GetxController {
   final assignedExamRoom = Future<ExamRoom?>.value().obs;
+  final examRoomName = ''.obs;
   final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
 
   Future<void> getAssignedExamRoom({DateTime? date}) async {
     try {
-      final data = _examRoomRepository.loadExamRoom();
+      final data = _examRoomRepository.loadExamRoom().then((value) {
+        examRoomName.value = value.examRoomName;
+        return value;
+      });
       assignedExamRoom.value = data;
     } catch (err) {
       throw Exception(err);
