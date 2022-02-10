@@ -1,16 +1,19 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:valua_camera/enums/attendance_status.dart';
 import 'package:valua_camera/models/attendance.dart';
+import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/check_in/check_in_controller.dart';
 import 'package:valua_camera/widgets/attendance_pie_chart.dart';
 import 'package:valua_camera/widgets/cached_circle_avatar.dart';
+import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 class CheckInScreen extends StatelessWidget {
@@ -58,10 +61,23 @@ class CheckInScreen extends StatelessWidget {
                     RoundButton(
                       label: "Simulate check in",
                       onPressed: () async {
-                        await showCheckInDialog(
-                          context,
-                          _controller.examRoom.attendances[0],
+                        final result = await Get.toNamed(
+                          AppRoutes.camera,
+                          arguments: _controller.cameraController,
                         );
+                        _controller.takenImage.value = result;
+                        if (_controller.takenImage.value != null) {
+                          showAlertDialog(
+                            context,
+                            _controller.takenImage.value,
+                          );
+                        }
+                      },
+                    ),
+                    RoundButton(
+                      label: "Test",
+                      onPressed: () async {
+                        showAlertDialog(context, _controller.takenImage.value);
                       },
                     ),
                   ],
@@ -124,84 +140,45 @@ class CheckInScreen extends StatelessWidget {
     );
   }
 
-  showCheckInDialog(BuildContext context, Attendance attendance) async {
-    final _controller = Get.find<CheckInController>();
-    const double previewAspectRatio = 1;
-    // show the dialog
-    return await showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // CachedCircleAvatar(
-            //   imageUrl: attendance.examinee.imageUrl ??
-            //       'https://i.stack.imgur.com/34AD2.jpg',
-            //   radius: 60,
-            // ),
-            FutureBuilder<void>(
-              future: _controller.initializeControllerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // If the Future is complete, display the preview.
-                  return SizedBox(
-                    height: 420,
-                    child: AspectRatio(
-                      aspectRatio: 1 / previewAspectRatio,
-                      child: ClipOval(
-                        child: Transform.scale(
-                          scale:
-                              _controller.cameraController.value.aspectRatio /
-                                  previewAspectRatio,
-                          child: Center(
-                            child: CameraPreview(_controller.cameraController),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              },
-            ),
-            const SizedBox(height: 20),
-            Text(
-                "${attendance.examinee.fullName} - ${attendance.examinee.companyId}"),
-            // const SizedBox(height: 10),
-            // const RichTextItem(
-            //   title: "Attended at: ",
-            //   content: "23/08/2021 16:40",
-            // ),
-            // const SizedBox(height: 10),
-            // RichTextItem(
-            //   title: "Seat position: ",
-            //   content: "${attendance.position}",
-            // ),
-            // const SizedBox(height: 10),
-            RoundButton(
-              onPressed: () async {
-                try {
-                  // Ensure camera initialization
-                  await _controller.initializeControllerFuture;
-                  // Take picture automatically after 5 second
-                  Timer(const Duration(seconds: 5), () async {
-                    final image =
-                        await _controller.cameraController.takePicture();
-                    _controller.takenImage.value = image;
-                    Fluttertoast.showToast(msg: "Picture taken");
-                  });
-                } catch (e) {
-                  print(e);
-                }
-              },
-              label: "Take a picture manually",
-            ),
-          ],
+  showAlertDialog(BuildContext context, XFile? xFile) {
+    // Create AlertDialog
+    AlertDialog dialog = AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
         ),
       ),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(
+            radius: 96,
+            backgroundImage: Image.file(File(xFile!.path.toString())).image,
+          ),
+          const SizedBox(height: 20),
+          const Text("Nguyen Huu Huy - SE140380"),
+          const SizedBox(height: 10),
+          RichTextItem(
+            title: "Attended at: ",
+            content: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
+          ),
+          const SizedBox(height: 10),
+          const RichTextItem(title: "Seat position: ", content: "02"),
+        ],
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Timer(const Duration(seconds: 7), () {
+          Get.back();
+        });
+        return dialog;
+      },
     );
   }
 }

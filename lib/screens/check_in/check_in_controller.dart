@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:valua_camera/models/exam_room.dart';
 
@@ -9,14 +8,23 @@ class CheckInController extends GetxController {
   late CameraController cameraController;
   late Future<void> initializeControllerFuture;
 
+  Future<CameraDescription> getCamera(CameraLensDirection direction) async {
+    return await availableCameras().then(
+      (List<CameraDescription> cameras) => cameras.firstWhere(
+        (CameraDescription camera) => camera.lensDirection == direction,
+      ),
+    );
+  }
+
   @override
   void onInit() async {
-    WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
     if (cameras.isNotEmpty) {
       // Get front camera
-      final frontCamera = cameras[1];
-      cameraController = CameraController(frontCamera, ResolutionPreset.medium);
+      CameraDescription cameraDescription =
+          await getCamera(CameraLensDirection.front);
+      cameraController =
+          CameraController(cameraDescription, ResolutionPreset.high);
       initializeControllerFuture = cameraController.initialize();
     }
     super.onInit();

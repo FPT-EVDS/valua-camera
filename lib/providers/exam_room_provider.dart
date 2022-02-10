@@ -5,7 +5,7 @@ import 'package:valua_camera/repository/exam_room_repository.dart';
 class ExamRoomProvider extends BaseProvider implements ExamRoomRepository {
   @override
   Future<ExamRoom> loadExamRoom() async {
-    final response = await get("/examRooms/assigned");
+    final response = await get("/examRooms/assigned/now");
     if (response.status.hasError) {
       throw (response.body);
     }

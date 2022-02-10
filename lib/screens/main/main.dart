@@ -169,7 +169,8 @@ class MainScreen extends StatelessWidget {
                       ),
                       Text(
                         snapshot.error.toString(),
-                        style: const TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 13),
                       ),
                       const SizedBox(
                         height: 40,
