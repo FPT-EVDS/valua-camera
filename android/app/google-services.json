@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "159831702528",
+    "firebase_url": "https://evds-project-11d88-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "evds-project-11d88",
+    "storage_bucket": "evds-project-11d88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159831702528:android:2cd72ab33e56bc447face5",
+        "android_client_info": {
+          "package_name": "com.example.test_push_notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159831702528-levln3uki2fscup60f0ffinbfkmf840t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkKIlxLqEzw6i25h_ZIUkfec1JwG8TWuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159831702528-levln3uki2fscup60f0ffinbfkmf840t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159831702528:android:310bc741a95648c07face5",
+        "android_client_info": {
+          "package_name": "com.example.valua_camera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159831702528-3d3umhr88b5dosrsoees0ottrtp6mkt8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.valua_camera",
+            "certificate_hash": "5d6d456b72fe7bb905a0c86e3b4109be58febfb3"
+          }
+        },
+        {
+          "client_id": "159831702528-levln3uki2fscup60f0ffinbfkmf840t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkKIlxLqEzw6i25h_ZIUkfec1JwG8TWuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159831702528-levln3uki2fscup60f0ffinbfkmf840t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

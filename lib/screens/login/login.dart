@@ -131,19 +131,8 @@ class LoginScreen extends StatelessWidget {
                             height: 20,
                           ),
                           RoundButton(
-                            onPressed: () async {
-                              // FIXME: Only for testing purpose
-                              GoogleSignIn _googleSignIn =
-                                  GoogleSignIn(scopes: ['email']);
-                              try {
-                                _googleSignIn.signIn().then((googleKey) {
-                                  print(googleKey);
-                                });
-                              } catch (error) {
-                                print(error);
-                              } finally {
-                                _googleSignIn.signOut();
-                              }
+                            onPressed: () {
+                              _controller.loginWithGoogle();
                             },
                             height: 45,
                             icon: const Icon(CommunityMaterialIcons.google),

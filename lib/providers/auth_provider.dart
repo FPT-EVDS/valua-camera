@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/models/account.dart';
 import 'package:valua_camera/models/app_user.dart';
@@ -9,6 +10,7 @@ import 'package:valua_camera/repository/auth_repository.dart';
 
 class AuthProvider extends BaseProvider implements AuthRepository {
   final GetStorage _storage = GetStorage(AppConstant.storageKey);
+  static final _googleSignIn = GoogleSignIn();
 
   @override
   Future<AppUser> login(String email, String password) async {
@@ -68,5 +70,15 @@ class AuthProvider extends BaseProvider implements AuthRepository {
       throw (response.body);
     }
     return response.body;
+  }
+
+  @override
+  Future<GoogleSignInAccount?> loginWithGoogle() async {
+    return await _googleSignIn.signIn();
+  }
+
+  @override
+  Future<GoogleSignInAccount?> logoutGoogle() async {
+    return await _googleSignIn.disconnect();
   }
 }

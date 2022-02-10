@@ -30,7 +30,7 @@ class LoginController extends GetxController {
     super.dispose();
   }
 
-  Future<void> login() async {
+  void login() async {
     if (formKey.currentState!.validate()) {
       String email = emailController.text;
       String password = passwordController.text;
@@ -53,6 +53,23 @@ class LoginController extends GetxController {
       } finally {
         isLoading.value = false;
       }
+    }
+  }
+
+  void loginWithGoogle() async {
+    try {
+      final googleAccount = await _provider.loginWithGoogle();
+      final googleAuthentication = await googleAccount?.authentication;
+      print("accessToken: ${googleAuthentication?.accessToken}");
+      print("idToken: ${googleAuthentication?.idToken}");
+      // TODO: send id token to backend
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        backgroundColor: Colors.grey.shade700,
+      );
+    } finally {
+      _provider.logoutGoogle();
     }
   }
 }
