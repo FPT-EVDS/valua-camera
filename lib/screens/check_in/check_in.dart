@@ -114,12 +114,23 @@ class CheckInScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final attendance = attendances[index];
               return ListTile(
-                title: Text(attendance.examinee.companyId),
-                subtitle: Text(attendance.examinee.fullName),
-                leading: CachedCircleAvatar(
-                  imageUrl: attendance.examinee.imageUrl ??
-                      'https://i.stack.imgur.com/34AD2.jpg',
-                  radius: 24,
+                title: Text(attendance.examinee.fullName),
+                subtitle: Text(attendance.examinee.companyId),
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      attendance.position.toString().padLeft(2, '0'),
+                      style: const TextStyle(fontSize: 14),
+                      textAlign: TextAlign.start,
+                    ),
+                    const SizedBox(width: 10),
+                    CachedCircleAvatar(
+                      imageUrl: attendance.examinee.imageUrl ??
+                          'https://i.stack.imgur.com/34AD2.jpg',
+                      radius: 24,
+                    ),
+                  ],
                 ),
                 trailing: attendance.status == AttendanceStatus.present
                     ? const Icon(
@@ -141,6 +152,8 @@ class CheckInScreen extends StatelessWidget {
   }
 
   showAlertDialog(BuildContext context, XFile? xFile) {
+    late Timer _timer;
+
     // Create AlertDialog
     AlertDialog dialog = AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -155,7 +168,10 @@ class CheckInScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 96,
-            backgroundImage: Image.file(File(xFile!.path.toString())).image,
+            backgroundImage: Image.file(
+              File(xFile!.path.toString()),
+              fit: BoxFit.cover,
+            ).image,
           ),
           const SizedBox(height: 20),
           const Text("Nguyen Huu Huy - SE140380"),
@@ -174,11 +190,15 @@ class CheckInScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Timer(const Duration(seconds: 7), () {
+        _timer = Timer(const Duration(seconds: 7), () {
           Get.back();
         });
         return dialog;
       },
-    );
+    ).then((val) {
+      if (_timer.isActive) {
+        _timer.cancel();
+      }
+    });
   }
 }

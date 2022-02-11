@@ -33,6 +33,7 @@ class CheckInCameraController extends GetxController {
   @override
   void dispose() {
     _timer.cancel();
+    _soundpool.dispose();
     cameraController.dispose();
     super.dispose();
   }
