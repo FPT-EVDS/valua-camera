@@ -12,20 +12,9 @@ import 'package:valua_camera/widgets/round_button.dart';
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  // Future<void> main() async {
-  //   try {
-  //     WidgetsFlutterBinding.ensureInitialized();
-  //     cameras = await availableCameras();
-  //   } on CameraException catch (e) {
-  //     print('Error in fetching the cameras: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final _controller = Get.find<MainController>();
-    // final controller = PageController();
-    // var dateTime = DateTime.parse(_assignedExamRoom!.createdDate);
     return Scaffold(
       appBar: AppBar(
         title: const Text(

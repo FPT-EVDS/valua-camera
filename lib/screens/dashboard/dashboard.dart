@@ -32,7 +32,9 @@ class DashboardScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600, fontSize: 15)),
                         const SizedBox(height: 20),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Get.offAndToNamed(AppRoutes.regulation);
+                          },
                           leading: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.blue[400],

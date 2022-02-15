@@ -1,11 +1,15 @@
 import 'package:valua_camera/screens/attendance/attendance.dart';
 import 'package:valua_camera/screens/dashboard/dashboard.dart';
+import 'package:valua_camera/screens/incident/incident.dart';
+import 'package:valua_camera/screens/incident/incident_binding.dart';
+import 'package:valua_camera/screens/regulation/regulation.dart';
 import 'package:valua_camera/screens/login/login.dart';
+import 'package:valua_camera/screens/regulation/regulation_binding.dart';
+import 'package:valua_camera/screens/violator/violator.dart';
 import 'package:valua_camera/screens/login/login_binding.dart';
 import 'package:valua_camera/screens/main/main.dart';
 import 'package:get/get.dart';
 import 'package:valua_camera/screens/main/main_binding.dart';
-import 'package:valua_camera/screens/report/incident.dart';
 
 part 'app_routes.dart';
 
@@ -24,7 +28,17 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.incident,
-      page: () => IncidentScreen(),
+      page: () => const IncidentScreen(),
+      binding: IncidentBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.regulation,
+      page: () => const RegulationScreen(),
+      binding: RegulationBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.violator,
+      page: () => const ViolatorScreen(),
     ),
     GetPage(
       name: AppRoutes.attendance,

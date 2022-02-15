@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBinding(),
       initialRoute: _storage.read("access_token") != null
           ? AppRoutes.main
-          : AppRoutes.incident,
+          : AppRoutes.regulation,
       debugShowCheckedModeBanner: false,
       getPages: AppPages.routes,
     );
