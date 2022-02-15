@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/widgets/card_button.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -30,7 +32,9 @@ class DashboardScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600, fontSize: 15)),
                         const SizedBox(height: 20),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Get.offAndToNamed(AppRoutes.regulation);
+                          },
                           leading: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.blue[400],
@@ -44,10 +48,7 @@ class DashboardScreen extends StatelessWidget {
                         const SizedBox(height: 10),
                         ListTile(
                           onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => IncidentScreen()));
+                            Get.offAndToNamed(AppRoutes.incident);
                           },
                           leading: CircleAvatar(
                             radius: 22,

@@ -6,31 +6,18 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/routes/routes.dart';
-import 'package:valua_camera/screens/camera/camera.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 late List<CameraDescription> cameras = [];
-ExamRoom? _assignedExamRoom;
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  // Future<void> main() async {
-  //   try {
-  //     WidgetsFlutterBinding.ensureInitialized();
-  //     cameras = await availableCameras();
-  //   } on CameraException catch (e) {
-  //     print('Error in fetching the cameras: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final _controller = Get.find<MainController>();
-    // final controller = PageController();
-    // var dateTime = DateTime.parse(_assignedExamRoom!.createdDate);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
