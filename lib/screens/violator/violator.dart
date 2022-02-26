@@ -15,7 +15,7 @@ class ViolatorScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(CommunityMaterialIcons.chevron_left),
             onPressed: () {
-              Get.off(RegulationScreen());
+              Get.back();
             },
           ),
           actions: <Widget>[

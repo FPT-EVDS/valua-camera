@@ -9,9 +9,9 @@ class MainController extends GetxController {
   final assignedExamRoom = Future<ExamRoom?>.value().obs;
   final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
 
-  Future<void> getAssignedExamRoom({DateTime? date}) async {
+  Future<void> getAssignedExamRoom() async {
     try {
-      final data = _examRoomRepository.loadExamRoom();
+      final data = _examRoomRepository.getCurrentExamRoom();
       assignedExamRoom.value = data;
     } catch (err) {
       throw Exception(err);

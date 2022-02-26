@@ -4,8 +4,8 @@ import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/providers/auth_provider.dart';
 
 class BaseProvider extends GetConnect {
-  // final _baseUrl = 'http://10.0.2.2:8080';
-  final _baseUrlOnRealDevice = "http://192.168.1.12:8080";
+  //final _baseUrl = 'http://10.0.2.2:8080';
+  final _baseUrlOnRealDevice = "http://192.168.0.195:8080";
   final _storage = GetStorage(AppConstant.storageKey);
 
   @override
