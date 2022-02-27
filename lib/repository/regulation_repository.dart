@@ -1,5 +1,9 @@
-import 'package:valua_camera/models/report.dart';
-
 abstract class RegulationRepository {
-  Future<Report> submit(String description, String note);
+  Future<String> submitReport(
+    String description,
+    String note,
+    String? imageUrl,
+    String violatorId,
+    String examRoomId,
+  );
 }

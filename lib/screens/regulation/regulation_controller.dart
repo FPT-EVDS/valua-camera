@@ -39,13 +39,16 @@ class RegulationController extends GetxController {
     }
   }
 
-  Future<void> submit() async {
+  Future<void> submitReport(
+      String? imageUrl, String violatorId, String examRoomId) async {
     if (formKey.currentState!.validate()) {
       String description = descriptionController.text;
       String note = noteController.text;
       try {
         isLoading.value = true;
-        final data = await _provider.submit(description, note);
+        final data = await _provider.submitReport(
+            description, note, imageUrl, violatorId, examRoomId);
+        print('submitReport: ' + data);
       } catch (e) {
         Fluttertoast.showToast(
           msg: e.toString(),

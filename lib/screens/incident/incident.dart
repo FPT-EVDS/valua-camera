@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/screens/incident/incident_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
@@ -33,18 +34,6 @@ class _IncidentScreenState extends State<IncidentScreen> {
   Widget build(BuildContext context) {
     final _controller = Get.find<IncidentController>();
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: RoundButton(
-          height: 40,
-          width: 100,
-          color: Colors.blue,
-          label: "Submit",
-          onPressed: () {
-            _controller.submit();
-          },
-        ),
-      ),
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -106,6 +95,47 @@ class _IncidentScreenState extends State<IncidentScreen> {
                       onTap: () {
                         pickImage();
                       },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(
+                      () => FutureBuilder(
+                        future: _controller.assignedExamRoom.value,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasData) {
+                            ExamRoom data = snapshot.data;
+                            // print("Huy pro");
+                            // print(data.examRoomName);
+                            // print(data.examRoomId);
+                            // print(snapshot.hasData);
+                            return Obx(
+                              () => RoundButton(
+                                onPressed: () {
+                                  _controller.submitReport(
+                                    "imageUrl",
+                                    data.examRoomId,
+                                  );
+                                },
+                                height: 45,
+                                width: double.infinity,
+                                label: "Submit",
+                                isLoading: _controller.isLoading.value,
+                              ),
+                            );
+                          }
+                          return Obx(
+                            () => RoundButton(
+                              onPressed: () {},
+                              height: 45,
+                              width: double.infinity,
+                              label: "Null",
+                              isLoading: _controller.isLoading.value,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

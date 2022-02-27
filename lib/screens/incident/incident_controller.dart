@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/providers/incident_provider.dart';
+import 'package:valua_camera/repository/exam_room_repository.dart';
 import 'package:valua_camera/repository/incident_repository.dart';
 
 class IncidentController extends GetxController {
   final formKey = GlobalKey<FormState>();
   late TextEditingController descriptionController, noteController;
   final isLoading = false.obs;
+  final assignedExamRoom = Future<ExamRoom?>.value().obs;
+
   final IncidentRepository _provider = Get.find<IncidentProvider>();
+  final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
 
   @override
   void onInit() {
     descriptionController = TextEditingController();
     noteController = TextEditingController();
+    getAssignedExamRoom();
     super.onInit();
   }
 
@@ -24,13 +31,27 @@ class IncidentController extends GetxController {
     super.dispose();
   }
 
-  Future<void> submit() async {
+  Future<void> getAssignedExamRoom() async {
+    try {
+      final data = _examRoomRepository.getCurrentExamRoom();
+      assignedExamRoom.value = data;
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  Future<void> submitReport(String? imageUrl, String examRoomId) async {
     if (formKey.currentState!.validate()) {
       String description = descriptionController.text;
       String note = noteController.text;
       try {
         isLoading.value = true;
-        final data = await _provider.submit(description, note);
+        final data = await _provider.submitReport(
+          description,
+          note,
+          imageUrl,
+          examRoomId,
+        );
       } catch (e) {
         Fluttertoast.showToast(
           msg: e.toString(),

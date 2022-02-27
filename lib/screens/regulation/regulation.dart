@@ -1,3 +1,5 @@
+// ignore_for_file: override_on_non_overriding_member, unused_field, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'dart:io';
 
 import 'package:community_material_icon/community_material_icon.dart';
@@ -32,22 +34,10 @@ class _RegulationScreenState extends State<RegulationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Get.arguments;
-    print(data);
     final _controller = Get.find<RegulationController>();
+    var data = Get.arguments;
+    // print(data);
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: RoundButton(
-          height: 40,
-          width: 150,
-          color: Colors.blue,
-          label: "Submit",
-          onPressed: () {
-            _controller.submit();
-          },
-        ),
-      ),
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -122,9 +112,6 @@ class _RegulationScreenState extends State<RegulationScreen> {
                                   fontSize: 18,
                                 ),
                               ),
-                              // const SizedBox(
-                              //   width: 40,
-                              // ),
                               Icon(
                                 CommunityMaterialIcons.plus,
                                 color: Colors.blue,
@@ -179,6 +166,24 @@ class _RegulationScreenState extends State<RegulationScreen> {
                     pickImage();
                   },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Obx(
+                  () => RoundButton(
+                    onPressed: () {
+                      _controller.submitReport(
+                        data['imageUrl'].toString(),
+                        data['violatorId'].toString(),
+                        data['examRoomId'].toString(),
+                      );
+                    },
+                    height: 45,
+                    width: double.infinity,
+                    label: "Submit",
+                    isLoading: _controller.isLoading.value,
+                  ),
+                )
               ],
             ),
           ),
