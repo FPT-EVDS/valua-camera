@@ -29,15 +29,7 @@ class ViolatorScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(CommunityMaterialIcons.chevron_left),
             onPressed: () {
-              Get.toNamed(
-                AppRoutes.regulation,
-                arguments: {
-                  "id": _controller.id,
-                  "imageUrl": _controller.imageUrl,
-                  "fullName": _controller.fullName,
-                  "pos": _controller.pos,
-                },
-              );
+              Get.back();
             },
           ),
           centerTitle: true,
@@ -48,43 +40,6 @@ class ViolatorScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: FutureBuilder(
-            //     future: _controller.assignedExamRoom.value,
-            //     builder:
-            //         (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            //       if (snapshot.hasData) {
-            //         ExamRoom data = snapshot.data;
-            //         final attendances = data.attendances;
-            //         return SizedBox(
-            //           width: 600,
-            //           child: DropdownSearch<Attendance>(
-            //             mode: Mode.DIALOG,
-            //             popupTitle: const Padding(
-            //               padding: EdgeInsets.all(16.0),
-            //               child: Text(
-            //                 "Select violator",
-            //                 style: TextStyle(
-            //                   fontWeight: FontWeight.bold,
-            //                   fontSize: 18,
-            //                 ),
-            //               ),
-            //             ),
-            //             items: attendances,
-            //             itemAsString: (item) => item!.examinee!.fullName,
-            //             label: "Select Violator",
-            //             onChanged: _controller.handleChangeViolator,
-            //             selectedItem: attendances[1],
-            //           ),
-            //         );
-            //       }
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     },
-            //   ),
-            // ),
             Expanded(
               child: Obx(
                 () => FutureBuilder(
@@ -92,7 +47,6 @@ class ViolatorScreen extends StatelessWidget {
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasData) {
-                      print('Co data nha con di oi');
                       ExamRoom data = snapshot.data;
                       final attendances = data.attendances;
                       if (attendances.isEmpty) {
@@ -112,6 +66,8 @@ class ViolatorScreen extends StatelessWidget {
                                   "imageUrl": _controller.imageUrl,
                                   "fullName": _controller.fullName,
                                   "pos": _controller.pos,
+                                  "violatorId": _controller.violatorId,
+                                  "examRoomId": data.examRoomId,
                                 },
                               );
                             },

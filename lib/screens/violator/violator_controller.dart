@@ -10,6 +10,7 @@ class ViolatorController extends GetxController {
   final id = "".obs;
   final imageUrl = "".obs;
   final fullName = "".obs;
+  final violatorId = "".obs;
   final pos = 0.obs;
 
   late TextEditingController descriptionController, noteController;
@@ -46,6 +47,7 @@ class ViolatorController extends GetxController {
       id.value = attendance.examinee!.companyId;
       imageUrl.value = attendance.examinee!.imageUrl!;
       fullName.value = attendance.examinee!.fullName;
+      violatorId.value = attendance.examinee!.appUserId;
       pos.value = attendance.position;
     }
   }
