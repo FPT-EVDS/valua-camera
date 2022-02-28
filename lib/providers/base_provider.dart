@@ -4,13 +4,13 @@ import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/providers/auth_provider.dart';
 
 class BaseProvider extends GetConnect {
-  //final _baseUrl = 'http://10.0.2.2:8080';
-  final _baseUrlOnRealDevice = "http://192.168.0.195:8080";
+  final _baseUrl = 'http://10.0.2.2:8080';
+  //final _baseUrlOnRealDevice = "http://192.168.0.195:8080";
   final _storage = GetStorage(AppConstant.storageKey);
 
   @override
   void onInit() {
-    httpClient.baseUrl = _baseUrlOnRealDevice;
+    httpClient.baseUrl = _baseUrl;
     httpClient.defaultContentType = "application/json";
     //Autenticator will be called 1 times if HttpStatus is
     //HttpStatus.unauthorized

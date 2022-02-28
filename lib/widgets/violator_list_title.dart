@@ -4,7 +4,7 @@ class ViolatorListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final String imageUrl;
-  final int position;
+  final String position;
   const ViolatorListTile({
     Key? key,
     required this.title,
@@ -22,8 +22,7 @@ class ViolatorListTile extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: NetworkImage(
-                'https://picsum.photos/200?image=${position + 30}'),
+            backgroundImage: NetworkImage(imageUrl),
           )
         ],
       ),
@@ -43,7 +42,7 @@ class ViolatorListTile extends StatelessWidget {
           fontSize: 14,
         ),
       ),
-      trailing: Text('Pos: ' + position.toString()),
+      trailing: Text('Pos: ' + position),
     );
   }
 }
