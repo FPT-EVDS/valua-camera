@@ -9,6 +9,7 @@ import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/dashboard/dashboard.dart';
 import 'package:valua_camera/screens/regulation/regulation_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
+import 'package:valua_camera/widgets/violator_list_title.dart';
 
 class RegulationScreen extends StatefulWidget {
   const RegulationScreen({Key? key}) : super(key: key);
@@ -31,8 +32,9 @@ class _RegulationScreenState extends State<RegulationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var data = Get.arguments;
+    print(data);
     final _controller = Get.find<RegulationController>();
-
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -71,44 +73,66 @@ class _RegulationScreenState extends State<RegulationScreen> {
                 const SizedBox(
                   height: 5,
                 ),
-                SizedBox(
-                  width: 400,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.offAndToNamed(AppRoutes.violator);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      primary: Colors.red.withOpacity(0),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "                    Select violator              ",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
+                Get.arguments != null
+                    ? InkWell(
+                        child: Card(
+                          elevation: 1,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 0.0,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: ViolatorListTile(
+                              title: data['id'].toString(),
+                              subtitle: data['fullName'].toString(),
+                              imageUrl: data['imageUrl'].toString(),
+                              position: data['pos'].toString(),
+                            ),
                           ),
                         ),
-                        // const SizedBox(
-                        //   width: 40,
-                        // ),
-                        Icon(
-                          CommunityMaterialIcons.plus,
-                          color: Colors.blue,
+                        onTap: () {
+                          Get.offAndToNamed(AppRoutes.violator);
+                        },
+                      )
+                    : SizedBox(
+                        width: 400,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.offAndToNamed(AppRoutes.violator);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            primary: Colors.red.withOpacity(0),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.blue),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "                    Select violator              ",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              // const SizedBox(
+                              //   width: 40,
+                              // ),
+                              Icon(
+                                CommunityMaterialIcons.plus,
+                                color: Colors.blue,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
                 const SizedBox(
                   height: 20,
                 ),

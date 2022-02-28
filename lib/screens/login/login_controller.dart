@@ -41,7 +41,7 @@ class LoginController extends GetxController {
           _storage.write("user", jsonEncode(data.appUser));
           _storage.write("access_token", data.token);
           _storage.write("refresh_token", data.appUser.refreshToken);
-          Get.offAllNamed(AppRoutes.main);
+          Get.offAllNamed(AppRoutes.dashboard);
         } else {
           throw ("Invalid role!");
         }

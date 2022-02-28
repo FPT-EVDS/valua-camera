@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:valua_camera/widgets/card_button.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:valua_camera/models/attendance.dart';
+import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/routes/app_pages.dart';
+import 'package:valua_camera/screens/violator/violator_controller.dart';
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:valua_camera/screens/regulation/regulation.dart';
 import 'package:get/get.dart';
 import 'package:valua_camera/widgets/violator_list_title.dart';
 
@@ -10,14 +14,9 @@ class ViolatorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _controller = Get.find<ViolatorController>();
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(CommunityMaterialIcons.chevron_left),
-            onPressed: () {
-              Get.back();
-            },
-          ),
           actions: <Widget>[
             IconButton(
               onPressed: () {},
@@ -27,53 +26,144 @@ class ViolatorScreen extends StatelessWidget {
               ),
             ),
           ],
+          leading: IconButton(
+            icon: const Icon(CommunityMaterialIcons.chevron_left),
+            onPressed: () {
+              Get.toNamed(
+                AppRoutes.regulation,
+                arguments: {
+                  "id": _controller.id,
+                  "imageUrl": _controller.imageUrl,
+                  "fullName": _controller.fullName,
+                  "pos": _controller.pos,
+                },
+              );
+            },
+          ),
           centerTitle: true,
           title: const Text(
             'Select violator',
           )),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              ViolatorListTile(
-                position: 1,
-                imageUrl: "https://picsum.photos/200",
-                subtitle: "Nguyen Huu Huy",
-                title: "SE140380",
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: FutureBuilder(
+            //     future: _controller.assignedExamRoom.value,
+            //     builder:
+            //         (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            //       if (snapshot.hasData) {
+            //         ExamRoom data = snapshot.data;
+            //         final attendances = data.attendances;
+            //         return SizedBox(
+            //           width: 600,
+            //           child: DropdownSearch<Attendance>(
+            //             mode: Mode.DIALOG,
+            //             popupTitle: const Padding(
+            //               padding: EdgeInsets.all(16.0),
+            //               child: Text(
+            //                 "Select violator",
+            //                 style: TextStyle(
+            //                   fontWeight: FontWeight.bold,
+            //                   fontSize: 18,
+            //                 ),
+            //               ),
+            //             ),
+            //             items: attendances,
+            //             itemAsString: (item) => item!.examinee!.fullName,
+            //             label: "Select Violator",
+            //             onChanged: _controller.handleChangeViolator,
+            //             selectedItem: attendances[1],
+            //           ),
+            //         );
+            //       }
+            //       return const Center(
+            //         child: CircularProgressIndicator(),
+            //       );
+            //     },
+            //   ),
+            // ),
+            Expanded(
+              child: Obx(
+                () => FutureBuilder(
+                  future: _controller.assignedExamRoom.value,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      print('Co data nha con di oi');
+                      ExamRoom data = snapshot.data;
+                      final attendances = data.attendances;
+                      if (attendances.isEmpty) {
+                        return Text('Huy dep trai vip pro');
+                      }
+                      return ListView.builder(
+                        itemCount: attendances.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              _controller
+                                  .handleChangeViolator(attendances[index]);
+                              Get.toNamed(
+                                AppRoutes.regulation,
+                                arguments: {
+                                  "id": _controller.id,
+                                  "imageUrl": _controller.imageUrl,
+                                  "fullName": _controller.fullName,
+                                  "pos": _controller.pos,
+                                },
+                              );
+                            },
+                            child: Card(
+                              elevation: 1,
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 8.0,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ViolatorListTile(
+                                  title: attendances[index].examinee!.companyId,
+                                  subtitle:
+                                      attendances[index].examinee!.fullName,
+                                  imageUrl:
+                                      attendances[index].examinee!.imageUrl!,
+                                  position:
+                                      attendances[index].position.toString(),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/no_found.svg",
+                            height: 180,
+                          ),
+                          const SizedBox(height: 15),
+                          Text(
+                            "There is no examinee in this room",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-              ViolatorListTile(
-                position: 2,
-                imageUrl: "https://picsum.photos/200",
-                subtitle: "Tran Cam Long",
-                title: "SE140312",
-              ),
-              ViolatorListTile(
-                position: 3,
-                imageUrl: "https://picsum.photos/200",
-                subtitle: "Ngo Tan Duc",
-                title: "SE140360",
-              ),
-              ViolatorListTile(
-                position: 4,
-                imageUrl: "https://picsum.photos/200",
-                subtitle: "Nguyen Thi Kim Hang",
-                title: "SE140388",
-              ),
-              ViolatorListTile(
-                position: 5,
-                imageUrl: "https://picsum.photos/200",
-                subtitle: "Hua Vinh Khang",
-                title: "SE140399",
-              ),
-              ViolatorListTile(
-                position: 6,
-                imageUrl: "https://picsum.photos/200",
-                subtitle: "Ngo Vinh Khang",
-                title: "SE140209",
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
