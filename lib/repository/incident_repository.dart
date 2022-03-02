@@ -1,8 +1,10 @@
+import 'package:valua_camera/models/report.dart';
+
 abstract class IncidentRepository {
-  Future<String> submitReport(
+  Future<Report> submitReport(
     String description,
     String note,
-    String? imageUrl,
     String examRoomId,
+    String? imageUrl,
   );
 }

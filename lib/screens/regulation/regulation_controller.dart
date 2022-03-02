@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -48,7 +50,6 @@ class RegulationController extends GetxController {
         isLoading.value = true;
         final data = await _provider.submitReport(
             description, note, imageUrl, violatorId, examRoomId);
-        print('submitReport: ' + data);
       } catch (e) {
         Fluttertoast.showToast(
           msg: e.toString(),

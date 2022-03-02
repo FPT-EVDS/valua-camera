@@ -66,7 +66,7 @@ class _RegulationScreenState extends State<RegulationScreen> {
                 Get.arguments != null
                     ? InkWell(
                         child: Card(
-                          elevation: 1,
+                          elevation: 0,
                           margin: const EdgeInsets.symmetric(
                             vertical: 8.0,
                             horizontal: 0.0,
