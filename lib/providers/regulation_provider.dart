@@ -1,9 +1,10 @@
+import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/providers/base_provider.dart';
 import 'package:valua_camera/repository/regulation_repository.dart';
 
 class RegulationProvider extends BaseProvider implements RegulationRepository {
   @override
-  Future<String> submitReport(
+  Future<Report> submitReport(
     String description,
     String note,
     String? imageUrl,
@@ -15,11 +16,13 @@ class RegulationProvider extends BaseProvider implements RegulationRepository {
       'note': note,
       'imageUrl': imageUrl,
       'violatorId': violatorId,
-      'examRoomId': examRoomId,
+      'examRoom': {
+        'examRoomId': examRoomId,
+      },
     });
     if (response.status.hasError) {
       throw (response.body);
     }
-    return response.body;
+    return Report.fromJson(response.body);
   }
 }

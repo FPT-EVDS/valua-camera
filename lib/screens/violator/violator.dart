@@ -1,7 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valua_camera/models/attendance.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/violator/violator_controller.dart';

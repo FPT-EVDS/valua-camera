@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -46,12 +48,17 @@ class IncidentController extends GetxController {
       String note = noteController.text;
       try {
         isLoading.value = true;
+        print(description);
+        print(note);
+        print(imageUrl);
+        print(examRoomId);
         final data = await _provider.submitReport(
           description,
           note,
-          imageUrl,
           examRoomId,
+          imageUrl,
         );
+        print(data.reportId);
       } catch (e) {
         Fluttertoast.showToast(
           msg: e.toString(),
