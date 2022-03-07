@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/providers/base_provider.dart';
 import 'package:valua_camera/repository/incident_repository.dart';
@@ -10,15 +11,19 @@ class IncidentProvider extends BaseProvider implements IncidentRepository {
     String examRoomId,
     String? imageUrl,
   ) async {
-    final response = await post("/reports", {
-      'description': description,
-      'note': note,
-      'examRoom': {
-        'examRoomId': examRoomId,
+    final form = FormData({
+      'contentType': "multipart/form-data",
+      'report': {
+        'description': description,
+        'note': note,
+        'examRoom': {
+          'examRoomId': examRoomId,
+        },
+        'reportType': 1,
       },
-      'reportType': 1,
       'image': imageUrl,
     });
+    final response = await post("/reports", form);
     if (response.status.hasError) {
       throw (response.body);
     }
