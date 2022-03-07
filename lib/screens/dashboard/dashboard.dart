@@ -17,7 +17,7 @@ class DashboardScreen extends StatelessWidget {
           ),
           context: context,
           builder: (context) => SizedBox(
-                height: 200,
+                height: 260,
                 child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -59,7 +59,22 @@ class DashboardScreen extends StatelessWidget {
                             ),
                           ),
                           title: const Text('Exam incident report'),
-                        )
+                        ),
+                        const SizedBox(height: 10),
+                        ListTile(
+                          onTap: () {
+                            Get.offAndToNamed(AppRoutes.incident);
+                          },
+                          leading: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.blue[800],
+                            child: const Icon(
+                              Icons.file_copy_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                          title: const Text('Manage report'),
+                        ),
                       ],
                     )),
               ));
@@ -106,16 +121,16 @@ class DashboardScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              CardButton(
-                icon: Icons.camera_alt,
-                onPressed: () {},
-                width: double.infinity,
-                label: 'Camera',
-                detail: 'View image gallery',
-                height: 80,
-                color: Colors.white,
-                labelColor: Colors.blue,
-              ),
+              // CardButton(
+              //   icon: Icons.camera_alt,
+              //   onPressed: () {},
+              //   width: double.infinity,
+              //   label: 'Camera',
+              //   detail: 'View image gallery',
+              //   height: 80,
+              //   color: Colors.white,
+              //   labelColor: Colors.blue,
+              // ),
               const SizedBox(
                 height: 20,
               ),

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/providers/base_provider.dart';
 import 'package:valua_camera/repository/regulation_repository.dart';
@@ -11,15 +12,20 @@ class RegulationProvider extends BaseProvider implements RegulationRepository {
     String violatorId,
     String examRoomId,
   ) async {
-    final response = await post("/reports", {
-      'description': description,
-      'note': note,
+    final form = FormData({
+      'report': [
+        {
+          'description': description,
+          'note': note,
+          'violatorId': violatorId,
+          'examRoom': {
+            'examRoomId': examRoomId,
+          },
+        },
+      ],
       'imageUrl': imageUrl,
-      'violatorId': violatorId,
-      'examRoom': {
-        'examRoomId': examRoomId,
-      },
     });
+    final response = await post("/reports", form);
     if (response.status.hasError) {
       throw (response.body);
     }
