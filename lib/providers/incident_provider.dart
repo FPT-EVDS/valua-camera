@@ -12,7 +12,6 @@ class IncidentProvider extends BaseProvider implements IncidentRepository {
     String? imageUrl,
   ) async {
     final form = FormData({
-      'contentType': "multipart/form-data",
       'report': {
         'description': description,
         'note': note,
@@ -23,7 +22,8 @@ class IncidentProvider extends BaseProvider implements IncidentRepository {
       },
       'image': imageUrl,
     });
-    final response = await post("/reports", form);
+    final response =
+        await post("/reports", form, contentType: "multipart/form-data");
     if (response.status.hasError) {
       throw (response.body);
     }

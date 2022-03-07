@@ -23,9 +23,13 @@ class RegulationProvider extends BaseProvider implements RegulationRepository {
           },
         },
       ],
-      'imageUrl': imageUrl,
+      'imageUrl': null,
     });
-    final response = await post("/reports", form);
+    final response = await post(
+      "/reports",
+      form,
+      contentType: "multipart/form-data",
+    );
     if (response.status.hasError) {
       throw (response.body);
     }
