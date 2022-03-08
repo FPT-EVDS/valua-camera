@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,8 +8,6 @@ import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
-
-late List<CameraDescription> cameras = [];
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);

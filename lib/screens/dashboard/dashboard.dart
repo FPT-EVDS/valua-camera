@@ -48,7 +48,7 @@ class DashboardScreen extends StatelessWidget {
                         const SizedBox(height: 10),
                         ListTile(
                           onTap: () {
-                            Get.offAndToNamed(AppRoutes.incident);
+                            Get.toNamed(AppRoutes.incident);
                           },
                           leading: CircleAvatar(
                             radius: 22,
