@@ -1,8 +1,9 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/providers/regulation_provider.dart';
@@ -16,6 +17,8 @@ class RegulationController extends GetxController {
   final RegulationRepository _provider = Get.find<RegulationProvider>();
   final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
   final assignedExamRoom = Future<ExamRoom?>.value().obs;
+  Rx<String?> chooseImage = null.obs;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void onInit() {
@@ -30,6 +33,17 @@ class RegulationController extends GetxController {
     descriptionController.dispose();
     noteController.dispose();
     super.dispose();
+  }
+
+  void handleChangeImage() async {
+    var localAvatar =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    if (localAvatar != null) {
+      chooseImage.value = localAvatar.path;
+    }
+    update();
+    print("Regulation");
+    print(chooseImage.value);
   }
 
   Future<void> getAssignedExamRoom() async {

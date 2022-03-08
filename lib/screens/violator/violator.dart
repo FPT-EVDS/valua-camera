@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/violator/violator_controller.dart';
-import 'package:community_material_icon/community_material_icon.dart';
-import 'package:get/get.dart';
 import 'package:valua_camera/widgets/violator_list_title.dart';
 
 class ViolatorScreen extends StatelessWidget {
@@ -72,7 +72,7 @@ class ViolatorScreen extends StatelessWidget {
                               );
                             },
                             child: Card(
-                              elevation: 1,
+                              elevation: 0,
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
                                 horizontal: 8.0,

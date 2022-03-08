@@ -6,31 +6,13 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/screens/incident/incident_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
-class IncidentScreen extends StatefulWidget {
-  const IncidentScreen({Key? key}) : super(key: key);
-
-  @override
-  _IncidentScreenState createState() => _IncidentScreenState();
-}
-
-class _IncidentScreenState extends State<IncidentScreen> {
-  File? _image;
-  final ImagePicker _picker = ImagePicker();
+class IncidentScreen extends StatelessWidget {
+  IncidentScreen({Key? key}) : super(key: key);
   final _form = GlobalKey<FormState>();
-
-  //for storing form state.
-
-  void pickImage() async {
-    final image = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(image!.path);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +71,17 @@ class _IncidentScreenState extends State<IncidentScreen> {
                         height: 100.0,
                         width: 100.0,
                         color: Colors.grey[350],
-                        child: _image != null
-                            ? Image.file(_image!, fit: BoxFit.fill)
-                            : Icon(CommunityMaterialIcons.image_plus,
-                                color: Colors.grey[600]),
+                        child: Obx(
+                          () => (_controller.chooseImage.value != null)
+                              ? (Image.file(
+                                  File(_controller.chooseImage.value!),
+                                  fit: BoxFit.fill))
+                              : Icon(CommunityMaterialIcons.image_plus,
+                                  color: Colors.grey[600]),
+                        ),
                       ),
                       onTap: () {
-                        pickImage();
+                        _controller.handleChangeImage();
                       },
                     ),
                     const SizedBox(
@@ -108,10 +94,6 @@ class _IncidentScreenState extends State<IncidentScreen> {
                             AsyncSnapshot<dynamic> snapshot) {
                           if (snapshot.hasData) {
                             ExamRoom data = snapshot.data;
-                            // print("Huy pro");
-                            // print(data.examRoomName);
-                            // print(data.examRoomId);
-                            // print(snapshot.hasData);
                             return Obx(
                               () => RoundButton(
                                 onPressed: () {

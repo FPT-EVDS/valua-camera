@@ -13,23 +13,18 @@ class RegulationProvider extends BaseProvider implements RegulationRepository {
     String examRoomId,
   ) async {
     final form = FormData({
-      'report': [
-        {
-          'description': description,
-          'note': note,
-          'violatorId': violatorId,
-          'examRoom': {
-            'examRoomId': examRoomId,
-          },
+      'report': {
+        'description': description,
+        'note': note,
+        'violatorId': violatorId,
+        'examRoom': {
+          'examRoomId': examRoomId,
         },
-      ],
+      },
       'imageUrl': null,
     });
-    final response = await post(
-      "/reports",
-      form,
-      contentType: "multipart/form-data",
-    );
+    final response = await post("/reports", form,
+        headers: {'Content-Type': 'multipart/form-data'});
     if (response.status.hasError) {
       throw (response.body);
     }

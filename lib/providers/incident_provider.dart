@@ -20,10 +20,13 @@ class IncidentProvider extends BaseProvider implements IncidentRepository {
         },
         'reportType': 1,
       },
-      'image': imageUrl,
+      'imageUrl': null,
     });
-    final response =
-        await post("/reports", form, contentType: "multipart/form-data");
+    final response = await post(
+      "/reports",
+      form,
+      headers: {"Content-Type": "multipart/form-data"},
+    );
     if (response.status.hasError) {
       throw (response.body);
     }

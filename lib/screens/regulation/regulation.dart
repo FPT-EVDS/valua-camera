@@ -1,4 +1,4 @@
-// ignore_for_file: override_on_non_overriding_member, unused_field, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
 
@@ -6,37 +6,20 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/dashboard/dashboard.dart';
 import 'package:valua_camera/screens/regulation/regulation_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 import 'package:valua_camera/widgets/violator_list_title.dart';
 
-class RegulationScreen extends StatefulWidget {
-  const RegulationScreen({Key? key}) : super(key: key);
-
-  @override
-  _RegulationScreenState createState() => _RegulationScreenState();
-}
-
-class _RegulationScreenState extends State<RegulationScreen> {
-  File? _image;
-  final _picker = ImagePicker();
+class RegulationScreen extends StatelessWidget {
+  RegulationScreen({Key? key}) : super(key: key);
   final _form = GlobalKey<FormState>();
-
-  void pickImage() async {
-    final image = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(image!.path);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final _controller = Get.find<RegulationController>();
     var data = Get.arguments;
-    // print(data);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -157,13 +140,16 @@ class _RegulationScreenState extends State<RegulationScreen> {
                     height: 100.0,
                     width: 100.0,
                     color: Colors.grey[350],
-                    child: _image != null
-                        ? Image.file(_image!, fit: BoxFit.fill)
-                        : Icon(CommunityMaterialIcons.image_plus,
-                            color: Colors.grey[600]),
+                    child: Obx(
+                      () => (_controller.chooseImage.value != null)
+                          ? (Image.file(File(_controller.chooseImage.value!),
+                              fit: BoxFit.fill))
+                          : Icon(CommunityMaterialIcons.image_plus,
+                              color: Colors.grey[600]),
+                    ),
                   ),
                   onTap: () {
-                    pickImage();
+                    _controller.handleChangeImage();
                   },
                 ),
                 const SizedBox(

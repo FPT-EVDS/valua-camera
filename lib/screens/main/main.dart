@@ -131,8 +131,7 @@ class MainScreen extends StatelessWidget {
                             color: Colors.blue,
                             label: "Start attendance checking",
                             onPressed: () {
-                              _controller.logout();
-                              Get.offAndToNamed(AppRoutes.login);
+                              Get.offAndToNamed(AppRoutes.dashboard);
                             },
                           ),
                         ),

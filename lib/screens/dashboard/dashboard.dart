@@ -17,7 +17,7 @@ class DashboardScreen extends StatelessWidget {
           ),
           context: context,
           builder: (context) => SizedBox(
-                height: 260,
+                height: 200,
                 child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -60,21 +60,6 @@ class DashboardScreen extends StatelessWidget {
                           ),
                           title: const Text('Exam incident report'),
                         ),
-                        const SizedBox(height: 10),
-                        ListTile(
-                          onTap: () {
-                            Get.offAndToNamed(AppRoutes.incident);
-                          },
-                          leading: CircleAvatar(
-                            radius: 22,
-                            backgroundColor: Colors.blue[800],
-                            child: const Icon(
-                              Icons.file_copy_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                          title: const Text('Manage report'),
-                        ),
                       ],
                     )),
               ));
@@ -109,7 +94,7 @@ class DashboardScreen extends StatelessWidget {
               CardButton(
                 icon: Icons.article,
                 onPressed: () {
-                  _settingModalBottomSheet(context);
+                  Get.toNamed(AppRoutes.report);
                 },
                 width: double.infinity,
                 label: 'Reports',
@@ -118,30 +103,15 @@ class DashboardScreen extends StatelessWidget {
                 color: Colors.white,
                 labelColor: Colors.blue,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              // CardButton(
-              //   icon: Icons.camera_alt,
-              //   onPressed: () {},
-              //   width: double.infinity,
-              //   label: 'Camera',
-              //   detail: 'View image gallery',
-              //   height: 80,
-              //   color: Colors.white,
-              //   labelColor: Colors.blue,
-              // ),
-              const SizedBox(
-                height: 20,
-              ),
-
-              // room
             ],
           ),
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton(child: const Icon(Icons.add), onPressed: () {}),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            _settingModalBottomSheet(context);
+          }),
     );
   }
 }
