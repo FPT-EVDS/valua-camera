@@ -18,7 +18,7 @@ class BaseProvider extends GetConnect {
     httpClient.timeout = const Duration(seconds: 15);
 
     httpClient.addRequestModifier<dynamic>((request) async {
-      String? token = _storage.read("access_token");
+      String? token = _storage.read(AppConstant.accessToken);
       if (token != null && !request.url.path.endsWith("login")) {
         request.headers['Authorization'] = 'Bearer $token';
       }
@@ -29,12 +29,12 @@ class BaseProvider extends GetConnect {
     httpClient.addAuthenticator<dynamic>((request) async {
       try {
         final token = await Get.find<AuthProvider>().refreshToken();
-        _storage.write("access_token", token);
+        _storage.write(AppConstant.accessToken, token);
         // Set the header
         request.headers['Authorization'] = 'Bearer $token';
       } catch (error) {
-        _storage.remove("access_token");
-        _storage.remove("refresh_token");
+        _storage.remove(AppConstant.accessToken);
+        _storage.remove(AppConstant.refreshToken);
       }
       return request;
     });

@@ -29,7 +29,7 @@ class AuthProvider extends BaseProvider implements AuthRepository {
     final response = await get(
       "/authentication/refreshToken",
       headers: {
-        "refreshToken": _storage.read("refresh_token").toString(),
+        "refreshToken": _storage.read(AppConstant.refreshToken).toString(),
       },
     );
     if (response.status.hasError) {

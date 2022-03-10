@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: AppThemes(context).defaultTheme,
       defaultTransition: Transition.fade,
       initialBinding: AppBinding(),
-      initialRoute: _storage.read("access_token") != null
+      initialRoute: _storage.read(AppConstant.accessToken) != null
           ? AppRoutes.main
           : AppRoutes.login,
       debugShowCheckedModeBanner: false,

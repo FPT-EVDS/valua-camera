@@ -9,8 +9,8 @@ class AuthService extends GetxService {
 
   @override
   void onInit() {
-    token = _storage.read('access_token');
-    _storage.listenKey('access_token', (value) {
+    token = _storage.read(AppConstant.accessToken);
+    _storage.listenKey(AppConstant.accessToken, (value) {
       if (value == null) {
         Get.offAllNamed(AppRoutes.login);
       }
