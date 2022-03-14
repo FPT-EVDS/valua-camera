@@ -8,12 +8,18 @@ import 'package:valua_camera/repository/exam_room_repository.dart';
 class MainController extends GetxController {
   final assignedExamRoom = Future<ExamRoom?>.value().obs;
   final examRoomName = ''.obs;
+  final shouldShowCheckin = false.obs;
   final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
 
   Future<void> getAssignedExamRoom({DateTime? date}) async {
     try {
       final data = _examRoomRepository.loadExamRoom().then((value) {
+        final shiftBeginTime = DateTime.parse(value.shift.beginTime);
+        final currentDate = DateTime.now();
         examRoomName.value = value.examRoomName;
+        shouldShowCheckin.value = currentDate.isBefore(shiftBeginTime) &&
+            currentDate.difference(shiftBeginTime) <
+                const Duration(minutes: AppConstant.minutesBeforeCheckin);
         return value;
       });
       assignedExamRoom.value = data;

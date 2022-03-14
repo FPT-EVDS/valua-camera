@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:valua_camera/models/generated_qr.dart';
 import 'package:valua_camera/screens/login/login_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
@@ -66,15 +67,33 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    QrImage(
-                      // FIXME: Update data here
-                      data: "1234567890",
-                      version: QrVersions.auto,
-                      padding: const EdgeInsets.all(16.0),
+                    Obx(
+                      () => FutureBuilder(
+                          future: _controller.qrData.value,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snapshot) {
+                            if (snapshot.hasData) {
+                              GeneratedQR data = snapshot.data;
+                              return QrImage(
+                                data: data.data.token,
+                                version: QrVersions.auto,
+                                padding: const EdgeInsets.all(16.0),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  snapshot.error.toString(),
+                                ),
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }),
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "Scan QR Code with Staff app to login",
+                      "Scan QR Code with staff app",
                       style: TextStyle(fontSize: 16),
                     ),
                   ],

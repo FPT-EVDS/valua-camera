@@ -1,28 +1,17 @@
-import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
-late List<CameraDescription> cameras = [];
-
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
-
-  // Future<void> main() async {
-  //   try {
-  //     WidgetsFlutterBinding.ensureInitialized();
-  //     cameras = await availableCameras();
-  //   } on CameraException catch (e) {
-  //     print('Error in fetching the cameras: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -122,18 +111,27 @@ class MainScreen extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              RoundButton(
-                                height: 45,
-                                width: double.infinity,
-                                color: Colors.blue,
-                                label: "Start attendance checking",
-                                onPressed: () {
-                                  Get.toNamed(
-                                    AppRoutes.checkIn,
-                                    arguments: data,
-                                  );
-                                },
-                              ),
+                              _controller.shouldShowCheckin.value
+                                  ? RoundButton(
+                                      height: 45,
+                                      width: double.infinity,
+                                      color: Colors.blue,
+                                      label: "Start attendance checking",
+                                      onPressed: () {
+                                        Get.toNamed(
+                                          AppRoutes.checkIn,
+                                          arguments: data,
+                                        );
+                                      },
+                                    )
+                                  : const SizedBox(
+                                      width: 220,
+                                      child: Text(
+                                        "Exam can only be start ${AppConstant.minutesBeforeCheckin} minutes before exams",
+                                        softWrap: true,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                               const SizedBox(height: 10),
                               TextButton(
                                 onPressed: () {
