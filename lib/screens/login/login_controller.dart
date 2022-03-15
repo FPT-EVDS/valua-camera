@@ -30,6 +30,7 @@ class LoginController extends GetxController {
   final QRRepository _qrProvider = Get.find<QRProvider>();
   final GetStorage _storage = GetStorage(AppConstant.storageKey);
   final _googleSignIn = GoogleSignIn();
+  late dynamic unsubscribeFn;
 
   @override
   void onInit() {
@@ -128,33 +129,44 @@ class LoginController extends GetxController {
     }
   }
 
+  void onSubscribeCallback(StompFrame stompFrame) {
+    if (stompFrame.body != null) {
+      try {
+        final jsonData =
+            jsonDecode(stompFrame.body.toString()) as Map<String, dynamic>;
+        final data = QrLoginResponse.fromJson(jsonData).appUser;
+        checkAuthAppUser(data);
+      } catch (error) {
+        Fluttertoast.showToast(
+          msg: "Please refresh qr and scan again",
+          backgroundColor: Colors.grey.shade700,
+        );
+      }
+    }
+  }
+
   void onConnect(StompFrame frame) async {
     final data = await qrData.value;
     if (data != null) {
       final topic = '/qr/token/${data.data.token}';
-      stompClient.subscribe(
+      unsubscribeFn = stompClient.subscribe(
         destination: topic,
-        callback: (stompFrame) {
-          if (stompFrame.body != null) {
-            try {
-              final jsonData = jsonDecode(stompFrame.body.toString())
-                  as Map<String, dynamic>;
-              final data = QrLoginResponse.fromJson(jsonData).appUser;
-              checkAuthAppUser(data);
-            } on FormatException {
-              Fluttertoast.showToast(
-                msg: "Invalid qr. Please scan again",
-                backgroundColor: Colors.grey.shade700,
-              );
-            } catch (error) {
-              Fluttertoast.showToast(
-                msg: error.toString(),
-                backgroundColor: Colors.grey.shade700,
-              );
-            }
-          }
-        },
+        callback: onSubscribeCallback,
       );
     }
+  }
+
+  void refreshQR() {
+    unsubscribeFn();
+    generateQRCode().then((value) {
+      final data = value?.data;
+      if (data != null) {
+        final topic = '/qr/token/${data.token}';
+        unsubscribeFn = stompClient.subscribe(
+          destination: topic,
+          callback: onSubscribeCallback,
+        );
+      }
+    });
   }
 }

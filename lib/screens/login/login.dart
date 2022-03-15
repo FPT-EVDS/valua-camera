@@ -77,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                               return QrImage(
                                 data: data.data.token,
                                 version: QrVersions.auto,
-                                padding: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(8.0),
                               );
                             } else if (snapshot.hasError) {
                               return Center(
@@ -91,10 +91,28 @@ class LoginScreen extends StatelessWidget {
                             );
                           }),
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Scan QR Code with staff app",
-                      style: TextStyle(fontSize: 16),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Scan QR Code with staff app. ",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _controller.refreshQR();
+                          },
+                          child: const Text(
+                            "Refresh QR",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
