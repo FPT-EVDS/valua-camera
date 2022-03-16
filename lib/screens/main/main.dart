@@ -111,46 +111,48 @@ class MainScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(
                             bottom: 16,
                           ),
-                          child: Column(
-                            children: [
-                              _controller.shouldShowCheckin.value
-                                  ? RoundButton(
-                                      height: 45,
-                                      width: double.infinity,
-                                      color: Colors.blue,
-                                      label: "Start attendance checking",
-                                      onPressed: () {
-                                        Get.toNamed(
-                                          AppRoutes.checkIn,
-                                          arguments: data,
-                                        );
-                                      },
-                                    )
-                                  : const SizedBox(
-                                      width: 220,
-                                      child: Text(
-                                        "Exam can only be start ${AppConstant.minutesBeforeCheckin} minutes before exams",
-                                        softWrap: true,
-                                        textAlign: TextAlign.center,
+                          child: Obx(
+                            () => Column(
+                              children: [
+                                _controller.shouldShowCheckin.value
+                                    ? RoundButton(
+                                        height: 45,
+                                        width: double.infinity,
+                                        color: Colors.blue,
+                                        label: "Start attendance checking",
+                                        onPressed: () {
+                                          Get.toNamed(
+                                            AppRoutes.checkIn,
+                                            arguments: data,
+                                          );
+                                        },
+                                      )
+                                    : const SizedBox(
+                                        width: 220,
+                                        child: Text(
+                                          "Exam can only be start ${AppConstant.minutesBeforeCheckin} minutes before exams",
+                                          softWrap: true,
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
+                                const SizedBox(height: 10),
+                                TextButton(
+                                  onPressed: () {
+                                    _controller.logout();
+                                    Get.offAndToNamed(AppRoutes.login);
+                                  },
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.red,
+                                  ),
+                                  child: const Text(
+                                    "Return to login screen",
+                                    style: TextStyle(
+                                      fontSize: 14,
                                     ),
-                              const SizedBox(height: 10),
-                              TextButton(
-                                onPressed: () {
-                                  _controller.logout();
-                                  Get.offAndToNamed(AppRoutes.login);
-                                },
-                                style: TextButton.styleFrom(
-                                  primary: Colors.red,
-                                ),
-                                child: const Text(
-                                  "Return to login screen",
-                                  style: TextStyle(
-                                    fontSize: 14,
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
