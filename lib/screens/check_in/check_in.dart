@@ -75,9 +75,18 @@ class CheckInScreen extends StatelessWidget {
                       },
                     ),
                     RoundButton(
-                      label: "Test",
+                      label: "Test popup",
                       onPressed: () async {
-                        showAlertDialog(context, _controller.takenImage.value);
+                        if (_controller.takenImage.value != null) {
+                          showAlertDialog(
+                              context, _controller.takenImage.value);
+                        }
+                      },
+                    ),
+                    RoundButton(
+                      label: "To exam room dashboard",
+                      onPressed: () async {
+                        Get.toNamed(AppRoutes.dashboard);
                       },
                     ),
                   ],

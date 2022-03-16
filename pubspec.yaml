@@ -52,6 +52,7 @@ dependencies:
   fl_chart: ^0.41.0
   soundpool: ^2.2.0
   stomp_dart_client: ^0.4.4
+  image_picker: 0.8.4+1
 
 dev_dependencies:
   flutter_test:

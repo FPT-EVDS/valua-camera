@@ -4,5 +4,5 @@ class AppConstant {
   static const refreshToken = "refresh_token";
   static const appUser = "user";
   static const apiUrl = "http://192.168.1.10:8080";
-  static const minutesBeforeCheckin = 30;
+  static const minutesBeforeCheckin = 60;
 }

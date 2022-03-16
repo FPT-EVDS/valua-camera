@@ -1,3 +1,5 @@
+import 'package:valua_camera/screens/attendance/attendance.dart';
+import 'package:valua_camera/screens/attendance/attendance_binding.dart';
 import 'package:valua_camera/screens/check_in/check_in.dart';
 import 'package:valua_camera/screens/check_in/check_in_binding.dart';
 import 'package:valua_camera/screens/check_in_camera/check_in_camera.dart';
@@ -34,10 +36,11 @@ class AppPages {
       name: AppRoutes.incident,
       page: () => const IncidentScreen(),
     ),
-    // GetPage(
-    //   name: AppRoutes.attendance,
-    //   page: () => const AttendanceScreen(),
-    // ),
+    GetPage(
+      name: AppRoutes.attendance,
+      page: () => const AttendanceScreen(),
+      binding: AttendanceBinding(),
+    ),
     GetPage(
       name: AppRoutes.camera,
       page: () => const CheckInCameraScreen(),

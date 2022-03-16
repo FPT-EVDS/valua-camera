@@ -63,7 +63,8 @@ class MainScreen extends StatelessWidget {
                             RichTextItem(
                               title: "Date: ",
                               content: DateFormat('dd/MM/yyyy').format(
-                                DateTime.parse(data.shift.beginTime.toString()),
+                                DateTime.parse(data.shift.beginTime.toString())
+                                    .toLocal(),
                               ),
                             ),
                             const SizedBox(
@@ -73,10 +74,11 @@ class MainScreen extends StatelessWidget {
                             RichTextItem(
                               title: "Time: ",
                               content: "${DateFormat("HH:mm").format(
-                                DateTime.parse(data.shift.beginTime.toString()),
+                                DateTime.parse(data.shift.beginTime.toString())
+                                    .toLocal(),
                               )} - ${DateFormat("HH:mm").format(
-                                DateTime.parse(
-                                    data.shift.finishTime.toString()),
+                                DateTime.parse(data.shift.finishTime.toString())
+                                    .toLocal(),
                               )}",
                             ),
                             const SizedBox(
