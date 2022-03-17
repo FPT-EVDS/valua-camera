@@ -8,6 +8,8 @@ import 'package:valua_camera/screens/dashboard/dashboard.dart';
 import 'package:valua_camera/screens/dashboard/dashboard_binding.dart';
 import 'package:valua_camera/screens/detail_incident/detail_incident.dart';
 import 'package:valua_camera/screens/detail_incident/detail_incident_binding.dart';
+import 'package:valua_camera/screens/detail_violation/detail_violation.dart';
+import 'package:valua_camera/screens/detail_violation/detail_violation_binding.dart';
 import 'package:valua_camera/screens/incident/incident.dart';
 import 'package:valua_camera/screens/incident/incident_binding.dart';
 import 'package:valua_camera/screens/login/login.dart';
@@ -50,6 +52,11 @@ class AppPages {
       name: AppRoutes.violation,
       page: () => const ViolationScreen(),
       binding: ViolationBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.detailViolation,
+      page: () => const DetailViolationScreen(),
+      binding: DetailViolationBinding(),
     ),
     GetPage(
       name: AppRoutes.report,
