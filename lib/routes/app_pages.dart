@@ -6,6 +6,8 @@ import 'package:valua_camera/screens/check_in_camera/check_in_camera.dart';
 import 'package:valua_camera/screens/check_in_camera/check_in_camera_binding.dart';
 import 'package:valua_camera/screens/dashboard/dashboard.dart';
 import 'package:valua_camera/screens/dashboard/dashboard_binding.dart';
+import 'package:valua_camera/screens/detail_incident/detail_incident.dart';
+import 'package:valua_camera/screens/detail_incident/detail_incident_binding.dart';
 import 'package:valua_camera/screens/incident/incident.dart';
 import 'package:valua_camera/screens/incident/incident_binding.dart';
 import 'package:valua_camera/screens/login/login.dart';
@@ -13,6 +15,8 @@ import 'package:valua_camera/screens/login/login_binding.dart';
 import 'package:valua_camera/screens/main/main.dart';
 import 'package:get/get.dart';
 import 'package:valua_camera/screens/main/main_binding.dart';
+import 'package:valua_camera/screens/report/report.dart';
+import 'package:valua_camera/screens/report/report_binding.dart';
 import 'package:valua_camera/screens/violation/violation.dart';
 import 'package:valua_camera/screens/violation/violation_binding.dart';
 
@@ -46,6 +50,16 @@ class AppPages {
       name: AppRoutes.violation,
       page: () => const ViolationScreen(),
       binding: ViolationBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.report,
+      page: () => const ReportScreen(),
+      binding: ReportBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.detailIncident,
+      page: () => const DetailIncidentScreen(),
+      binding: DetailIncidentBinding(),
     ),
     GetPage(
       name: AppRoutes.attendance,

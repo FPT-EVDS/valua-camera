@@ -16,7 +16,7 @@ class DashboardScreen extends StatelessWidget {
       ModalBottomSheetItem(
         title: "Exam regulation report",
         color: Colors.blue.shade500,
-        iconData: CommunityMaterialIcons.file_document,
+        iconData: CommunityMaterialIcons.account_alert,
         onTap: () {
           Get.toNamed(
             AppRoutes.violation,
@@ -27,7 +27,7 @@ class DashboardScreen extends StatelessWidget {
       ModalBottomSheetItem(
         title: "Exam incident report",
         color: Colors.blue.shade900,
-        iconData: CommunityMaterialIcons.file_document,
+        iconData: CommunityMaterialIcons.alert,
         onTap: () {
           Get.toNamed(
             AppRoutes.incident,
@@ -132,7 +132,9 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     CardButton(
                       icon: CommunityMaterialIcons.file_document_multiple,
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.report);
+                      },
                       width: double.infinity,
                       label: 'Reports',
                       detail: 'Manage submitted reports',
@@ -146,22 +148,25 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 );
               } else if (snapshot.hasError) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/images/not_found.svg",
-                      height: 200,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      snapshot.error.toString(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ],
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/not_found.svg",
+                        height: 200,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        snapshot.error.toString(),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
                 );
               }
               return const Center(
