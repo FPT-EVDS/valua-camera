@@ -1,18 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:valua_camera/models/attendance.dart';
-import 'package:valua_camera/models/account_alternative.dart';
-import 'package:valua_camera/models/room.dart';
-import 'package:valua_camera/models/shift.dart';
 import 'package:valua_camera/models/subject.dart';
+
 part 'exam_room.g.dart';
 
 @JsonSerializable()
 class ExamRoom {
   String examRoomId;
   String examRoomName;
-  Shift shift;
-  AccountAlternative staff;
-  Room room;
   Subject subject;
   List<Attendance> attendances;
   int status;
@@ -22,9 +17,6 @@ class ExamRoom {
   ExamRoom({
     required this.examRoomId,
     required this.examRoomName,
-    required this.shift,
-    required this.staff,
-    required this.room,
     required this.subject,
     required this.attendances,
     required this.status,

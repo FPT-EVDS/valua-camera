@@ -1,5 +1,5 @@
-import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 
 abstract class ExamRoomRepository {
-  Future<ExamRoom> loadExamRoom();
+  Future<AssignedExamRoom> loadExamRoom();
 }

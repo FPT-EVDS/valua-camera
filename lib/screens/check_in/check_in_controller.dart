@@ -1,9 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
-import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 
 class CheckInController extends GetxController {
-  final ExamRoom examRoom = Get.arguments;
+  final AssignedExamRoom examRoom = Get.arguments;
   final takenImage = Rx<XFile?>(null);
   late CameraController cameraController;
   late Future<void> initializeControllerFuture;

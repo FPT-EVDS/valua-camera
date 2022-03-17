@@ -1,28 +1,16 @@
-import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
-late List<CameraDescription> cameras = [];
-
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
-
-  // Future<void> main() async {
-  //   try {
-  //     WidgetsFlutterBinding.ensureInitialized();
-  //     cameras = await availableCameras();
-  //   } on CameraException catch (e) {
-  //     print('Error in fetching the cameras: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +33,7 @@ class MainScreen extends StatelessWidget {
               future: _controller.assignedExamRoom.value,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
-                  ExamRoom data = snapshot.data;
+                  AssignedExamRoom data = snapshot.data;
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +62,9 @@ class MainScreen extends StatelessWidget {
                             RichTextItem(
                               title: "Date: ",
                               content: DateFormat('dd/MM/yyyy').format(
-                                DateTime.parse(data.shift.beginTime.toString()),
+                                DateTime.parse(
+                                        data.currentShift.beginTime.toString())
+                                    .toLocal(),
                               ),
                             ),
                             const SizedBox(
@@ -84,10 +74,13 @@ class MainScreen extends StatelessWidget {
                             RichTextItem(
                               title: "Time: ",
                               content: "${DateFormat("HH:mm").format(
-                                DateTime.parse(data.shift.beginTime.toString()),
+                                DateTime.parse(
+                                        data.currentShift.beginTime.toString())
+                                    .toLocal(),
                               )} - ${DateFormat("HH:mm").format(
                                 DateTime.parse(
-                                    data.shift.finishTime.toString()),
+                                        data.currentShift.finishTime.toString())
+                                    .toLocal(),
                               )}",
                             ),
                             const SizedBox(
@@ -96,15 +89,16 @@ class MainScreen extends StatelessWidget {
                             // room
                             RichTextItem(
                               title: "Room: ",
-                              content: data.room.roomName,
+                              content: data.currentRoom.roomName,
                             ),
                             const SizedBox(
                               height: 20,
                             ),
                             // subject
+                            // FIXME: Update subject for all exam rooms
                             RichTextItem(
                               title: "Subject: ",
-                              content: data.subject.subjectCode,
+                              content: data.examRooms[0].subject.subjectCode,
                             ),
                             const SizedBox(
                               height: 20,
@@ -112,7 +106,7 @@ class MainScreen extends StatelessWidget {
                             // total examinees
                             RichTextItem(
                               title: "Total examinees: ",
-                              content: data.attendances.length.toString(),
+                              content: data.totalAttendances.toString(),
                             ),
                           ],
                         ),
@@ -120,37 +114,48 @@ class MainScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(
                             bottom: 16,
                           ),
-                          child: Column(
-                            children: [
-                              RoundButton(
-                                height: 45,
-                                width: double.infinity,
-                                color: Colors.blue,
-                                label: "Start attendance checking",
-                                onPressed: () {
-                                  Get.toNamed(
-                                    AppRoutes.checkIn,
-                                    arguments: data,
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                              TextButton(
-                                onPressed: () {
-                                  _controller.logout();
-                                  Get.offAndToNamed(AppRoutes.login);
-                                },
-                                style: TextButton.styleFrom(
-                                  primary: Colors.red,
-                                ),
-                                child: const Text(
-                                  "Return to login screen",
-                                  style: TextStyle(
-                                    fontSize: 14,
+                          child: Obx(
+                            () => Column(
+                              children: [
+                                _controller.shouldShowCheckin.value
+                                    ? RoundButton(
+                                        height: 45,
+                                        width: double.infinity,
+                                        color: Colors.blue,
+                                        label: "Start attendance checking",
+                                        onPressed: () {
+                                          Get.toNamed(
+                                            AppRoutes.checkIn,
+                                            arguments: data,
+                                          );
+                                        },
+                                      )
+                                    : const SizedBox(
+                                        width: 220,
+                                        child: Text(
+                                          "Current shift status is not ongoing",
+                                          softWrap: true,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                const SizedBox(height: 10),
+                                TextButton(
+                                  onPressed: () {
+                                    _controller.logout();
+                                    Get.offAndToNamed(AppRoutes.login);
+                                  },
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.red,
+                                  ),
+                                  child: const Text(
+                                    "Return to login screen",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
