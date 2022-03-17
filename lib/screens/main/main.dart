@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:valua_camera/constants/app.dart';
-import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
@@ -34,7 +33,7 @@ class MainScreen extends StatelessWidget {
               future: _controller.assignedExamRoom.value,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
-                  ExamRoom data = snapshot.data;
+                  AssignedExamRoom data = snapshot.data;
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +62,8 @@ class MainScreen extends StatelessWidget {
                             RichTextItem(
                               title: "Date: ",
                               content: DateFormat('dd/MM/yyyy').format(
-                                DateTime.parse(data.shift.beginTime.toString())
+                                DateTime.parse(
+                                        data.currentShift.beginTime.toString())
                                     .toLocal(),
                               ),
                             ),
@@ -74,10 +74,12 @@ class MainScreen extends StatelessWidget {
                             RichTextItem(
                               title: "Time: ",
                               content: "${DateFormat("HH:mm").format(
-                                DateTime.parse(data.shift.beginTime.toString())
+                                DateTime.parse(
+                                        data.currentShift.beginTime.toString())
                                     .toLocal(),
                               )} - ${DateFormat("HH:mm").format(
-                                DateTime.parse(data.shift.finishTime.toString())
+                                DateTime.parse(
+                                        data.currentShift.finishTime.toString())
                                     .toLocal(),
                               )}",
                             ),
@@ -87,15 +89,16 @@ class MainScreen extends StatelessWidget {
                             // room
                             RichTextItem(
                               title: "Room: ",
-                              content: data.room.roomName,
+                              content: data.currentRoom.roomName,
                             ),
                             const SizedBox(
                               height: 20,
                             ),
                             // subject
+                            // FIXME: Update subject for all exam rooms
                             RichTextItem(
                               title: "Subject: ",
-                              content: data.subject.subjectCode,
+                              content: data.examRooms[0].subject.subjectCode,
                             ),
                             const SizedBox(
                               height: 20,
@@ -103,7 +106,7 @@ class MainScreen extends StatelessWidget {
                             // total examinees
                             RichTextItem(
                               title: "Total examinees: ",
-                              content: data.attendances.length.toString(),
+                              content: data.totalAttendances.toString(),
                             ),
                           ],
                         ),
@@ -130,7 +133,7 @@ class MainScreen extends StatelessWidget {
                                     : const SizedBox(
                                         width: 220,
                                         child: Text(
-                                          "Exam can only be start ${AppConstant.minutesBeforeCheckin} minutes before exams",
+                                          "Current shift status is not ongoing",
                                           softWrap: true,
                                           textAlign: TextAlign.center,
                                         ),

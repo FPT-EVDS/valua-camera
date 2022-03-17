@@ -13,6 +13,8 @@ import 'package:valua_camera/screens/login/login_binding.dart';
 import 'package:valua_camera/screens/main/main.dart';
 import 'package:get/get.dart';
 import 'package:valua_camera/screens/main/main_binding.dart';
+import 'package:valua_camera/screens/violation/violation.dart';
+import 'package:valua_camera/screens/violation/violation_binding.dart';
 
 part 'app_routes.dart';
 
@@ -39,6 +41,11 @@ class AppPages {
       name: AppRoutes.incident,
       page: () => const IncidentScreen(),
       binding: IncidentBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.violation,
+      page: () => const ViolationScreen(),
+      binding: ViolationBinding(),
     ),
     GetPage(
       name: AppRoutes.attendance,

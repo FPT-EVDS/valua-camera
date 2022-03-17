@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/repository/exam_room_repository.dart';
 
 class DashboardController extends GetxController {
-  final assignedExamRoom = Rx<ExamRoom?>(null);
+  final assignedExamRoom = Rx<AssignedExamRoom?>(null);
   final ExamRoomRepository _examRoomRepository = Get.find<ExamRoomProvider>();
 
-  Future<ExamRoom> getAssignedExamRoom({DateTime? date}) async {
+  Future<AssignedExamRoom> getAssignedExamRoom({DateTime? date}) async {
     try {
       final data = _examRoomRepository.loadExamRoom().then((value) {
         assignedExamRoom.value = value;

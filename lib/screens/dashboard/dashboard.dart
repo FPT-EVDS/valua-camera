@@ -2,7 +2,6 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:valua_camera/models/exam_room.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/dashboard/dashboard_controller.dart';
@@ -18,7 +17,12 @@ class DashboardScreen extends StatelessWidget {
         title: "Exam regulation report",
         color: Colors.blue.shade500,
         iconData: CommunityMaterialIcons.file_document,
-        onTap: () {},
+        onTap: () {
+          Get.toNamed(
+            AppRoutes.violation,
+            arguments: _controller.assignedExamRoom.value,
+          );
+        },
       ),
       ModalBottomSheetItem(
         title: "Exam incident report",
@@ -109,7 +113,6 @@ class DashboardScreen extends StatelessWidget {
             future: _controller.getAssignedExamRoom(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
-                ExamRoom examRoom = snapshot.data;
                 return Column(
                   children: <Widget>[
                     CardButton(

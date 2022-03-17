@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:valua_camera/models/attendance.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
-import 'package:valua_camera/screens/incident/incident_controller.dart';
+import 'package:valua_camera/screens/violation/violation_controller.dart';
+import 'package:valua_camera/widgets/cached_circle_avatar.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 final pickImageTypes = [
@@ -23,11 +26,11 @@ final pickImageTypes = [
   ),
 ];
 
-class IncidentScreen extends StatelessWidget {
-  const IncidentScreen({Key? key}) : super(key: key);
+class ViolationScreen extends StatelessWidget {
+  const ViolationScreen({Key? key}) : super(key: key);
 
   Future _showImageSelector(BuildContext context) {
-    final _controller = Get.find<IncidentController>();
+    final _controller = Get.find<ViolationController>();
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -96,14 +99,54 @@ class IncidentScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildDropdownItem(BuildContext context, Attendance? attendance) {
+    if (attendance == null) {
+      return Container();
+    }
+    return ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      leading: CachedCircleAvatar(
+        imageUrl: attendance.examinee.imageUrl ??
+            'https://i.stack.imgur.com/34AD2.jpg',
+        radius: 22,
+      ),
+      title: Text(attendance.examinee.fullName),
+      subtitle: Text(attendance.examinee.companyId),
+    );
+  }
+
+  Widget _buildPopupItem(
+      BuildContext context, Attendance? attendance, bool isSelected) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(attendance?.examinee.fullName ?? ''),
+        subtitle: Text(attendance?.examinee.companyId ?? ''),
+        leading: CachedCircleAvatar(
+          imageUrl: attendance?.examinee.imageUrl ??
+              'https://i.stack.imgur.com/34AD2.jpg',
+          radius: 22,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.find<IncidentController>();
+    final _controller = Get.find<ViolationController>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Create incident report',
+          'Create violation report',
         ),
       ),
       resizeToAvoidBottomInset: false,
@@ -130,6 +173,32 @@ class IncidentScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Obx(
+                  () => DropdownSearch<Attendance>(
+                    mode: Mode.DIALOG,
+                    showClearButton: true,
+                    items: _controller.examRoom.examRooms[0].attendances,
+                    dropdownBuilder: _buildDropdownItem,
+                    popupItemBuilder: _buildPopupItem,
+                    compareFn: (item, selectedItem) =>
+                        item?.attendanceId == selectedItem?.attendanceId,
+                    dropdownSearchDecoration: const InputDecoration(
+                      labelText: "Violator",
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                    ),
+                    popupSafeArea:
+                        const PopupSafeAreaProps(top: true, bottom: true),
+                    onChanged: (attendance) {
+                      _controller.selectedAttendance.value = attendance;
+                    },
+                    validator: (v) => v == null ? "Violator is required" : null,
+                    selectedItem: _controller.selectedAttendance.value,
+                  ),
+                ),
+                const SizedBox(height: 30),
                 TextFormField(
                   controller: _controller.descriptionController,
                   maxLines: 8,
@@ -155,17 +224,24 @@ class IncidentScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text('Images', textAlign: TextAlign.start),
+                const Text('Image', textAlign: TextAlign.start),
                 const SizedBox(
                   height: 5,
                 ),
                 InkWell(
-                  child: Container(
-                    height: 100.0,
-                    width: 100.0,
-                    color: Colors.grey[350],
-                    child: Obx(
-                      () => _controller.image.value != null
+                  child: Obx(
+                    () => Container(
+                      height: 100.0,
+                      width: 100.0,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[350],
+                        border: Border.all(
+                          color: _controller.imageError.value.isNotEmpty
+                              ? Colors.red
+                              : Colors.transparent,
+                        ),
+                      ),
+                      child: _controller.image.value != null
                           ? Image.file(
                               File(_controller.image.value!.path.toString()),
                               fit: BoxFit.cover,
@@ -181,7 +257,17 @@ class IncidentScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 5,
+                ),
+                Obx(
+                  () => Text(
+                    _controller.imageError.value,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ],
             ),

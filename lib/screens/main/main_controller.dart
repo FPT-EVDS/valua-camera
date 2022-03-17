@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:valua_camera/constants/app.dart';
-import 'package:valua_camera/models/exam_room.dart';
+import 'package:valua_camera/enums/shift_status.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/repository/exam_room_repository.dart';
 
 class MainController extends GetxController {
-  final assignedExamRoom = Future<ExamRoom?>.value().obs;
+  final assignedExamRoom = Future<AssignedExamRoom?>.value().obs;
   final message = ''.obs;
   final examRoomName = ''.obs;
   final shouldShowCheckin = false.obs;
@@ -15,11 +16,9 @@ class MainController extends GetxController {
   Future<void> getAssignedExamRoom({DateTime? date}) async {
     try {
       final data = _examRoomRepository.loadExamRoom().then((value) {
-        final shiftBeginTime = DateTime.parse(value.shift.beginTime).toLocal();
-        final currentDate = DateTime.now().toLocal();
-        examRoomName.value = value.examRoomName;
-        shouldShowCheckin.value = currentDate.difference(shiftBeginTime) <=
-            const Duration(minutes: AppConstant.minutesBeforeCheckin);
+        if (value.currentShift.status == ShiftStatus.ongoing) {
+          shouldShowCheckin.value = true;
+        }
         return value;
       });
       assignedExamRoom.value = data;

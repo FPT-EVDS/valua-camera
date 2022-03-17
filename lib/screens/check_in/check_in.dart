@@ -27,7 +27,7 @@ class CheckInScreen extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(_controller.examRoom.examRoomName),
+            title: Text(_controller.examRoom.currentRoom.roomName),
             bottom: const TabBar(
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
@@ -41,7 +41,10 @@ class CheckInScreen extends StatelessWidget {
           body: TabBarView(
             children: [
               // Attendance screen
-              _buildAttendanceScreen(context, _controller.examRoom.attendances),
+              _buildAttendanceScreen(
+                context,
+                _controller.examRoom.examRooms[0].attendances,
+              ),
               // QR Checking screen
               Center(
                 child: Column(
@@ -49,7 +52,7 @@ class CheckInScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     QrImage(
-                      data: _controller.examRoom.examRoomId,
+                      data: _controller.examRoom.currentRoom.roomId,
                       version: QrVersions.auto,
                       padding: const EdgeInsets.all(32.0),
                     ),

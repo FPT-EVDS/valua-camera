@@ -7,6 +7,7 @@ abstract class AppRoutes {
   static const home = '/home';
   static const dashboard = '/dashboard';
   static const incident = '/incident';
+  static const violation = '/violation';
   static const camera = '/camera';
   static const attendance = '/attendance';
 }

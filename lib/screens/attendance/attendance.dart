@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:valua_camera/enums/attendance_status.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/models/attendance.dart';
 import 'package:valua_camera/screens/attendance/attendance_controller.dart';
 import 'package:valua_camera/widgets/attendance_pie_chart.dart';
@@ -23,8 +24,11 @@ class AttendanceScreen extends StatelessWidget {
           future: _controller.getAssignedExamRoom(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.hasData) {
-              final examRoom = snapshot.data;
-              return _buildAttendanceScreen(context, examRoom.attendances);
+              AssignedExamRoom data = snapshot.data;
+              return _buildAttendanceScreen(
+                context,
+                data.examRooms[0].attendances,
+              );
             } else if (snapshot.hasError) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
