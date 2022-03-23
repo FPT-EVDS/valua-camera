@@ -75,7 +75,7 @@ class LoginController extends GetxController {
         backgroundColor: Colors.grey.shade700,
       );
     }
-    return Future(() => null);
+    throw Exception("Can't generate QR");
   }
 
   void checkAuthAppUser(AppUser data) {
