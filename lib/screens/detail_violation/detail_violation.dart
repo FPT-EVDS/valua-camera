@@ -108,12 +108,12 @@ class DetailViolationScreen extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: CachedCircleAvatar(
-        imageUrl: attendance.examinee.imageUrl ??
+        imageUrl: attendance.subjectExaminee.examinee.imageUrl ??
             'https://i.stack.imgur.com/34AD2.jpg',
         radius: 22,
       ),
-      title: Text(attendance.examinee.fullName),
-      subtitle: Text(attendance.examinee.companyId),
+      title: Text(attendance.subjectExaminee.examinee.fullName),
+      subtitle: Text(attendance.subjectExaminee.examinee.companyId),
     );
   }
 
@@ -130,10 +130,10 @@ class DetailViolationScreen extends StatelessWidget {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(attendance?.examinee.fullName ?? ''),
-        subtitle: Text(attendance?.examinee.companyId ?? ''),
+        title: Text(attendance?.subjectExaminee.examinee.fullName ?? ''),
+        subtitle: Text(attendance?.subjectExaminee.examinee.companyId ?? ''),
         leading: CachedCircleAvatar(
-          imageUrl: attendance?.examinee.imageUrl ??
+          imageUrl: attendance?.subjectExaminee.examinee.imageUrl ??
               'https://i.stack.imgur.com/34AD2.jpg',
           radius: 22,
         ),

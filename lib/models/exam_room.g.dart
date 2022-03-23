@@ -9,11 +9,12 @@ part of 'exam_room.dart';
 ExamRoom _$ExamRoomFromJson(Map<String, dynamic> json) => ExamRoom(
       examRoomId: json['examRoomId'] as String,
       examRoomName: json['examRoomName'] as String,
-      subject: Subject.fromJson(json['subject'] as Map<String, dynamic>),
       attendances: (json['attendances'] as List<dynamic>)
           .map((e) => Attendance.fromJson(e as Map<String, dynamic>))
           .toList(),
       status: json['status'] as int,
+      subjectSemester: SubjectSemester.fromJson(
+          json['subjectSemester'] as Map<String, dynamic>),
       createdDate: DateTime.parse(json['createdDate'] as String),
       lastModifiedDate: DateTime.parse(json['lastModifiedDate'] as String),
     );
@@ -21,9 +22,9 @@ ExamRoom _$ExamRoomFromJson(Map<String, dynamic> json) => ExamRoom(
 Map<String, dynamic> _$ExamRoomToJson(ExamRoom instance) => <String, dynamic>{
       'examRoomId': instance.examRoomId,
       'examRoomName': instance.examRoomName,
-      'subject': instance.subject,
       'attendances': instance.attendances,
       'status': instance.status,
+      'subjectSemester': instance.subjectSemester,
       'createdDate': instance.createdDate.toIso8601String(),
       'lastModifiedDate': instance.lastModifiedDate.toIso8601String(),
     };

@@ -65,7 +65,8 @@ class DetailViolationController extends GetxController {
           'examRoomId': report.value?.examRoom.examRoomId,
         },
         "reportedUser": {
-          "appUserId": selectedAttendance.value?.examinee.appUserId,
+          "appUserId":
+              selectedAttendance.value?.subjectExaminee.examinee.appUserId,
         },
         'description': description,
         'note': note,
@@ -107,7 +108,8 @@ class DetailViolationController extends GetxController {
         final attendance = dashboardController
             .assignedExamRoom.value?.examRooms[0].attendances
             .firstWhere((element) =>
-                element.examinee.appUserId == report.reportedUser?.appUserId);
+                element.subjectExaminee.examinee.appUserId ==
+                report.reportedUser?.appUserId);
         selectedAttendance.value = attendance;
         descriptionController.text = report.description;
         noteController.text = report.note ?? '';

@@ -59,9 +59,8 @@ class AttendanceScreen extends StatelessWidget {
 
   Widget _buildAttendanceScreen(
       BuildContext context, List<Attendance> attendances) {
-    final attendedAttendances = attendances
-        .where((element) => element.status == AttendanceStatus.present)
-        .toList();
+    final attendedAttendances =
+        attendances.where((element) => element.startTime != null).toList();
     return SingleChildScrollView(
       physics: const ScrollPhysics(),
       child: Column(
@@ -81,8 +80,8 @@ class AttendanceScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final attendance = attendances[index];
               return ListTile(
-                title: Text(attendance.examinee.fullName),
-                subtitle: Text(attendance.examinee.companyId),
+                title: Text(attendance.subjectExaminee.examinee.fullName),
+                subtitle: Text(attendance.subjectExaminee.examinee.companyId),
                 leading: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -93,13 +92,13 @@ class AttendanceScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     CachedCircleAvatar(
-                      imageUrl: attendance.examinee.imageUrl ??
+                      imageUrl: attendance.subjectExaminee.examinee.imageUrl ??
                           'https://i.stack.imgur.com/34AD2.jpg',
                       radius: 24,
                     ),
                   ],
                 ),
-                trailing: attendance.status == AttendanceStatus.present
+                trailing: attendance.startTime != null
                     ? const Icon(
                         CommunityMaterialIcons.check_circle,
                         color: Colors.green,

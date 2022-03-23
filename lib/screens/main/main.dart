@@ -95,18 +95,32 @@ class MainScreen extends StatelessWidget {
                               height: 20,
                             ),
                             // subject
-                            // FIXME: Update subject for all exam rooms
-                            RichTextItem(
-                              title: "Subject: ",
-                              content: data.examRooms[0].subject.subjectCode,
+                            Obx(
+                              () => RichTextItem(
+                                title: "Subject: ",
+                                content: _controller.subjectsMessage.value,
+                              ),
                             ),
                             const SizedBox(
                               height: 20,
                             ),
                             // total examinees
-                            RichTextItem(
-                              title: "Total examinees: ",
-                              content: data.totalAttendances.toString(),
+                            Obx(
+                              () => RichTextItem(
+                                title: "Total examinees: ",
+                                content:
+                                    _controller.totalExaminees.value.toString(),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            // total examinees
+                            Obx(
+                              () => RichTextItem(
+                                title: "Allowed tools: ",
+                                content: _controller.toolsMessage.value,
+                              ),
                             ),
                           ],
                         ),
@@ -179,6 +193,19 @@ class MainScreen extends StatelessWidget {
                       ),
                       const SizedBox(
                         height: 40,
+                      ),
+                      RoundButton(
+                        height: 45,
+                        width: 300,
+                        color: Colors.blue,
+                        label: "Refresh",
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () {
+                          _controller.getAssignedExamRoom();
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       RoundButton(
                         height: 45,

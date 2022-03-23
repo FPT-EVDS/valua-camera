@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:valua_camera/enums/attendance_status.dart';
-import 'package:valua_camera/models/attendance.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/check_in/check_in_controller.dart';
 import 'package:valua_camera/widgets/attendance_pie_chart.dart';
 import 'package:valua_camera/widgets/cached_circle_avatar.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
+import 'package:valua_camera/utils/collections.dart';
 
 class CheckInScreen extends StatelessWidget {
   const CheckInScreen({Key? key}) : super(key: key);
@@ -41,9 +41,13 @@ class CheckInScreen extends StatelessWidget {
           body: TabBarView(
             children: [
               // Attendance screen
-              _buildAttendanceScreen(
-                context,
-                _controller.examRoom.examRooms[0].attendances,
+              Obx(
+                () => _controller.isExpandedList.isNotEmpty
+                    ? _buildAttendanceScreen(
+                        context,
+                        _controller.examRoom,
+                      )
+                    : const CircularProgressIndicator(),
               ),
               // QR Checking screen
               Center(
@@ -103,60 +107,88 @@ class CheckInScreen extends StatelessWidget {
   }
 
   Widget _buildAttendanceScreen(
-      BuildContext context, List<Attendance> attendances) {
-    final attendedAttendances = attendances
-        .where((element) => element.status == AttendanceStatus.present)
-        .toList();
+      BuildContext context, AssignedExamRoom assignedExamRoom) {
+    final _controller = Get.find<CheckInController>();
     return SingleChildScrollView(
       physics: const ScrollPhysics(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           AttendancePieChart(
-            attended: attendedAttendances.length.toDouble(),
-            unattended:
-                (attendances.length - attendedAttendances.length).toDouble(),
+            attended: _controller.attendedAttendances.value.toDouble(),
+            unattended: (assignedExamRoom.totalAttendances -
+                    _controller.attendedAttendances.value)
+                .toDouble(),
           ),
           const SizedBox(height: 20),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: attendances.length,
-            padding: const EdgeInsets.all(8.0),
-            itemBuilder: (context, index) {
-              final attendance = attendances[index];
-              return ListTile(
-                title: Text(attendance.examinee.fullName),
-                subtitle: Text(attendance.examinee.companyId),
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      attendance.position.toString().padLeft(2, '0'),
-                      style: const TextStyle(fontSize: 14),
-                      textAlign: TextAlign.start,
-                    ),
-                    const SizedBox(width: 10),
-                    CachedCircleAvatar(
-                      imageUrl: attendance.examinee.imageUrl ??
-                          'https://i.stack.imgur.com/34AD2.jpg',
-                      radius: 24,
-                    ),
-                  ],
-                ),
-                trailing: attendance.status == AttendanceStatus.present
-                    ? const Icon(
-                        CommunityMaterialIcons.check_circle,
-                        color: Colors.green,
-                        size: 24.0,
-                      )
-                    : const Icon(
-                        CommunityMaterialIcons.close_circle,
-                        color: Colors.red,
-                        size: 24.0,
+          Obx(
+            () => ExpansionPanelList(
+              expandedHeaderPadding: const EdgeInsets.symmetric(vertical: 8.0),
+              elevation: 2,
+              expansionCallback: (int index, bool isExpanded) {
+                _controller.isExpandedList[index] = !isExpanded;
+              },
+              children:
+                  assignedExamRoom.examRooms.mapIndexed((index, examRoom) {
+                return ExpansionPanel(
+                  isExpanded: _controller.isExpandedList[index],
+                  headerBuilder: (BuildContext context, bool isExpanded) {
+                    return ListTile(
+                      title: Text(
+                        examRoom.examRoomName,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-              );
-            },
+                    );
+                  },
+                  body: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: examRoom.attendances.length,
+                    padding: const EdgeInsets.all(8.0),
+                    itemBuilder: (context, index) {
+                      final attendance = examRoom.attendances[index];
+                      return ListTile(
+                        title:
+                            Text(attendance.subjectExaminee.examinee.fullName),
+                        subtitle:
+                            Text(attendance.subjectExaminee.examinee.companyId),
+                        leading: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              attendance.position.toString().padLeft(2, '0'),
+                              style: const TextStyle(fontSize: 14),
+                              textAlign: TextAlign.start,
+                            ),
+                            const SizedBox(width: 10),
+                            CachedCircleAvatar(
+                              imageUrl: attendance
+                                      .subjectExaminee.examinee.imageUrl ??
+                                  'https://i.stack.imgur.com/34AD2.jpg',
+                              radius: 24,
+                            ),
+                          ],
+                        ),
+                        trailing: attendance.startTime != null
+                            ? const Icon(
+                                CommunityMaterialIcons.check_circle,
+                                color: Colors.green,
+                                size: 24.0,
+                              )
+                            : const Icon(
+                                CommunityMaterialIcons.close_circle,
+                                color: Colors.red,
+                                size: 24.0,
+                              ),
+                      );
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),

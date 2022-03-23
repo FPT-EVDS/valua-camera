@@ -7,6 +7,8 @@ class CheckInController extends GetxController {
   final takenImage = Rx<XFile?>(null);
   late CameraController cameraController;
   late Future<void> initializeControllerFuture;
+  final attendedAttendances = 0.obs;
+  RxList<bool> isExpandedList = RxList<bool>();
 
   Future<CameraDescription> getCamera(CameraLensDirection direction) async {
     return await availableCameras().then(
@@ -26,6 +28,15 @@ class CheckInController extends GetxController {
       cameraController =
           CameraController(cameraDescription, ResolutionPreset.high);
       initializeControllerFuture = cameraController.initialize();
+    }
+    isExpandedList.value =
+        List.generate(examRoom.examRooms.length, (index) => true);
+    for (var examRoom in examRoom.examRooms) {
+      final examRoomAttendedAttendances = examRoom.attendances
+          .where((attendance) => attendance.startTime != null)
+          .toList()
+          .length;
+      attendedAttendances.value += examRoomAttendedAttendances;
     }
     super.onInit();
   }

@@ -8,10 +8,10 @@ part of 'semester.dart';
 
 Semester _$SemesterFromJson(Map<String, dynamic> json) => Semester(
       semesterId: json['semesterId'] as String,
-      name: json['name'] as String,
+      semesterName: json['semesterName'] as String,
     );
 
 Map<String, dynamic> _$SemesterToJson(Semester instance) => <String, dynamic>{
       'semesterId': instance.semesterId,
-      'name': instance.name,
+      'semesterName': instance.semesterName,
     };

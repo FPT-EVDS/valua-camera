@@ -61,7 +61,8 @@ class ViolationController extends GetxController {
           'examRoomId': examRoom.examRooms[0].examRoomId,
         },
         "reportedUser": {
-          "appUserId": selectedAttendance.value?.examinee.appUserId,
+          "appUserId":
+              selectedAttendance.value?.subjectExaminee.examinee.appUserId,
         },
         'description': description,
         'note': note,
