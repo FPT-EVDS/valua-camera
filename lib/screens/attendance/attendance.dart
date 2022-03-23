@@ -2,7 +2,6 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:valua_camera/enums/attendance_status.dart';
 import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/models/attendance.dart';
 import 'package:valua_camera/screens/attendance/attendance_controller.dart';

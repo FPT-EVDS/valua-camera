@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:valua_camera/enums/attendance_status.dart';
 import 'package:valua_camera/enums/subject_examinee_status.dart';
 import 'package:valua_camera/models/account_alternative.dart';
 
