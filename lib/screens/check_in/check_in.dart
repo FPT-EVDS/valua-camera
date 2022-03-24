@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:valua_camera/models/assigned_exam_room.dart';
+import 'package:valua_camera/models/current_attendance.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/check_in/check_in_controller.dart';
 import 'package:valua_camera/widgets/attendance_pie_chart.dart';
@@ -43,9 +42,11 @@ class CheckInScreen extends StatelessWidget {
               // Attendance screen
               Obx(
                 () => _controller.isExpandedList.isNotEmpty
-                    ? _buildAttendanceScreen(
-                        context,
-                        _controller.examRoom,
+                    ? Obx(
+                        () => _buildAttendanceScreen(
+                          context,
+                          _controller.assignedExamRoom.value,
+                        ),
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
@@ -65,31 +66,6 @@ class CheckInScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 20),
-                    RoundButton(
-                      label: "Simulate check in",
-                      onPressed: () async {
-                        final result = await Get.toNamed(
-                          AppRoutes.camera,
-                          arguments: _controller.cameraController,
-                        );
-                        _controller.takenImage.value = result;
-                        if (_controller.takenImage.value != null) {
-                          showAlertDialog(
-                            context,
-                            _controller.takenImage.value,
-                          );
-                        }
-                      },
-                    ),
-                    RoundButton(
-                      label: "Test popup",
-                      onPressed: () async {
-                        if (_controller.takenImage.value != null) {
-                          showAlertDialog(
-                              context, _controller.takenImage.value);
-                        }
-                      },
-                    ),
                     RoundButton(
                       label: "To exam room dashboard",
                       onPressed: () async {
@@ -195,9 +171,9 @@ class CheckInScreen extends StatelessWidget {
     );
   }
 
-  showAlertDialog(BuildContext context, XFile? xFile) {
+  showAlertDialog(BuildContext context, CurrentAttendance attendance) {
     late Timer _timer;
-
+    final examinee = attendance.currentAttendance.examinee;
     // Create AlertDialog
     AlertDialog dialog = AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -212,20 +188,23 @@ class CheckInScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 96,
-            backgroundImage: Image.file(
-              File(xFile!.path.toString()),
+            backgroundImage: Image.network(
+              examinee.imageUrl.toString(),
               fit: BoxFit.cover,
             ).image,
           ),
           const SizedBox(height: 20),
-          const Text("Nguyen Huu Huy - SE140380"),
+          Text("${examinee.fullName} - ${examinee.companyId}"),
           const SizedBox(height: 10),
           RichTextItem(
             title: "Attended at: ",
             content: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
           ),
           const SizedBox(height: 10),
-          const RichTextItem(title: "Seat position: ", content: "02"),
+          RichTextItem(
+            title: "Seat position: ",
+            content: attendance.currentAttendance.position.toString(),
+          ),
         ],
       ),
     );

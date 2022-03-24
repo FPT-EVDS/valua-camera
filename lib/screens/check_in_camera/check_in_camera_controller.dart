@@ -21,13 +21,8 @@ class CheckInCameraController extends GetxController {
     _soundId = await rootBundle
         .load("assets/sounds/camera.mp3")
         .then((soundData) => _soundpool.load(soundData));
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
     startTimer();
-    super.onReady();
+    super.onInit();
   }
 
   @override
