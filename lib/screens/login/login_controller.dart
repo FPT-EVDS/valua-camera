@@ -155,7 +155,9 @@ class LoginController extends GetxController {
   }
 
   void refreshQR() {
-    unsubscribeFn();
+    if (unsubscribeFn != null) {
+      unsubscribeFn();
+    }
     generateQRCode().then((value) {
       final data = value?.data;
       if (data != null) {

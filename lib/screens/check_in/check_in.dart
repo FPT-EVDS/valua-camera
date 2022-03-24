@@ -47,7 +47,7 @@ class CheckInScreen extends StatelessWidget {
                         context,
                         _controller.examRoom,
                       )
-                    : const CircularProgressIndicator(),
+                    : const Center(child: CircularProgressIndicator()),
               ),
               // QR Checking screen
               Center(

@@ -30,7 +30,7 @@ class MainController extends GetxController {
           totalExaminees.value += examRoom.attendances.length;
           toolsMessage.value = examRoom.subjectSemester.subject.tools
               .map((e) => e.toolName)
-              .join(" ,");
+              .join(", ");
           if (i != tempExamRooms.length - 1) {
             subjectsMessage.value +=
                 "${examRoom.subjectSemester.subject.subjectCode}, ";
