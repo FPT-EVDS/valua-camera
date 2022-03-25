@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -6,6 +7,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -17,6 +19,7 @@ import 'package:valua_camera/repository/attendance_repository.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:image/image.dart' as img;
+import 'package:valua_camera/widgets/rich_text_item.dart';
 
 const socketUrl = AppConstant.apiUrl + "/websocket";
 
@@ -24,6 +27,7 @@ class CheckInController extends GetxController {
   late StompClient stompClient;
   final AssignedExamRoom examRoom = Get.arguments;
   final currentAttendance = Rx<CurrentAttendance?>(null);
+  final tabControllerIndex = 1.obs;
   late CameraController cameraController;
   late Future<void> initializeControllerFuture;
   final AttendanceRepository _attendanceProvider =
@@ -86,9 +90,10 @@ class CheckInController extends GetxController {
         currentAttendance.value = CurrentAttendance.fromJson(jsonData);
         await handleCaptureImage();
       } catch (error) {
-        Fluttertoast.showToast(
-          msg: "Please scan again",
-          backgroundColor: Colors.grey.shade700,
+        showDialog(
+          "An error occurred",
+          error.toString(),
+          false,
         );
       }
     }
@@ -108,6 +113,7 @@ class CheckInController extends GetxController {
       arguments: cameraController,
     );
     if (result != null) {
+      showLoadingDialog();
       XFile takenImage = result;
       final img.Image? capturedImage =
           img.decodeImage(await takenImage.readAsBytes());
@@ -120,45 +126,53 @@ class CheckInController extends GetxController {
           filename: takenImage.name,
         ),
       });
-      final data = await _attendanceProvider.checkAttendance(
+      _attendanceProvider
+          .checkAttendance(
         currentAttendance.value!.currentAttendance.attendanceId,
         _formData,
-      );
-      // success check
-      if (data['currentAttendance'] != null) {
-        final currentAttendance = CurrentAttendance.fromJson(data);
-        final attendanceExamRoom = currentAttendance.currentAttendance.examRoom;
-        final currentExamRoom = assignedExamRoom.value;
-        // update state of current attendance start time
-        currentExamRoom.examRooms
-            .firstWhere((examRoom) =>
-                examRoom.examRoomId == attendanceExamRoom.examRoomId)
-            .attendances
-            .firstWhere((attendance) =>
-                attendance.attendanceId ==
-                currentAttendance.currentAttendance.attendanceId)
-            .startTime = currentAttendance.currentAttendance.startTime;
-        assignedExamRoom.value = currentExamRoom;
-        attendedAttendances.value += 1;
-        _mainController.assignedExamRoom.value = Future(() => currentExamRoom);
-        showDialog(
-          "Success",
-          "${currentAttendance.currentAttendance.examinee.companyId} checked successfully",
-          true,
-        );
-      } else if (data['lastAttempt'] != null) {
+      )
+          .then((data) {
+        Get.back();
+        if (data['currentAttendance'] != null) {
+          final currentAttendance = CurrentAttendance.fromJson(data);
+          final attendanceExamRoom =
+              currentAttendance.currentAttendance.examRoom;
+          final currentExamRoom = assignedExamRoom.value;
+          // update state of current attendance start time
+          currentExamRoom.examRooms
+              .firstWhere((examRoom) =>
+                  examRoom.examRoomId == attendanceExamRoom.examRoomId)
+              .attendances
+              .firstWhere((attendance) =>
+                  attendance.attendanceId ==
+                  currentAttendance.currentAttendance.attendanceId)
+              .startTime = currentAttendance.currentAttendance.startTime;
+          assignedExamRoom.value = currentExamRoom;
+          attendedAttendances.value += 1;
+          _mainController.assignedExamRoom.value =
+              Future.value(currentExamRoom);
+          showAttendanceDialog(currentAttendance);
+        } else if (data['lastAttempt'] != null) {
+          showDialog(
+            "Failed",
+            "Your face doesn't match. Please try again",
+            false,
+          );
+        } else {
+          showDialog(
+            "Failed",
+            data.toString(),
+            false,
+          );
+        }
+      }).catchError((error) {
+        Get.back();
         showDialog(
           "Failed",
-          "Your face doesn't match. Please try again",
+          error.toString(),
           false,
         );
-      } else {
-        showDialog(
-          "Failed",
-          data.toString(),
-          false,
-        );
-      }
+      });
     } else {
       Fluttertoast.showToast(
         msg: "You haven't take your picture yet",
@@ -167,7 +181,58 @@ class CheckInController extends GetxController {
     }
   }
 
+  showAttendanceDialog(CurrentAttendance attendance) {
+    final examinee = attendance.currentAttendance.examinee;
+    // auto close duration
+    final Timer _timer = Timer(const Duration(seconds: 8), () {
+      Get.back();
+    });
+    return Get.defaultDialog(
+      title: examinee.companyId,
+      radius: 8,
+      titleStyle: const TextStyle(fontSize: 20),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(
+            radius: 96,
+            backgroundImage: Image.network(
+              attendance.currentAttendance.attempts.last.imageUrl,
+              fit: BoxFit.cover,
+            ).image,
+          ),
+          const SizedBox(height: 20),
+          Text(examinee.fullName),
+          const SizedBox(height: 10),
+          RichTextItem(
+            title: "Attended at: ",
+            content: attendance.currentAttendance.startTime != null
+                ? DateFormat('dd/MM/yyyy HH:mm').format(
+                    attendance.currentAttendance.startTime!,
+                  )
+                : '',
+          ),
+          const SizedBox(height: 10),
+          RichTextItem(
+            title: "Seat position: ",
+            content: attendance.currentAttendance.position.toString(),
+          ),
+        ],
+      ),
+    ).then((val) {
+      if (_timer.isActive) {
+        _timer.cancel();
+      }
+    });
+  }
+
   showDialog(String title, String message, bool isSuccess) {
+    // auto close duration
+    final Timer _timer = Timer(const Duration(seconds: 5), () {
+      Get.back();
+    });
     return Get.defaultDialog(
       title: title,
       radius: 8,
@@ -195,6 +260,24 @@ class CheckInController extends GetxController {
               textAlign: TextAlign.center,
             ),
           ],
+        ),
+      ),
+    ).then((val) {
+      if (_timer.isActive) {
+        _timer.cancel();
+      }
+    });
+  }
+
+  showLoadingDialog() {
+    return Get.defaultDialog(
+      title: "Processing...",
+      radius: 8,
+      titleStyle: const TextStyle(fontSize: 20),
+      content: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );

@@ -1,0 +1,4 @@
+enum AttendanceAction {
+  check,
+  uncheck,
+}

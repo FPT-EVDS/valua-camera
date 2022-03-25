@@ -54,6 +54,7 @@ dependencies:
   stomp_dart_client: ^0.4.4
   image_picker: 0.8.4+1
   dropdown_search: ^2.0.1
+  flutter_slidable: ^1.2.0
 
 dev_dependencies:
   flutter_test:

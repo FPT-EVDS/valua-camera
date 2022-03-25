@@ -1,19 +1,14 @@
-import 'dart:async';
-
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:valua_camera/models/assigned_exam_room.dart';
-import 'package:valua_camera/models/current_attendance.dart';
 import 'package:valua_camera/routes/routes.dart';
 import 'package:valua_camera/screens/check_in/check_in_controller.dart';
+import 'package:valua_camera/utils/collections.dart';
 import 'package:valua_camera/widgets/attendance_pie_chart.dart';
 import 'package:valua_camera/widgets/cached_circle_avatar.dart';
-import 'package:valua_camera/widgets/rich_text_item.dart';
 import 'package:valua_camera/widgets/round_button.dart';
-import 'package:valua_camera/utils/collections.dart';
 
 class CheckInScreen extends StatelessWidget {
   const CheckInScreen({Key? key}) : super(key: key);
@@ -35,6 +30,20 @@ class CheckInScreen extends StatelessWidget {
                 fontSize: 15,
               ),
               tabs: [Tab(text: ("Attendance")), Tab(text: ("QR Checking"))],
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            child: RoundButton(
+              height: 44,
+              width: double.infinity,
+              label: "Finish check in",
+              onPressed: () {
+                Get.toNamed(AppRoutes.dashboard);
+              },
             ),
           ),
           body: TabBarView(
@@ -64,13 +73,6 @@ class CheckInScreen extends StatelessWidget {
                     const Text(
                       "Scan QR with Examinee app to check in",
                       style: TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 20),
-                    RoundButton(
-                      label: "To exam room dashboard",
-                      onPressed: () async {
-                        Get.toNamed(AppRoutes.dashboard);
-                      },
                     ),
                   ],
                 ),
@@ -169,59 +171,5 @@ class CheckInScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  showAlertDialog(BuildContext context, CurrentAttendance attendance) {
-    late Timer _timer;
-    final examinee = attendance.currentAttendance.examinee;
-    // Create AlertDialog
-    AlertDialog dialog = AlertDialog(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-      ),
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircleAvatar(
-            radius: 96,
-            backgroundImage: Image.network(
-              examinee.imageUrl.toString(),
-              fit: BoxFit.cover,
-            ).image,
-          ),
-          const SizedBox(height: 20),
-          Text("${examinee.fullName} - ${examinee.companyId}"),
-          const SizedBox(height: 10),
-          RichTextItem(
-            title: "Attended at: ",
-            content: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
-          ),
-          const SizedBox(height: 10),
-          RichTextItem(
-            title: "Seat position: ",
-            content: attendance.currentAttendance.position.toString(),
-          ),
-        ],
-      ),
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        _timer = Timer(const Duration(seconds: 7), () {
-          Get.back();
-        });
-        return dialog;
-      },
-    ).then((val) {
-      if (_timer.isActive) {
-        _timer.cancel();
-      }
-    });
   }
 }
