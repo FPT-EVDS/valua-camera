@@ -15,6 +15,7 @@ import 'package:valua_camera/constants/app.dart';
 import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/models/current_attendance.dart';
 import 'package:valua_camera/providers/attendance_provider.dart';
+import 'package:valua_camera/providers/auth_provider.dart';
 import 'package:valua_camera/repository/attendance_repository.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
@@ -23,8 +24,11 @@ import 'package:valua_camera/widgets/rich_text_item.dart';
 
 const socketUrl = AppConstant.apiUrl + "/websocket";
 
-class CheckInController extends GetxController {
+class CheckInController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  final isLoading = false.obs;
   late StompClient stompClient;
+  late TextEditingController passwordController = TextEditingController();
   final AssignedExamRoom examRoom = Get.arguments;
   final currentAttendance = Rx<CurrentAttendance?>(null);
   final tabControllerIndex = 1.obs;
@@ -32,11 +36,17 @@ class CheckInController extends GetxController {
   late Future<void> initializeControllerFuture;
   final AttendanceRepository _attendanceProvider =
       Get.find<AttendanceProvider>();
+  final AuthProvider _authProvider = Get.find<AuthProvider>();
   final MainController _mainController = Get.find<MainController>();
   final attendedAttendances = 0.obs;
   late Rx<AssignedExamRoom> assignedExamRoom;
   RxList<bool> isExpandedList = RxList<bool>();
   late dynamic unsubscribeFn;
+  final List<Tab> tabs = [
+    const Tab(text: ("Attendance")),
+    const Tab(text: ("QR Checking"))
+  ];
+  late TabController tabController;
 
   Future<CameraDescription> getCamera(CameraLensDirection direction) async {
     return await availableCameras().then(
@@ -48,6 +58,14 @@ class CheckInController extends GetxController {
 
   @override
   void onInit() async {
+    tabController = TabController(
+      length: tabs.length,
+      vsync: this,
+      initialIndex: tabControllerIndex.value,
+    );
+    tabController.addListener(() {
+      tabControllerIndex.value = tabController.index;
+    });
     assignedExamRoom = examRoom.obs;
     final cameras = await availableCameras();
     if (cameras.isNotEmpty) {
@@ -285,7 +303,30 @@ class CheckInController extends GetxController {
 
   @override
   void dispose() {
+    passwordController.dispose();
+    tabController.dispose();
     cameraController.dispose();
     super.dispose();
+  }
+
+  Future<void> checkPassword() async {
+    isLoading.value = true;
+    try {
+      String password = passwordController.text;
+      String message = await _authProvider.checkPassword(password);
+      if (message == "Password is correct") {
+        Get.offAllNamed(AppRoutes.dashboard);
+      } else {
+        throw Exception(message);
+      }
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.grey.shade700,
+      );
+    } finally {
+      passwordController.clear();
+      isLoading.value = false;
+    }
   }
 }

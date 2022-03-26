@@ -18,8 +18,20 @@ class AttendanceProvider extends BaseProvider implements AttendanceRepository {
   @override
   Future<CheckAttendance> updateAttendance(
       String attendanceId, AttendanceAction action) async {
+    String operation = '';
+    switch (action) {
+      case AttendanceAction.check:
+        operation = "check";
+        break;
+      case AttendanceAction.uncheck:
+        operation = "uncheck";
+        break;
+      case AttendanceAction.finish:
+        operation = "finish";
+        break;
+    }
     final response = await put("/attendances/$attendanceId", {}, query: {
-      "operation": action == AttendanceAction.check ? "check" : "uncheck",
+      "operation": operation,
     });
     if (response.status.hasError) {
       throw (response.body);

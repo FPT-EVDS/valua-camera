@@ -218,7 +218,7 @@ class MainScreen extends StatelessWidget {
                           icon: const Icon(Icons.logout),
                           onPressed: () {
                             _controller.logout();
-                            Get.offAndToNamed(AppRoutes.login);
+                            Get.offAllNamed(AppRoutes.login);
                           },
                         ),
                       ],

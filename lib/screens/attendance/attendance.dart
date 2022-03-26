@@ -106,54 +106,64 @@ class AttendanceScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     itemBuilder: (context, index) {
                       final attendance = examRoom.attendances[index];
+                      final isFinished = attendance.finishTime != null &&
+                          attendance.startTime != null;
                       return Slidable(
                         key: ValueKey(attendance.attendanceId),
-                        startActionPane: attendance.startTime != null
-                            ? ActionPane(
+                        startActionPane:
+                            attendance.startTime != null && !isFinished
+                                ? ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (context) {
+                                          _controller.updateAttendanceStatus(
+                                            attendance.attendanceId,
+                                            AttendanceAction.finish,
+                                          );
+                                        },
+                                        backgroundColor: Colors.teal,
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.done,
+                                        label: 'Finish',
+                                      ),
+                                    ],
+                                  )
+                                : null,
+                        endActionPane: isFinished
+                            ? null
+                            : ActionPane(
                                 motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (context) {},
-                                    backgroundColor: Colors.teal,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.done,
-                                    label: 'Finish',
-                                  ),
-                                ],
-                              )
-                            : null,
-                        endActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: attendance.startTime == null
-                              ? [
-                                  SlidableAction(
-                                    onPressed: (context) {
-                                      _controller.updateAttendanceStatus(
-                                        attendance.attendanceId,
-                                        AttendanceAction.check,
-                                      );
-                                    },
-                                    backgroundColor: Colors.green,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.check,
-                                    label: 'Check',
-                                  ),
-                                ]
-                              : [
-                                  SlidableAction(
-                                    onPressed: (context) {
-                                      _controller.updateAttendanceStatus(
-                                        attendance.attendanceId,
-                                        AttendanceAction.uncheck,
-                                      );
-                                    },
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.close,
-                                    label: 'Uncheck',
-                                  ),
-                                ],
-                        ),
+                                children: attendance.startTime == null
+                                    ? [
+                                        SlidableAction(
+                                          onPressed: (context) {
+                                            _controller.updateAttendanceStatus(
+                                              attendance.attendanceId,
+                                              AttendanceAction.check,
+                                            );
+                                          },
+                                          backgroundColor: Colors.green,
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.check,
+                                          label: 'Check',
+                                        ),
+                                      ]
+                                    : [
+                                        SlidableAction(
+                                          onPressed: (context) {
+                                            _controller.updateAttendanceStatus(
+                                              attendance.attendanceId,
+                                              AttendanceAction.uncheck,
+                                            );
+                                          },
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.close,
+                                          label: 'Uncheck',
+                                        ),
+                                      ],
+                              ),
                         child: ListTile(
                           title: Text(
                               attendance.subjectExaminee.examinee.fullName),
@@ -176,17 +186,23 @@ class AttendanceScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          trailing: attendance.startTime != null
+                          trailing: isFinished
                               ? const Icon(
                                   CommunityMaterialIcons.check_circle,
-                                  color: Colors.green,
+                                  color: Colors.teal,
                                   size: 24.0,
                                 )
-                              : const Icon(
-                                  CommunityMaterialIcons.close_circle,
-                                  color: Colors.red,
-                                  size: 24.0,
-                                ),
+                              : attendance.startTime != null
+                                  ? const Icon(
+                                      CommunityMaterialIcons.check_circle,
+                                      color: Colors.green,
+                                      size: 24.0,
+                                    )
+                                  : const Icon(
+                                      CommunityMaterialIcons.close_circle,
+                                      color: Colors.red,
+                                      size: 24.0,
+                                    ),
                         ),
                       );
                     },

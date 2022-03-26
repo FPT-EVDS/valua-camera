@@ -43,52 +43,50 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       context: context,
-      builder: (context) => SizedBox(
+      builder: (context) => Container(
         height: 200,
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                'Choose type of report',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              'Choose type of report',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
               ),
-              const SizedBox(height: 20),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: reportTypes.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
-                },
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      // Close modal bottom sheet
-                      Get.back();
-                      reportTypes[index].onTap();
-                    },
-                    leading: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: reportTypes[index].color,
-                      child: Icon(
-                        reportTypes[index].iconData,
-                        color: Colors.white,
-                      ),
+            ),
+            const SizedBox(height: 20),
+            ListView.separated(
+              shrinkWrap: true,
+              itemCount: reportTypes.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 10);
+              },
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    // Close modal bottom sheet
+                    Get.back();
+                    reportTypes[index].onTap();
+                  },
+                  leading: CircleAvatar(
+                    radius: 22,
+                    backgroundColor: reportTypes[index].color,
+                    child: Icon(
+                      reportTypes[index].iconData,
+                      color: Colors.white,
                     ),
-                    title: Text(reportTypes[index].title),
-                  );
-                },
-              ),
-            ],
-          ),
+                  ),
+                  title: Text(reportTypes[index].title),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -141,6 +139,22 @@ class DashboardScreen extends StatelessWidget {
                       height: 80,
                       color: Colors.white,
                       labelColor: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CardButton(
+                      icon: CommunityMaterialIcons.logout_variant,
+                      onPressed: () {
+                        _controller.logout();
+                        Get.offAllNamed(AppRoutes.login);
+                      },
+                      width: double.infinity,
+                      label: 'Log out',
+                      detail: 'Back to login screen',
+                      height: 80,
+                      color: Colors.white,
+                      labelColor: Colors.red,
                     ),
                     const SizedBox(
                       height: 20,
