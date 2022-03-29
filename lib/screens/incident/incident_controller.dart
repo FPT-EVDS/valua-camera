@@ -49,26 +49,27 @@ class IncidentController extends GetxController {
     if (formKey.currentState!.validate()) {
       String description = descriptionController.text;
       String note = noteController.text;
-      // FIXME: Fix to exam room for the selected exam room
-      final jsonData = jsonEncode({
-        'examRoom': {
-          'examRoomId': examRoom.examRooms[0].examRoomId,
-        },
-        'description': description,
-        'note': note,
-        'reportType': 1,
-      });
-      final FormData _formData = FormData({
-        'report': jsonData,
-        if (image.value != null)
-          'image': MultipartFile(
-            File(image.value!.path),
-            filename: image.value!.name,
-          ),
-      });
+      isLoading.value = true;
       try {
-        isLoading.value = true;
-        await _provider.createReport(_formData);
+        await Future.wait(examRoom.examRooms.map((e) {
+          final jsonData = jsonEncode({
+            'examRoom': {
+              'examRoomId': e.examRoomId,
+            },
+            'description': description,
+            'note': note,
+            'reportType': 1,
+          });
+          final FormData _formData = FormData({
+            'report': jsonData,
+            if (image.value != null)
+              'image': MultipartFile(
+                File(image.value!.path),
+                filename: image.value!.name,
+              ),
+          });
+          return _provider.createReport(_formData);
+        }));
         await Fluttertoast.showToast(
           msg: "Create report success",
           backgroundColor: Colors.grey.shade700,

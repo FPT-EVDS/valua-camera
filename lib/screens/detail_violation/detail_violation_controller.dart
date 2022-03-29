@@ -14,6 +14,7 @@ import 'package:valua_camera/screens/dashboard/dashboard_controller.dart';
 class DetailViolationController extends GetxController {
   final String? reportId = Get.parameters["id"];
   final report = Rx<Report?>(null);
+  final isResolved = false.obs;
   final imageError = ''.obs;
   final selectedAttendance = Rx<Attendance?>(null);
   final image = Rx<XFile?>(null);
@@ -59,7 +60,6 @@ class DetailViolationController extends GetxController {
     if (formKey.currentState!.validate()) {
       String description = descriptionController.text;
       String note = noteController.text;
-      // FIXME: Fix to exam room for the selected exam room
       final jsonData = jsonEncode({
         'examRoom': {
           'examRoomId': report.value?.examRoom.examRoomId,
@@ -103,6 +103,7 @@ class DetailViolationController extends GetxController {
       isLoading.value = true;
       try {
         final report = await _provider.getReport(reportId!);
+        isResolved.value = report.solution != null;
         this.report.value = report;
         // Find attendance
         final attendance = dashboardController

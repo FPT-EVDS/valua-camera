@@ -155,14 +155,17 @@ class DetailViolationScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(
-          () => RoundButton(
-            isLoading: _controller.isLoading.value,
-            onPressed: () {
-              _controller.submitReport();
-            },
-            width: double.infinity,
-            height: 48,
-            label: 'Submit',
+          () => Visibility(
+            visible: !_controller.isResolved.value,
+            child: RoundButton(
+              isLoading: _controller.isLoading.value,
+              onPressed: () {
+                _controller.submitReport();
+              },
+              width: double.infinity,
+              height: 48,
+              label: 'Submit',
+            ),
           ),
         ),
       ),
@@ -183,6 +186,7 @@ class DetailViolationScreen extends StatelessWidget {
                       Obx(
                         () => DropdownSearch<Attendance>(
                           mode: Mode.DIALOG,
+                          enabled: !_controller.isResolved.value,
                           showClearButton: true,
                           items: _controller.dashboardController
                               .assignedExamRoom.value!.examRooms[0].attendances,
@@ -210,6 +214,7 @@ class DetailViolationScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       TextFormField(
                         controller: _controller.descriptionController,
+                        enabled: !_controller.isResolved.value,
                         maxLines: 8,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -225,6 +230,7 @@ class DetailViolationScreen extends StatelessWidget {
                       ),
                       TextFormField(
                         maxLines: 6,
+                        enabled: !_controller.isResolved.value,
                         controller: _controller.noteController,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -269,7 +275,9 @@ class DetailViolationScreen extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          _showImageSelector(context);
+                          if (!_controller.isResolved.value) {
+                            _showImageSelector(context);
+                          }
                         },
                       ),
                       const SizedBox(

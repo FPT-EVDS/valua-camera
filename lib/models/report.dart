@@ -3,7 +3,7 @@ import 'package:valua_camera/enums/report_status.dart';
 import 'package:valua_camera/enums/report_type.dart';
 import 'package:valua_camera/models/account_alternative.dart';
 import 'package:valua_camera/models/room.dart';
-import 'package:valua_camera/models/subject.dart';
+import 'package:valua_camera/models/subject_semester.dart';
 part 'report.g.dart';
 
 @JsonSerializable()
@@ -47,7 +47,7 @@ class ExamRoom {
   String examRoomName;
   AccountAlternative staff;
   Room room;
-  Subject subject;
+  SubjectSemester subjectSemester;
   int status;
 
   ExamRoom({
@@ -55,7 +55,7 @@ class ExamRoom {
     required this.examRoomName,
     required this.staff,
     required this.room,
-    required this.subject,
+    required this.subjectSemester,
     required this.status,
   });
 

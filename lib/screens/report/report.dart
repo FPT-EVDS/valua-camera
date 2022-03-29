@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:valua_camera/enums/report_type.dart';
 import 'package:valua_camera/models/report_overview.dart';
 import 'package:valua_camera/screens/report/report_controller.dart';
+import 'package:valua_camera/utils/collections.dart';
 
 class ReportScreen extends StatelessWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -13,11 +14,16 @@ class ReportScreen extends StatelessWidget {
   Widget _generateListItem(Report report) {
     DateFormat _formatter = DateFormat("dd/MM/yyyy HH:mm");
     bool isIncident = report.reportType == ReportType.incident;
+    bool isResolved = report.solution != null;
     return ListTile(
       title: Text(isIncident ? "Incident report" : "Violation report"),
       leading: CircleAvatar(
         radius: 22,
-        backgroundColor: isIncident ? Colors.blue[900] : Colors.blue,
+        backgroundColor: isResolved
+            ? Colors.green
+            : isIncident
+                ? Colors.blue[900]
+                : Colors.blue,
         child: Icon(
           isIncident
               ? CommunityMaterialIcons.alert
@@ -44,74 +50,104 @@ class ReportScreen extends StatelessWidget {
           'Manage reports',
         ),
       ),
-      body: SafeArea(
-        bottom: true,
-        top: true,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder(
-            future: _controller.getReportOverview(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                final ReportOverview overview = snapshot.data;
-                // FIXME: get reports of all exam rooms
-                if (overview.reportsInExamRooms.isNotEmpty) {
-                  final reportsInExamRoom = overview.reportsInExamRooms[0];
-                  return ListView.separated(
-                    itemBuilder: (context, index) => _generateListItem(
-                      reportsInExamRoom.reports[index],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          bottom: true,
+          top: true,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FutureBuilder(
+              future: _controller.getReportOverview(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  final ReportOverview overview = snapshot.data;
+                  if (overview.reportsInExamRooms.isNotEmpty) {
+                    return Obx(() => ExpansionPanelList(
+                        expandedHeaderPadding:
+                            const EdgeInsets.symmetric(vertical: 8.0),
+                        elevation: 2,
+                        expansionCallback: (int index, bool isExpanded) {
+                          _controller.isExpandedList[index] = !isExpanded;
+                        },
+                        children: overview.reportsInExamRooms.mapIndexed(
+                          (index, value) {
+                            final reportsInExamRoom =
+                                overview.reportsInExamRooms[index];
+                            return ExpansionPanel(
+                              isExpanded: _controller.isExpandedList[index],
+                              headerBuilder:
+                                  (BuildContext context, bool isExpanded) {
+                                return ListTile(
+                                  title: Text(
+                                    reportsInExamRoom.examRoom.examRoomName,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              },
+                              body: ListView.separated(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) =>
+                                    _generateListItem(
+                                  reportsInExamRoom.reports[index],
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 10),
+                                itemCount: reportsInExamRoom.reports.length,
+                              ),
+                            );
+                          },
+                        ).toList()));
+                  }
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/images/report.svg",
+                          height: 200,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          "No reports available",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ],
                     ),
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
-                    itemCount: reportsInExamRoom.reports.length,
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/images/not_found.svg",
+                          height: 200,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          snapshot.error.toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      ],
+                    ),
                   );
                 }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/images/report.svg",
-                        height: 200,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "No reports available",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/images/not_found.svg",
-                        height: 200,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        snapshot.error.toString(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

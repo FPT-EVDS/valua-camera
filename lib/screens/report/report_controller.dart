@@ -6,10 +6,13 @@ import 'package:valua_camera/repository/report_repository.dart';
 class ReportController extends GetxController {
   final reportOverview = Rx<ReportOverview?>(null);
   final ReportRepository _provider = Get.find<ReportProvider>();
+  RxList<bool> isExpandedList = RxList<bool>();
 
   Future<ReportOverview> getReportOverview({DateTime? date}) async {
     try {
       final data = _provider.getReportOverview().then((value) {
+        isExpandedList.value =
+            List.generate(value.reportsInExamRooms.length, (index) => true);
         reportOverview.value = value;
         return value;
       });

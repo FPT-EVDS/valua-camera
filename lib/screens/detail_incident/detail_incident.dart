@@ -112,14 +112,17 @@ class DetailIncidentScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(
-          () => RoundButton(
-            isLoading: _controller.isLoading.value,
-            onPressed: () {
-              _controller.submitReport();
-            },
-            width: double.infinity,
-            height: 48,
-            label: 'Submit',
+          () => Visibility(
+            visible: !_controller.isResolved.value,
+            child: RoundButton(
+              isLoading: _controller.isLoading.value,
+              onPressed: () {
+                _controller.submitReport();
+              },
+              width: double.infinity,
+              height: 48,
+              label: 'Submit',
+            ),
           ),
         ),
       ),
@@ -138,6 +141,7 @@ class DetailIncidentScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TextFormField(
+                        enabled: !_controller.isResolved.value,
                         controller: _controller.descriptionController,
                         maxLines: 8,
                         keyboardType: TextInputType.text,
@@ -155,6 +159,7 @@ class DetailIncidentScreen extends StatelessWidget {
                       ),
                       TextFormField(
                         maxLines: 6,
+                        enabled: !_controller.isResolved.value,
                         controller: _controller.noteController,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -192,7 +197,9 @@ class DetailIncidentScreen extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          _showImageSelector(context);
+                          if (!_controller.isResolved.value) {
+                            _showImageSelector(context);
+                          }
                         },
                       ),
                       const SizedBox(

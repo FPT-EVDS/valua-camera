@@ -11,6 +11,7 @@ import 'package:valua_camera/repository/report_repository.dart';
 
 class DetailIncidentController extends GetxController {
   final String? reportId = Get.parameters["id"];
+  final isResolved = false.obs;
   final report = Rx<Report?>(null);
   final image = Rx<XFile?>(null);
   final ImagePicker _picker = ImagePicker();
@@ -50,7 +51,7 @@ class DetailIncidentController extends GetxController {
     if (formKey.currentState!.validate()) {
       String description = descriptionController.text;
       String note = noteController.text;
-      // FIXME: Fix to exam room for the selected exam room
+      isLoading.value = true;
       final jsonData = jsonEncode({
         'examRoom': {
           'examRoomId': report.value?.examRoom.examRoomId,
@@ -68,7 +69,6 @@ class DetailIncidentController extends GetxController {
           ),
       });
       try {
-        isLoading.value = true;
         await _provider.updateReport(reportId!, _formData);
         await Fluttertoast.showToast(
           msg: "Update report success",
@@ -91,6 +91,7 @@ class DetailIncidentController extends GetxController {
       try {
         final report = await _provider.getReport(reportId!);
         this.report.value = report;
+        isResolved.value = report.solution != null;
         descriptionController.text = report.description;
         noteController.text = report.note ?? '';
         return report;
