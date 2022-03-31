@@ -21,8 +21,8 @@ CurrentAttendanceClass _$CurrentAttendanceClassFromJson(
         Map<String, dynamic> json) =>
     CurrentAttendanceClass(
       attendanceId: json['attendanceId'] as String,
-      examinee:
-          AccountAlternative.fromJson(json['examinee'] as Map<String, dynamic>),
+      subjectExaminee: SubjectExaminee.fromJson(
+          json['subjectExaminee'] as Map<String, dynamic>),
       position: json['position'] as int,
       examRoom: ExamRoom.fromJson(json['examRoom'] as Map<String, dynamic>),
       attempts: (json['attempts'] as List<dynamic>)
@@ -42,7 +42,7 @@ Map<String, dynamic> _$CurrentAttendanceClassToJson(
         CurrentAttendanceClass instance) =>
     <String, dynamic>{
       'attendanceId': instance.attendanceId,
-      'examinee': instance.examinee,
+      'subjectExaminee': instance.subjectExaminee,
       'position': instance.position,
       'examRoom': instance.examRoom,
       'attempts': instance.attempts,
@@ -60,4 +60,21 @@ ExamRoom _$ExamRoomFromJson(Map<String, dynamic> json) => ExamRoom(
 Map<String, dynamic> _$ExamRoomToJson(ExamRoom instance) => <String, dynamic>{
       'examRoomId': instance.examRoomId,
       'examRoomName': instance.examRoomName,
+    };
+
+SubjectExaminee _$SubjectExamineeFromJson(Map<String, dynamic> json) =>
+    SubjectExaminee(
+      subjectExamineeId: json['subjectExamineeId'] as String,
+      examinee:
+          AccountAlternative.fromJson(json['examinee'] as Map<String, dynamic>),
+      status: json['status'] as int,
+      removedReason: json['removedReason'] as String?,
+    );
+
+Map<String, dynamic> _$SubjectExamineeToJson(SubjectExaminee instance) =>
+    <String, dynamic>{
+      'subjectExamineeId': instance.subjectExamineeId,
+      'examinee': instance.examinee,
+      'status': instance.status,
+      'removedReason': instance.removedReason,
     };

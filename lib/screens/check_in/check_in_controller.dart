@@ -200,7 +200,7 @@ class CheckInController extends GetxController
   }
 
   showAttendanceDialog(CurrentAttendance attendance) {
-    final examinee = attendance.currentAttendance.examinee;
+    final examinee = attendance.currentAttendance.subjectExaminee.examinee;
     // auto close duration
     final Timer _timer = Timer(const Duration(seconds: 8), () {
       Get.back();
