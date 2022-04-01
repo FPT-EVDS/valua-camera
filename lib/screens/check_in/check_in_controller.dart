@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +34,6 @@ class CheckInController extends GetxController
   final currentAttendance = Rx<CurrentAttendance?>(null);
   final tabControllerIndex = 1.obs;
   late CameraController cameraController;
-  late Future<void> initializeControllerFuture;
   final AttendanceRepository _attendanceProvider =
       Get.find<AttendanceProvider>();
   final AuthProvider _authProvider = Get.find<AuthProvider>();
@@ -74,7 +74,11 @@ class CheckInController extends GetxController
           await getCamera(CameraLensDirection.front);
       cameraController =
           CameraController(cameraDescription, ResolutionPreset.veryHigh);
-      initializeControllerFuture = cameraController.initialize();
+      await cameraController.initialize();
+      if (Platform.isAndroid) {
+        await cameraController
+            .lockCaptureOrientation(DeviceOrientation.portraitUp);
+      }
     }
     stompClient = StompClient(
         config: StompConfig.SockJS(
