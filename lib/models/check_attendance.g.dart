@@ -19,11 +19,13 @@ Map<String, dynamic> _$CheckAttendanceToJson(CheckAttendance instance) =>
 
 Attendance _$AttendanceFromJson(Map<String, dynamic> json) => Attendance(
       attendanceId: json['attendanceId'] as String,
-      examinee:
-          AccountAlternative.fromJson(json['examinee'] as Map<String, dynamic>),
+      subjectExaminee: SubjectExaminee.fromJson(
+          json['subjectExaminee'] as Map<String, dynamic>),
       position: json['position'] as int,
       examRoom: ExamRoom.fromJson(json['examRoom'] as Map<String, dynamic>),
-      attempts: json['attempts'] as List<dynamic>,
+      attempts: (json['attempts'] as List<dynamic>)
+          .map((e) => Attempt.fromJson(e as Map<String, dynamic>))
+          .toList(),
       startTime: json['startTime'] == null
           ? null
           : DateTime.parse(json['startTime'] as String),
@@ -37,7 +39,7 @@ Attendance _$AttendanceFromJson(Map<String, dynamic> json) => Attendance(
 Map<String, dynamic> _$AttendanceToJson(Attendance instance) =>
     <String, dynamic>{
       'attendanceId': instance.attendanceId,
-      'examinee': instance.examinee,
+      'subjectExaminee': instance.subjectExaminee,
       'position': instance.position,
       'examRoom': instance.examRoom,
       'attempts': instance.attempts,
@@ -46,6 +48,29 @@ Map<String, dynamic> _$AttendanceToJson(Attendance instance) =>
       'createdDate': instance.createdDate.toIso8601String(),
       'lastModified': instance.lastModified.toIso8601String(),
     };
+
+SubjectExaminee _$SubjectExamineeFromJson(Map<String, dynamic> json) =>
+    SubjectExaminee(
+      subjectExamineeId: json['subjectExamineeId'] as String,
+      examinee:
+          AccountAlternative.fromJson(json['examinee'] as Map<String, dynamic>),
+      status: $enumDecode(_$SubjectExamineeStatusEnumMap, json['status']),
+      removedReason: json['removedReason'] as String?,
+    );
+
+Map<String, dynamic> _$SubjectExamineeToJson(SubjectExaminee instance) =>
+    <String, dynamic>{
+      'subjectExamineeId': instance.subjectExamineeId,
+      'examinee': instance.examinee,
+      'status': _$SubjectExamineeStatusEnumMap[instance.status],
+      'removedReason': instance.removedReason,
+    };
+
+const _$SubjectExamineeStatusEnumMap = {
+  SubjectExamineeStatus.assigned: 1,
+  SubjectExamineeStatus.unassigned: 2,
+  SubjectExamineeStatus.exempted: 3,
+};
 
 ExamRoom _$ExamRoomFromJson(Map<String, dynamic> json) => ExamRoom(
       examRoomId: json['examRoomId'] as String,
