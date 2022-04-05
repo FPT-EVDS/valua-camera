@@ -44,7 +44,7 @@ class CheckInController extends GetxController
   late dynamic unsubscribeFn;
   final List<Tab> tabs = [
     const Tab(text: ("Attendance")),
-    const Tab(text: ("QR Checking"))
+    const Tab(text: ("QR Checkin"))
   ];
   late TabController tabController;
 
