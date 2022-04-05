@@ -58,7 +58,9 @@ class LoginController extends GetxController {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    unsubscribeFn();
+    if (unsubscribeFn != null) {
+      unsubscribeFn();
+    }
     stompClient.deactivate();
     super.dispose();
   }

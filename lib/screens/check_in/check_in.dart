@@ -74,6 +74,7 @@ class CheckInScreen extends StatelessWidget {
                     data: _controller.examRoom.currentRoom.roomId,
                     version: QrVersions.auto,
                     padding: const EdgeInsets.all(32.0),
+                    size: MediaQuery.of(context).size.height / 2,
                   ),
                   const Text(
                     "Scan QR with Examinee app to check in",

@@ -14,39 +14,36 @@ class AttendancePieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.3,
+    return SizedBox(
+      height: 300,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Stack(
-                children: [
-                  PieChart(
-                    PieChartData(
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 60,
-                      sections: showingSections([attended, unattended]),
+            child: Stack(
+              children: [
+                PieChart(
+                  PieChartData(
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 60,
+                    sections: showingSections([attended, unattended]),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    (attended + unattended).toStringAsFixed(0),
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black.withOpacity(0.5),
                     ),
                   ),
-                  Center(
-                    child: Text(
-                      (attended + unattended).toStringAsFixed(0),
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
           Row(

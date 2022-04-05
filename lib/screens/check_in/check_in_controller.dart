@@ -44,7 +44,7 @@ class CheckInController extends GetxController
   late dynamic unsubscribeFn;
   final List<Tab> tabs = [
     const Tab(text: ("Attendance")),
-    const Tab(text: ("QR Checkin"))
+    const Tab(text: ("QR check-in"))
   ];
   late TabController tabController;
 
@@ -72,12 +72,18 @@ class CheckInController extends GetxController
       // Get front camera
       CameraDescription cameraDescription =
           await getCamera(CameraLensDirection.front);
-      cameraController =
-          CameraController(cameraDescription, ResolutionPreset.veryHigh);
-      await cameraController.initialize();
-      if (Platform.isAndroid) {
-        await cameraController
-            .lockCaptureOrientation(DeviceOrientation.portraitUp);
+      cameraController = CameraController(
+        cameraDescription,
+        ResolutionPreset.veryHigh,
+        enableAudio: false,
+      );
+      try {
+        await cameraController.initialize();
+      } catch (error) {
+        Fluttertoast.showToast(
+          msg: error.toString(),
+          backgroundColor: Colors.grey.shade700,
+        );
       }
     }
     stompClient = StompClient(
@@ -310,6 +316,9 @@ class CheckInController extends GetxController
     passwordController.dispose();
     tabController.dispose();
     cameraController.dispose();
+    if (unsubscribeFn != null) {
+      unsubscribeFn();
+    }
     super.dispose();
   }
 

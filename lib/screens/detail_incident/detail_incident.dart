@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/screens/detail_incident/detail_incident_controller.dart';
-import 'package:valua_camera/screens/incident/incident_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 final pickImageTypes = [
@@ -29,7 +28,7 @@ class DetailIncidentScreen extends StatelessWidget {
   const DetailIncidentScreen({Key? key}) : super(key: key);
 
   Future _showImageSelector(BuildContext context) {
-    final _controller = Get.find<IncidentController>();
+    final _controller = Get.find<DetailIncidentController>();
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -108,7 +107,7 @@ class DetailIncidentScreen extends StatelessWidget {
           'Update incident report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(

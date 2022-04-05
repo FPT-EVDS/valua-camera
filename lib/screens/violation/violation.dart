@@ -149,7 +149,7 @@ class ViolationScreen extends StatelessWidget {
           'Create violation report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(

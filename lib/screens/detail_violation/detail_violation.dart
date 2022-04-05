@@ -9,7 +9,6 @@ import 'package:valua_camera/models/attendance.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/screens/detail_violation/detail_violation_controller.dart';
-import 'package:valua_camera/screens/violation/violation_controller.dart';
 import 'package:valua_camera/widgets/cached_circle_avatar.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
@@ -32,7 +31,7 @@ class DetailViolationScreen extends StatelessWidget {
   const DetailViolationScreen({Key? key}) : super(key: key);
 
   Future _showImageSelector(BuildContext context) {
-    final _controller = Get.find<ViolationController>();
+    final _controller = Get.find<DetailViolationController>();
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -151,7 +150,7 @@ class DetailViolationScreen extends StatelessWidget {
           'Update violation report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(

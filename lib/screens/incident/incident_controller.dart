@@ -51,7 +51,7 @@ class IncidentController extends GetxController {
       String note = noteController.text;
       isLoading.value = true;
       try {
-        await Future.wait(examRoom.examRooms.map((e) {
+        for (var e in examRoom.examRooms) {
           final jsonData = jsonEncode({
             'examRoom': {
               'examRoomId': e.examRoomId,
@@ -68,8 +68,8 @@ class IncidentController extends GetxController {
                 filename: image.value!.name,
               ),
           });
-          return _provider.createReport(_formData);
-        }));
+          await _provider.createReport(_formData);
+        }
         await Fluttertoast.showToast(
           msg: "Create report success",
           backgroundColor: Colors.grey.shade700,
