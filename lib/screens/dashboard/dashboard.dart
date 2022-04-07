@@ -6,6 +6,7 @@ import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/dashboard/dashboard_controller.dart';
 import 'package:valua_camera/widgets/card_button.dart';
+import 'package:valua_camera/widgets/round_button.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -114,6 +115,21 @@ class DashboardScreen extends StatelessWidget {
                 return Column(
                   children: <Widget>[
                     CardButton(
+                      icon: CommunityMaterialIcons.information,
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.examRoom);
+                      },
+                      width: double.infinity,
+                      label: 'Info',
+                      detail: 'View exam rooms detail',
+                      height: 80,
+                      color: Colors.white,
+                      labelColor: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CardButton(
                       icon: CommunityMaterialIcons.google_classroom,
                       onPressed: () {
                         Get.toNamed(AppRoutes.attendance);
@@ -178,6 +194,20 @@ class DashboardScreen extends StatelessWidget {
                         snapshot.error.toString(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RoundButton(
+                        height: 45,
+                        width: 300,
+                        color: Colors.blue,
+                        label: "Log out",
+                        icon: const Icon(Icons.logout),
+                        onPressed: () {
+                          _controller.logout();
+                          Get.offAllNamed(AppRoutes.login);
+                        },
                       ),
                     ],
                   ),

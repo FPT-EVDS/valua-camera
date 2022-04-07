@@ -173,11 +173,21 @@ class ViolationScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                TextFormField(
+                  controller: _controller.examRoomNameController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: "Exam room name",
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Obx(
                   () => DropdownSearch<Attendance>(
                     mode: Mode.DIALOG,
                     showClearButton: true,
-                    items: _controller.examRoom.examRooms[0].attendances,
+                    items: _controller.attendances,
                     dropdownBuilder: _buildDropdownItem,
                     popupItemBuilder: _buildPopupItem,
                     compareFn: (item, selectedItem) =>
@@ -191,9 +201,7 @@ class ViolationScreen extends StatelessWidget {
                     ),
                     popupSafeArea:
                         const PopupSafeAreaProps(top: true, bottom: true),
-                    onChanged: (attendance) {
-                      _controller.selectedAttendance.value = attendance;
-                    },
+                    onChanged: _controller.handleChangeAttendance,
                     validator: (v) => v == null ? "Violator is required" : null,
                     selectedItem: _controller.selectedAttendance.value,
                   ),

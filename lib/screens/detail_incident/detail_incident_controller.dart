@@ -16,7 +16,10 @@ class DetailIncidentController extends GetxController {
   final image = Rx<XFile?>(null);
   final ImagePicker _picker = ImagePicker();
   final formKey = GlobalKey<FormState>();
-  late TextEditingController descriptionController, noteController;
+  late TextEditingController examRoomIdController,
+      examRoomNameController,
+      descriptionController,
+      noteController;
   final isLoading = false.obs;
   final ReportRepository _provider = Get.find<ReportProvider>();
 
@@ -30,6 +33,8 @@ class DetailIncidentController extends GetxController {
 
   @override
   void onInit() {
+    examRoomIdController = TextEditingController();
+    examRoomNameController = TextEditingController();
     descriptionController = TextEditingController();
     noteController = TextEditingController();
     super.onInit();
@@ -37,6 +42,8 @@ class DetailIncidentController extends GetxController {
 
   @override
   void dispose() {
+    examRoomIdController.dispose();
+    examRoomNameController.dispose();
     descriptionController.dispose();
     noteController.dispose();
     super.dispose();
@@ -92,6 +99,8 @@ class DetailIncidentController extends GetxController {
         final report = await _provider.getReport(reportId!);
         this.report.value = report;
         isResolved.value = report.solution != null;
+        examRoomIdController.text = report.examRoom.examRoomId;
+        examRoomNameController.text = report.examRoom.examRoomName;
         descriptionController.text = report.description;
         noteController.text = report.note ?? '';
         return report;

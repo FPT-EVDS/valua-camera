@@ -140,6 +140,16 @@ class DetailIncidentScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TextFormField(
+                        controller: _controller.examRoomNameController,
+                        enabled: false,
+                        decoration: const InputDecoration(
+                          labelText: "Exam room name",
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
                         enabled: !_controller.isResolved.value,
                         controller: _controller.descriptionController,
                         maxLines: 8,
@@ -168,7 +178,7 @@ class DetailIncidentScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Text('Images', textAlign: TextAlign.start),
+                      const Text('Image', textAlign: TextAlign.start),
                       const SizedBox(
                         height: 5,
                       ),

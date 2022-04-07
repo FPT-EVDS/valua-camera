@@ -4,17 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:valua_camera/models/assigned_exam_room.dart';
-import 'package:valua_camera/routes/routes.dart';
-import 'package:valua_camera/screens/main/main_controller.dart';
+import 'package:valua_camera/screens/exam_room/exam_room_controller.dart';
 import 'package:valua_camera/widgets/rich_text_item.dart';
-import 'package:valua_camera/widgets/round_button.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class ExamRoomScreen extends StatelessWidget {
+  const ExamRoomScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.find<MainController>();
+    final _controller = Get.find<ExamRoomController>();
     return Scaffold(
       appBar: AppBar(
         title: Obx(
@@ -24,14 +22,6 @@ class MainScreen extends StatelessWidget {
                 : "Exam room name",
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(CommunityMaterialIcons.refresh),
-            onPressed: () {
-              _controller.getAssignedExamRoom();
-            },
-          ),
-        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -135,54 +125,6 @@ class MainScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 16,
-                            ),
-                            child: Obx(
-                              () => Column(
-                                children: [
-                                  _controller.shouldShowCheckin.value
-                                      ? RoundButton(
-                                          height: 45,
-                                          width: double.infinity,
-                                          color: Colors.blue,
-                                          label: "Start attendance checking",
-                                          onPressed: () {
-                                            Get.toNamed(
-                                              AppRoutes.checkIn,
-                                              arguments: data,
-                                            );
-                                          },
-                                        )
-                                      : const SizedBox(
-                                          width: 220,
-                                          child: Text(
-                                            "Current shift status is not ongoing",
-                                            softWrap: true,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                  const SizedBox(height: 10),
-                                  TextButton(
-                                    onPressed: () {
-                                      _controller.logout();
-                                      Get.offAndToNamed(AppRoutes.login);
-                                    },
-                                    style: TextButton.styleFrom(
-                                      primary: Colors.red,
-                                    ),
-                                    child: const Text(
-                                      "Return to login screen",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     );
@@ -201,20 +143,6 @@ class MainScreen extends StatelessWidget {
                           snapshot.error.toString(),
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 13),
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        RoundButton(
-                          height: 45,
-                          width: 300,
-                          color: Colors.blue,
-                          label: "Log out",
-                          icon: const Icon(Icons.logout),
-                          onPressed: () {
-                            _controller.logout();
-                            Get.offAllNamed(AppRoutes.login);
-                          },
                         ),
                       ],
                     );

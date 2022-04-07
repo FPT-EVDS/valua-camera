@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:valua_camera/enums/report_type.dart';
 import 'package:valua_camera/models/report_overview.dart';
 import 'package:valua_camera/screens/report/report_controller.dart';
-import 'package:valua_camera/utils/collections.dart';
 
 class ReportScreen extends StatelessWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -36,7 +35,8 @@ class ReportScreen extends StatelessWidget {
             ? Get.toNamed("/incident/${report.reportId}")
             : Get.toNamed("/violation/${report.reportId}");
       },
-      subtitle: Text("Created at: ${_formatter.format(report.createdDate)}"),
+      subtitle: Text(
+          "Created at: ${_formatter.format(report.createdDate.toLocal())}"),
     );
   }
 
@@ -61,45 +61,20 @@ class ReportScreen extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   final ReportOverview overview = snapshot.data;
+                  final reportsInExamRoom = overview.reportsInExamRooms
+                      .map((e) => e.reports)
+                      .expand((element) => element)
+                      .toList();
                   if (overview.reportsInExamRooms.isNotEmpty) {
-                    return Obx(() => ExpansionPanelList(
-                        expandedHeaderPadding:
-                            const EdgeInsets.symmetric(vertical: 8.0),
-                        elevation: 2,
-                        expansionCallback: (int index, bool isExpanded) {
-                          _controller.isExpandedList[index] = !isExpanded;
-                        },
-                        children: overview.reportsInExamRooms.mapIndexed(
-                          (index, value) {
-                            final reportsInExamRoom =
-                                overview.reportsInExamRooms[index];
-                            return ExpansionPanel(
-                              isExpanded: _controller.isExpandedList[index],
-                              headerBuilder:
-                                  (BuildContext context, bool isExpanded) {
-                                return ListTile(
-                                  title: Text(
-                                    reportsInExamRoom.examRoom.examRoomName,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                );
-                              },
-                              body: ListView.separated(
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) =>
-                                    _generateListItem(
-                                  reportsInExamRoom.reports[index],
-                                ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 10),
-                                itemCount: reportsInExamRoom.reports.length,
-                              ),
-                            );
-                          },
-                        ).toList()));
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => _generateListItem(
+                        reportsInExamRoom[index],
+                      ),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
+                      itemCount: reportsInExamRoom.length,
+                    );
                   }
                   return Center(
                     child: Column(

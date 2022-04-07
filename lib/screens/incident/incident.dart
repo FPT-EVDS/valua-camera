@@ -155,7 +155,7 @@ class IncidentScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text('Images', textAlign: TextAlign.start),
+                const Text('Image', textAlign: TextAlign.start),
                 const SizedBox(
                   height: 5,
                 ),
