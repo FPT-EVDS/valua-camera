@@ -21,7 +21,6 @@ import 'package:valua_camera/routes/app_pages.dart';
 const socketUrl = AppConstant.apiUrl + "/websocket";
 
 class LoginController extends GetxController {
-  final formKey = GlobalKey<FormState>();
   late StompClient stompClient;
   late TextEditingController emailController, passwordController;
   final qrData = Future<GeneratedQR?>.value().obs;
@@ -59,7 +58,9 @@ class LoginController extends GetxController {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    unsubscribeFn();
+    if (unsubscribeFn != null) {
+      unsubscribeFn();
+    }
     stompClient.deactivate();
     super.dispose();
   }
@@ -75,7 +76,7 @@ class LoginController extends GetxController {
         backgroundColor: Colors.grey.shade700,
       );
     }
-    return Future(() => null);
+    throw Exception("Can't generate QR");
   }
 
   void checkAuthAppUser(AppUser data) {
@@ -90,21 +91,19 @@ class LoginController extends GetxController {
   }
 
   void login() async {
-    if (formKey.currentState!.validate()) {
-      String email = emailController.text;
-      String password = passwordController.text;
-      try {
-        isLoading.value = true;
-        final data = await _authProvider.login(email, password);
-        checkAuthAppUser(data);
-      } catch (e) {
-        Fluttertoast.showToast(
-          msg: e.toString(),
-          backgroundColor: Colors.grey.shade700,
-        );
-      } finally {
-        isLoading.value = false;
-      }
+    String email = emailController.text;
+    String password = passwordController.text;
+    try {
+      isLoading.value = true;
+      final data = await _authProvider.login(email, password);
+      checkAuthAppUser(data);
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        backgroundColor: Colors.grey.shade700,
+      );
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -158,7 +157,9 @@ class LoginController extends GetxController {
   }
 
   void refreshQR() {
-    unsubscribeFn();
+    if (unsubscribeFn != null) {
+      unsubscribeFn();
+    }
     generateQRCode().then((value) {
       final data = value?.data;
       if (data != null) {

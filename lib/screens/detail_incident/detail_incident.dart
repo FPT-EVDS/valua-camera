@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/screens/detail_incident/detail_incident_controller.dart';
-import 'package:valua_camera/screens/incident/incident_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 final pickImageTypes = [
@@ -29,7 +28,7 @@ class DetailIncidentScreen extends StatelessWidget {
   const DetailIncidentScreen({Key? key}) : super(key: key);
 
   Future _showImageSelector(BuildContext context) {
-    final _controller = Get.find<IncidentController>();
+    final _controller = Get.find<DetailIncidentController>();
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -108,18 +107,21 @@ class DetailIncidentScreen extends StatelessWidget {
           'Update incident report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(
-          () => RoundButton(
-            isLoading: _controller.isLoading.value,
-            onPressed: () {
-              _controller.submitReport();
-            },
-            width: double.infinity,
-            height: 48,
-            label: 'Submit',
+          () => Visibility(
+            visible: !_controller.isResolved.value,
+            child: RoundButton(
+              isLoading: _controller.isLoading.value,
+              onPressed: () {
+                _controller.submitReport();
+              },
+              width: double.infinity,
+              height: 48,
+              label: 'Submit',
+            ),
           ),
         ),
       ),
@@ -138,6 +140,17 @@ class DetailIncidentScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TextFormField(
+                        controller: _controller.examRoomNameController,
+                        enabled: false,
+                        decoration: const InputDecoration(
+                          labelText: "Exam room name",
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        enabled: !_controller.isResolved.value,
                         controller: _controller.descriptionController,
                         maxLines: 8,
                         keyboardType: TextInputType.text,
@@ -155,6 +168,7 @@ class DetailIncidentScreen extends StatelessWidget {
                       ),
                       TextFormField(
                         maxLines: 6,
+                        enabled: !_controller.isResolved.value,
                         controller: _controller.noteController,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -164,7 +178,7 @@ class DetailIncidentScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Text('Images', textAlign: TextAlign.start),
+                      const Text('Image', textAlign: TextAlign.start),
                       const SizedBox(
                         height: 5,
                       ),
@@ -192,7 +206,9 @@ class DetailIncidentScreen extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          _showImageSelector(context);
+                          if (!_controller.isResolved.value) {
+                            _showImageSelector(context);
+                          }
                         },
                       ),
                       const SizedBox(

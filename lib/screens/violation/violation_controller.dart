@@ -17,9 +17,13 @@ class ViolationController extends GetxController {
   final image = Rx<XFile?>(null);
   final ImagePicker _picker = ImagePicker();
   final formKey = GlobalKey<FormState>();
-  late TextEditingController descriptionController, noteController;
+  late TextEditingController examRoomIdController,
+      examRoomNameController,
+      descriptionController,
+      noteController;
   final isLoading = false.obs;
   final ReportRepository _provider = Get.find<ReportProvider>();
+  late final List<Attendance> attendances;
 
   void pickImage(int index) async {
     ImageSource source = index == 0 ? ImageSource.gallery : ImageSource.camera;
@@ -32,13 +36,21 @@ class ViolationController extends GetxController {
 
   @override
   void onInit() {
+    examRoomIdController = TextEditingController();
+    examRoomNameController = TextEditingController();
     descriptionController = TextEditingController();
     noteController = TextEditingController();
+    attendances = examRoom.examRooms
+        .map((e) => e.attendances)
+        .expand((element) => element)
+        .toList();
     super.onInit();
   }
 
   @override
   void dispose() {
+    examRoomIdController.dispose();
+    examRoomNameController.dispose();
     descriptionController.dispose();
     noteController.dispose();
     super.dispose();
@@ -51,32 +63,44 @@ class ViolationController extends GetxController {
     selectedAttendance.value = null;
   }
 
+  void handleChangeAttendance(Attendance? attendance) {
+    selectedAttendance.value = attendance;
+    if (attendance != null) {
+      final violatorExamRoom = examRoom.examRooms.firstWhere((element) =>
+          element.attendances.any(
+              ((element) => element.attendanceId == attendance.attendanceId)));
+      examRoomIdController.text = violatorExamRoom.examRoomId;
+      examRoomNameController.text = violatorExamRoom.examRoomName;
+    }
+  }
+
   Future<void> submitReport() async {
     if (formKey.currentState!.validate() && image.value != null) {
+      String examRoomId = examRoomIdController.text;
       String description = descriptionController.text;
       String note = noteController.text;
-      // FIXME: Fix to exam room for the selected exam room
-      final jsonData = jsonEncode({
-        'examRoom': {
-          'examRoomId': examRoom.examRooms[0].examRoomId,
-        },
-        "reportedUser": {
-          "appUserId": selectedAttendance.value?.examinee.appUserId,
-        },
-        'description': description,
-        'note': note,
-        'reportType': 2,
-      });
-      final FormData _formData = FormData({
-        'report': jsonData,
-        if (image.value != null)
-          'image': MultipartFile(
-            File(image.value!.path),
-            filename: image.value!.name,
-          ),
-      });
+      isLoading.value = true;
       try {
-        isLoading.value = true;
+        final jsonData = jsonEncode({
+          'examRoom': {
+            'examRoomId': examRoomId,
+          },
+          "reportedUser": {
+            "appUserId":
+                selectedAttendance.value?.subjectExaminee.examinee.appUserId,
+          },
+          'description': description,
+          'note': note,
+          'reportType': 2,
+        });
+        final FormData _formData = FormData({
+          'report': jsonData,
+          if (image.value != null)
+            'image': MultipartFile(
+              File(image.value!.path),
+              filename: image.value!.name,
+            ),
+        });
         await _provider.createReport(_formData);
         await Fluttertoast.showToast(
           msg: "Create report success",

@@ -106,7 +106,7 @@ class IncidentScreen extends StatelessWidget {
           'Create incident report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(
@@ -155,7 +155,7 @@ class IncidentScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text('Images', textAlign: TextAlign.start),
+                const Text('Image', textAlign: TextAlign.start),
                 const SizedBox(
                   height: 5,
                 ),

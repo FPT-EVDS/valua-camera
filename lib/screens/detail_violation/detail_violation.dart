@@ -9,7 +9,6 @@ import 'package:valua_camera/models/attendance.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/screens/detail_violation/detail_violation_controller.dart';
-import 'package:valua_camera/screens/violation/violation_controller.dart';
 import 'package:valua_camera/widgets/cached_circle_avatar.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
@@ -32,7 +31,7 @@ class DetailViolationScreen extends StatelessWidget {
   const DetailViolationScreen({Key? key}) : super(key: key);
 
   Future _showImageSelector(BuildContext context) {
-    final _controller = Get.find<ViolationController>();
+    final _controller = Get.find<DetailViolationController>();
     return showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -108,12 +107,12 @@ class DetailViolationScreen extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: CachedCircleAvatar(
-        imageUrl: attendance.examinee.imageUrl ??
+        imageUrl: attendance.subjectExaminee.examinee.imageUrl ??
             'https://i.stack.imgur.com/34AD2.jpg',
         radius: 22,
       ),
-      title: Text(attendance.examinee.fullName),
-      subtitle: Text(attendance.examinee.companyId),
+      title: Text(attendance.subjectExaminee.examinee.fullName),
+      subtitle: Text(attendance.subjectExaminee.examinee.companyId),
     );
   }
 
@@ -130,10 +129,10 @@ class DetailViolationScreen extends StatelessWidget {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(attendance?.examinee.fullName ?? ''),
-        subtitle: Text(attendance?.examinee.companyId ?? ''),
+        title: Text(attendance?.subjectExaminee.examinee.fullName ?? ''),
+        subtitle: Text(attendance?.subjectExaminee.examinee.companyId ?? ''),
         leading: CachedCircleAvatar(
-          imageUrl: attendance?.examinee.imageUrl ??
+          imageUrl: attendance?.subjectExaminee.examinee.imageUrl ??
               'https://i.stack.imgur.com/34AD2.jpg',
           radius: 22,
         ),
@@ -151,18 +150,21 @@ class DetailViolationScreen extends StatelessWidget {
           'Update violation report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(
-          () => RoundButton(
-            isLoading: _controller.isLoading.value,
-            onPressed: () {
-              _controller.submitReport();
-            },
-            width: double.infinity,
-            height: 48,
-            label: 'Submit',
+          () => Visibility(
+            visible: !_controller.isResolved.value,
+            child: RoundButton(
+              isLoading: _controller.isLoading.value,
+              onPressed: () {
+                _controller.submitReport();
+              },
+              width: double.infinity,
+              height: 48,
+              label: 'Submit',
+            ),
           ),
         ),
       ),
@@ -180,12 +182,22 @@ class DetailViolationScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      TextFormField(
+                        controller: _controller.examRoomNameController,
+                        enabled: false,
+                        decoration: const InputDecoration(
+                          labelText: "Exam room name",
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Obx(
                         () => DropdownSearch<Attendance>(
                           mode: Mode.DIALOG,
+                          enabled: !_controller.isResolved.value,
                           showClearButton: true,
-                          items: _controller.dashboardController
-                              .assignedExamRoom.value!.examRooms[0].attendances,
+                          items: _controller.attendances,
                           dropdownBuilder: _buildDropdownItem,
                           popupItemBuilder: _buildPopupItem,
                           compareFn: (item, selectedItem) =>
@@ -199,9 +211,7 @@ class DetailViolationScreen extends StatelessWidget {
                           ),
                           popupSafeArea:
                               const PopupSafeAreaProps(top: true, bottom: true),
-                          onChanged: (attendance) {
-                            _controller.selectedAttendance.value = attendance;
-                          },
+                          onChanged: _controller.handleChangeAttendance,
                           validator: (v) =>
                               v == null ? "Violator is required" : null,
                           selectedItem: _controller.selectedAttendance.value,
@@ -210,6 +220,7 @@ class DetailViolationScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       TextFormField(
                         controller: _controller.descriptionController,
+                        enabled: !_controller.isResolved.value,
                         maxLines: 8,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -225,6 +236,7 @@ class DetailViolationScreen extends StatelessWidget {
                       ),
                       TextFormField(
                         maxLines: 6,
+                        enabled: !_controller.isResolved.value,
                         controller: _controller.noteController,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -269,7 +281,9 @@ class DetailViolationScreen extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          _showImageSelector(context);
+                          if (!_controller.isResolved.value) {
+                            _showImageSelector(context);
+                          }
                         },
                       ),
                       const SizedBox(

@@ -6,6 +6,7 @@ import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/dashboard/dashboard_controller.dart';
 import 'package:valua_camera/widgets/card_button.dart';
+import 'package:valua_camera/widgets/round_button.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -43,52 +44,50 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       context: context,
-      builder: (context) => SizedBox(
+      builder: (context) => Container(
         height: 200,
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                'Choose type of report',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              'Choose type of report',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
               ),
-              const SizedBox(height: 20),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: reportTypes.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
-                },
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      // Close modal bottom sheet
-                      Get.back();
-                      reportTypes[index].onTap();
-                    },
-                    leading: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: reportTypes[index].color,
-                      child: Icon(
-                        reportTypes[index].iconData,
-                        color: Colors.white,
-                      ),
+            ),
+            const SizedBox(height: 20),
+            ListView.separated(
+              shrinkWrap: true,
+              itemCount: reportTypes.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 10);
+              },
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    // Close modal bottom sheet
+                    Get.back();
+                    reportTypes[index].onTap();
+                  },
+                  leading: CircleAvatar(
+                    radius: 22,
+                    backgroundColor: reportTypes[index].color,
+                    child: Icon(
+                      reportTypes[index].iconData,
+                      color: Colors.white,
                     ),
-                    title: Text(reportTypes[index].title),
-                  );
-                },
-              ),
-            ],
-          ),
+                  ),
+                  title: Text(reportTypes[index].title),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -115,6 +114,21 @@ class DashboardScreen extends StatelessWidget {
               if (snapshot.hasData) {
                 return Column(
                   children: <Widget>[
+                    CardButton(
+                      icon: CommunityMaterialIcons.information,
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.examRoom);
+                      },
+                      width: double.infinity,
+                      label: 'Info',
+                      detail: 'View exam rooms detail',
+                      height: 80,
+                      color: Colors.white,
+                      labelColor: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     CardButton(
                       icon: CommunityMaterialIcons.google_classroom,
                       onPressed: () {
@@ -145,6 +159,22 @@ class DashboardScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
+                    CardButton(
+                      icon: CommunityMaterialIcons.logout_variant,
+                      onPressed: () {
+                        _controller.logout();
+                        Get.offAllNamed(AppRoutes.login);
+                      },
+                      width: double.infinity,
+                      label: 'Log out',
+                      detail: 'Back to login screen',
+                      height: 80,
+                      color: Colors.white,
+                      labelColor: Colors.red,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                   ],
                 );
               } else if (snapshot.hasError) {
@@ -164,6 +194,20 @@ class DashboardScreen extends StatelessWidget {
                         snapshot.error.toString(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RoundButton(
+                        height: 45,
+                        width: 300,
+                        color: Colors.blue,
+                        label: "Log out",
+                        icon: const Icon(Icons.logout),
+                        onPressed: () {
+                          _controller.logout();
+                          Get.offAllNamed(AppRoutes.login);
+                        },
                       ),
                     ],
                   ),

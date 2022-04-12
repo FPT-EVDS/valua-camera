@@ -106,12 +106,12 @@ class ViolationScreen extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: CachedCircleAvatar(
-        imageUrl: attendance.examinee.imageUrl ??
+        imageUrl: attendance.subjectExaminee.examinee.imageUrl ??
             'https://i.stack.imgur.com/34AD2.jpg',
         radius: 22,
       ),
-      title: Text(attendance.examinee.fullName),
-      subtitle: Text(attendance.examinee.companyId),
+      title: Text(attendance.subjectExaminee.examinee.fullName),
+      subtitle: Text(attendance.subjectExaminee.examinee.companyId),
     );
   }
 
@@ -128,10 +128,10 @@ class ViolationScreen extends StatelessWidget {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(attendance?.examinee.fullName ?? ''),
-        subtitle: Text(attendance?.examinee.companyId ?? ''),
+        title: Text(attendance?.subjectExaminee.examinee.fullName ?? ''),
+        subtitle: Text(attendance?.subjectExaminee.examinee.companyId ?? ''),
         leading: CachedCircleAvatar(
-          imageUrl: attendance?.examinee.imageUrl ??
+          imageUrl: attendance?.subjectExaminee.examinee.imageUrl ??
               'https://i.stack.imgur.com/34AD2.jpg',
           radius: 22,
         ),
@@ -149,7 +149,7 @@ class ViolationScreen extends StatelessWidget {
           'Create violation report',
         ),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(
@@ -173,11 +173,21 @@ class ViolationScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                TextFormField(
+                  controller: _controller.examRoomNameController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: "Exam room name",
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Obx(
                   () => DropdownSearch<Attendance>(
                     mode: Mode.DIALOG,
                     showClearButton: true,
-                    items: _controller.examRoom.examRooms[0].attendances,
+                    items: _controller.attendances,
                     dropdownBuilder: _buildDropdownItem,
                     popupItemBuilder: _buildPopupItem,
                     compareFn: (item, selectedItem) =>
@@ -191,9 +201,7 @@ class ViolationScreen extends StatelessWidget {
                     ),
                     popupSafeArea:
                         const PopupSafeAreaProps(top: true, bottom: true),
-                    onChanged: (attendance) {
-                      _controller.selectedAttendance.value = attendance;
-                    },
+                    onChanged: _controller.handleChangeAttendance,
                     validator: (v) => v == null ? "Violator is required" : null,
                     selectedItem: _controller.selectedAttendance.value,
                   ),

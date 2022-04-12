@@ -50,10 +50,10 @@ class CardButton extends StatelessWidget {
                   const SizedBox(width: 10),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: labelColor ?? Colors.blue,
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       border: Border.all(
-                        color: Colors.blue,
+                        color: labelColor ?? Colors.blue,
                         width: 10,
                       ),
                     ),

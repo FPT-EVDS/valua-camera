@@ -8,7 +8,8 @@ import 'package:valua_camera/screens/login/login_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +43,14 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         bottomNavigationBar: BottomAppBar(
           elevation: 0,
           color: Colors.transparent,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "\u00a9 Valua Camera 2021, All rights reserved",
+              "\u00a9 Valua Camera 2022, All rights reserved",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade500,
@@ -78,6 +79,7 @@ class LoginScreen extends StatelessWidget {
                                 data: data.data.token,
                                 version: QrVersions.auto,
                                 padding: const EdgeInsets.all(8.0),
+                                size: MediaQuery.of(context).size.height / 2.3,
                               );
                             } else if (snapshot.hasError) {
                               return Center(
@@ -117,69 +119,74 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 // Email Login
-                Column(
-                  children: [
-                    Form(
-                      key: _controller.formKey,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                            controller: _controller.emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              labelText: "Email",
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(
+                              height: 30,
                             ),
-                            validator: MultiValidator([
-                              EmailValidator(errorText: "Invalid email"),
-                              RequiredValidator(errorText: "Email is required")
-                            ]),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                            obscureText: true,
-                            controller: _controller.passwordController,
-                            decoration: const InputDecoration(
-                              labelText: "Password",
+                            TextFormField(
+                              controller: _controller.emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                labelText: "Email",
+                              ),
+                              validator: MultiValidator([
+                                EmailValidator(errorText: "Invalid email"),
+                                RequiredValidator(
+                                    errorText: "Email is required")
+                              ]),
                             ),
-                            validator: RequiredValidator(
-                                errorText: "Password is required"),
-                          ),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          Obx(
-                            () => RoundButton(
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              obscureText: true,
+                              controller: _controller.passwordController,
+                              decoration: const InputDecoration(
+                                labelText: "Password",
+                              ),
+                              validator: RequiredValidator(
+                                  errorText: "Password is required"),
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Obx(
+                              () => RoundButton(
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    _controller.login();
+                                  }
+                                },
+                                height: 45,
+                                width: double.infinity,
+                                label: "Login",
+                                isLoading: _controller.isLoading.value,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            RoundButton(
                               onPressed: () {
-                                _controller.login();
+                                _controller.loginWithGoogle();
                               },
                               height: 45,
+                              icon: const Icon(CommunityMaterialIcons.google),
                               width: double.infinity,
-                              label: "Login",
-                              isLoading: _controller.isLoading.value,
+                              label: "Login with Google",
+                              color: Colors.red,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          RoundButton(
-                            onPressed: () {
-                              _controller.loginWithGoogle();
-                            },
-                            height: 45,
-                            icon: const Icon(CommunityMaterialIcons.google),
-                            width: double.infinity,
-                            label: "Login with Google",
-                            color: Colors.red,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

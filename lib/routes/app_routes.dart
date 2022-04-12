@@ -12,5 +12,6 @@ abstract class AppRoutes {
   static const detailViolation = '/violation/:id';
   static const report = '/report';
   static const camera = '/camera';
+  static const examRoom = '/exam-room';
   static const attendance = '/attendance';
 }

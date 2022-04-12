@@ -78,4 +78,13 @@ class AuthProvider extends BaseProvider implements AuthRepository {
     }
     return AppUser.fromJson(response.body);
   }
+
+  @override
+  Future<String> checkPassword(String password) async {
+    final response = await post("/authentication/checkPassword", password);
+    if (response.status.hasError) {
+      throw (response.body);
+    }
+    return response.body.toString();
+  }
 }

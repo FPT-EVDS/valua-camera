@@ -9,14 +9,11 @@ class CheckInCameraScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _controller = Get.find<CheckInCameraController>();
+
     return Scaffold(
       body: SafeArea(
         child: Stack(children: [
-          Positioned(
-            top: 0,
-            bottom: 0,
-            child: CameraPreview(_controller.cameraController),
-          ),
+          Center(child: CameraPreview(_controller.cameraController)),
           Center(
             child: Obx(
               () => Text(

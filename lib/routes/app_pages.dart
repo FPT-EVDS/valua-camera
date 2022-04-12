@@ -10,6 +10,8 @@ import 'package:valua_camera/screens/detail_incident/detail_incident.dart';
 import 'package:valua_camera/screens/detail_incident/detail_incident_binding.dart';
 import 'package:valua_camera/screens/detail_violation/detail_violation.dart';
 import 'package:valua_camera/screens/detail_violation/detail_violation_binding.dart';
+import 'package:valua_camera/screens/exam_room/exam_room.dart';
+import 'package:valua_camera/screens/exam_room/exam_room_binding.dart';
 import 'package:valua_camera/screens/incident/incident.dart';
 import 'package:valua_camera/screens/incident/incident_binding.dart';
 import 'package:valua_camera/screens/login/login.dart';
@@ -30,7 +32,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: AppRoutes.login,
-      page: () => const LoginScreen(),
+      page: () => LoginScreen(),
       binding: LoginBinding(),
     ),
     GetPage(
@@ -83,6 +85,11 @@ class AppPages {
       name: AppRoutes.main,
       page: () => const MainScreen(),
       binding: MainBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.examRoom,
+      page: () => const ExamRoomScreen(),
+      binding: ExamRoomBinding(),
     ),
   ];
 }
