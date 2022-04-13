@@ -1,7 +1,9 @@
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/dashboard/dashboard_controller.dart';
@@ -112,6 +114,7 @@ class DashboardScreen extends StatelessWidget {
             future: _controller.getAssignedExamRoom(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
+                final data = snapshot.data as AssignedExamRoom;
                 return Column(
                   children: <Widget>[
                     CardButton(
@@ -159,6 +162,34 @@ class DashboardScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
+                    data.examRooms[0].finishTime == null
+                        ? Column(
+                            children: [
+                              CardButton(
+                                icon: CommunityMaterialIcons.check,
+                                onPressed: () {
+                                  CoolAlert.show(
+                                    context: context,
+                                    type: CoolAlertType.confirm,
+                                    title: "Finish this exam ?",
+                                    onConfirmBtnTap: () {
+                                      _controller.finishExam();
+                                    },
+                                  );
+                                },
+                                width: double.infinity,
+                                label: 'Finish exam',
+                                detail: 'Log finish time and logout',
+                                height: 80,
+                                color: Colors.white,
+                                labelColor: Colors.green,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              )
+                            ],
+                          )
+                        : const SizedBox(),
                     CardButton(
                       icon: CommunityMaterialIcons.logout_variant,
                       onPressed: () {
@@ -222,7 +253,9 @@ class DashboardScreen extends StatelessWidget {
       ),
       floatingActionButton: Obx(
         () => Visibility(
-          visible: _controller.assignedExamRoom.value != null,
+          visible: _controller.assignedExamRoom.value != null &&
+              _controller.assignedExamRoom.value?.examRooms[0].finishTime ==
+                  null,
           child: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () async {

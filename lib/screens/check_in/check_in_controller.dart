@@ -16,7 +16,9 @@ import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/models/current_attendance.dart';
 import 'package:valua_camera/providers/attendance_provider.dart';
 import 'package:valua_camera/providers/auth_provider.dart';
+import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/repository/attendance_repository.dart';
+import 'package:valua_camera/repository/exam_room_repository.dart';
 import 'package:valua_camera/routes/app_pages.dart';
 import 'package:valua_camera/screens/main/main_controller.dart';
 import 'package:image/image.dart' as img;
@@ -35,6 +37,7 @@ class CheckInController extends GetxController
   late CameraController cameraController;
   final AttendanceRepository _attendanceProvider =
       Get.find<AttendanceProvider>();
+  final ExamRoomRepository _examRoomProvider = Get.find<ExamRoomProvider>();
   final AuthProvider _authProvider = Get.find<AuthProvider>();
   final MainController _mainController = Get.find<MainController>();
   final attendedAttendances = 0.obs;
@@ -327,6 +330,7 @@ class CheckInController extends GetxController
       String password = passwordController.text;
       String message = await _authProvider.checkPassword(password);
       if (message == "Password is correct") {
+        await _examRoomProvider.finishChecking();
         Get.offAllNamed(AppRoutes.dashboard);
       } else {
         throw Exception(message);

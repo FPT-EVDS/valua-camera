@@ -5,6 +5,7 @@ import 'package:valua_camera/enums/shift_status.dart';
 import 'package:valua_camera/models/assigned_exam_room.dart';
 import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/repository/exam_room_repository.dart';
+import 'package:valua_camera/routes/app_pages.dart';
 
 class MainController extends GetxController {
   final assignedExamRoom = Future<AssignedExamRoom?>.value().obs;
@@ -21,6 +22,9 @@ class MainController extends GetxController {
     String tempSubjectsMessage = '';
     try {
       final data = _examRoomRepository.loadExamRoom().then((value) {
+        if (value.examRooms[0].startTime != null) {
+          Get.offAllNamed(AppRoutes.dashboard);
+        }
         if (value.currentShift.status == ShiftStatus.ongoing) {
           shouldShowCheckin.value = true;
         } else {

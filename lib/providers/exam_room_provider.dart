@@ -11,4 +11,22 @@ class ExamRoomProvider extends BaseProvider implements ExamRoomRepository {
     }
     return AssignedExamRoom.fromJson(response.body);
   }
+
+  @override
+  Future<bool> finishChecking() async {
+    final response = await patch("/examRooms/finishChecking", {});
+    if (response.status.hasError) {
+      throw (response.body);
+    }
+    return true;
+  }
+
+  @override
+  Future<bool> finishExam() async {
+    final response = await patch("/examRooms/finishExam", {});
+    if (response.status.hasError) {
+      throw (response.body);
+    }
+    return true;
+  }
 }
