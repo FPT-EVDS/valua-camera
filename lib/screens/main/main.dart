@@ -125,7 +125,7 @@ class MainScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              // total examinees
+                              // allowed tools
                               Obx(
                                 () => RichTextItem(
                                   textAlign: TextAlign.center,

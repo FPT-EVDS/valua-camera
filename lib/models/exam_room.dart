@@ -11,6 +11,8 @@ class ExamRoom {
   List<Attendance> attendances;
   int status;
   SubjectSemester subjectSemester;
+  DateTime? startTime;
+  DateTime? finishTime;
   DateTime createdDate;
   DateTime lastModifiedDate;
 
@@ -20,6 +22,8 @@ class ExamRoom {
     required this.attendances,
     required this.status,
     required this.subjectSemester,
+    this.startTime,
+    this.finishTime,
     required this.createdDate,
     required this.lastModifiedDate,
   });

@@ -14,6 +14,7 @@ class AttendanceController extends GetxController {
   final AttendanceRepository _attendanceProvider =
       Get.find<AttendanceProvider>();
   final attendedAttendances = 0.obs;
+  final finishedAttendances = 0.obs;
   RxList<bool> isExpandedList = RxList<bool>();
 
   Future<AssignedExamRoom> getAssignedExamRoom({DateTime? date}) async {
@@ -21,6 +22,7 @@ class AttendanceController extends GetxController {
       final data = _examRoomProvider.loadExamRoom().then((value) {
         final tempExamRooms = value.examRooms;
         int attendedAttendances = 0;
+        int finishedAttendances = 0;
         // Sort attendances by position when init
         for (int i = 0; i < tempExamRooms.length; i++) {
           final examRoom = tempExamRooms[i];
@@ -29,9 +31,17 @@ class AttendanceController extends GetxController {
               .where((attendance) => attendance.startTime != null)
               .toList()
               .length;
+          final examRoomFinishedAttendances = examRoom.attendances
+              .where((attendance) =>
+                  attendance.startTime != null && attendance.finishTime != null)
+              .toList()
+              .length;
           attendedAttendances += examRoomAttendedAttendances;
+          finishedAttendances += examRoomFinishedAttendances;
         }
-        this.attendedAttendances.value = attendedAttendances;
+        this.attendedAttendances.value =
+            attendedAttendances - finishedAttendances;
+        this.finishedAttendances.value = finishedAttendances;
         value.examRooms = tempExamRooms;
         return value;
       });
@@ -48,29 +58,41 @@ class AttendanceController extends GetxController {
   ) async {
     try {
       int attendedAttendances = 0;
+      int finishedAttendances = 0;
       final currentAttendance =
           await _attendanceProvider.updateAttendance(attendanceId, action);
       final attendanceExamRoom = currentAttendance.attendance.examRoom;
       final currentExamRoom = await assignedExamRoom.value;
-      // update state of current attendance start time
+      // update state of current attendance start time & finish time
       currentExamRoom!.examRooms
+          // find exam room of examinee
           .firstWhere((examRoom) =>
               examRoom.examRoomId == attendanceExamRoom.examRoomId)
           .attendances
+          // find examinee
           .firstWhere((attendance) =>
               attendance.attendanceId ==
               currentAttendance.attendance.attendanceId)
-          .startTime = currentAttendance.attendance.startTime;
-      //Update attended attendances
+        ..startTime = currentAttendance.attendance.startTime
+        ..finishTime = currentAttendance.attendance.finishTime;
+      //Update attended attendances and finished attendances
       for (int i = 0; i < currentExamRoom.examRooms.length; i++) {
         final examRoom = currentExamRoom.examRooms[i];
         final examRoomAttendedAttendances = examRoom.attendances
             .where((attendance) => attendance.startTime != null)
             .toList()
             .length;
+        final examRoomFinishedAttendances = examRoom.attendances
+            .where((attendance) =>
+                attendance.startTime != null && attendance.finishTime != null)
+            .toList()
+            .length;
         attendedAttendances += examRoomAttendedAttendances;
+        finishedAttendances += examRoomFinishedAttendances;
       }
-      this.attendedAttendances.value = attendedAttendances;
+      this.attendedAttendances.value =
+          attendedAttendances - finishedAttendances;
+      this.finishedAttendances.value = finishedAttendances;
       assignedExamRoom.value = Future.value(currentExamRoom);
       Fluttertoast.showToast(
         msg: "Update attendance successfully",
