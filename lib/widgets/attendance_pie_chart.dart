@@ -103,7 +103,9 @@ class AttendancePieChart extends StatelessWidget {
       PieChartSectionData(
         color: Colors.green[500],
         value: data[0],
-        title: (data[1] > 0 || data[2] > 0) ? data[0].toStringAsFixed(0) : '',
+        title: (data[1] > 0 || (finished != null && finished! > 0))
+            ? data[0].toStringAsFixed(0)
+            : '',
         radius: radius,
         titleStyle: const TextStyle(
           fontSize: fontSize,
@@ -113,7 +115,9 @@ class AttendancePieChart extends StatelessWidget {
       PieChartSectionData(
         color: Colors.red[500],
         value: data[1],
-        title: (data[0] > 0 || data[2] > 0) ? data[1].toStringAsFixed(0) : '',
+        title: (data[0] > 0 || (finished != null && finished! > 0))
+            ? data[1].toStringAsFixed(0)
+            : '',
         radius: radius,
         titleStyle: const TextStyle(
           fontSize: fontSize,
