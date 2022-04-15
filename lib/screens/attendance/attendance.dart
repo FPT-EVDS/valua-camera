@@ -21,42 +21,42 @@ class AttendanceScreen extends StatelessWidget {
         title: const Text("Attendance list"),
       ),
       body: SafeArea(
-        child: FutureBuilder(
-          future: _controller.assignedExamRoom.value,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              AssignedExamRoom data = snapshot.data;
-              return _controller.isExpandedList.isNotEmpty
-                  ? Obx(
-                      () => _buildAttendanceScreen(
+        child: Obx(
+          () => FutureBuilder(
+            future: _controller.assignedExamRoom.value,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasData) {
+                AssignedExamRoom data = snapshot.data;
+                return _controller.isExpandedList.isNotEmpty
+                    ? _buildAttendanceScreen(
                         context,
                         data,
-                      ),
-                    )
-                  : const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    "assets/images/not_found.svg",
-                    height: 200,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    snapshot.error.toString(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                ],
+                      )
+                    : const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/not_found.svg",
+                      height: 200,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      snapshot.error.toString(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ],
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
@@ -73,8 +73,10 @@ class AttendanceScreen extends StatelessWidget {
           AttendancePieChart(
             attended: _controller.attendedAttendances.value.toDouble(),
             unattended: (assignedExamRoom.totalAttendances -
-                    _controller.attendedAttendances.value)
+                    _controller.attendedAttendances.value -
+                    _controller.finishedAttendances.value)
                 .toDouble(),
+            finished: _controller.finishedAttendances.value.toDouble(),
           ),
           const SizedBox(height: 20),
           Obx(
@@ -189,7 +191,7 @@ class AttendanceScreen extends StatelessWidget {
                           trailing: isFinished
                               ? const Icon(
                                   CommunityMaterialIcons.check_circle,
-                                  color: Colors.teal,
+                                  color: Colors.blue,
                                   size: 24.0,
                                 )
                               : attendance.startTime != null

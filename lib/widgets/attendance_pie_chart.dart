@@ -7,13 +7,18 @@ class AttendancePieChart extends StatelessWidget {
     Key? key,
     required this.attended,
     required this.unattended,
+    this.finished,
   }) : super(key: key);
 
   final double attended;
   final double unattended;
+  final double? finished;
 
   @override
   Widget build(BuildContext context) {
+    List<double> section = finished != null
+        ? [attended, unattended, finished!]
+        : [attended, unattended];
     return SizedBox(
       height: 300,
       child: Column(
@@ -30,12 +35,13 @@ class AttendancePieChart extends StatelessWidget {
                     ),
                     sectionsSpace: 0,
                     centerSpaceRadius: 60,
-                    sections: showingSections([attended, unattended]),
+                    sections: showingSections(section),
                   ),
                 ),
                 Center(
                   child: Text(
-                    (attended + unattended).toStringAsFixed(0),
+                    (attended + unattended + (finished ?? 0))
+                        .toStringAsFixed(0),
                     style: TextStyle(
                       fontSize: 30.0,
                       fontWeight: FontWeight.bold,
@@ -65,6 +71,21 @@ class AttendancePieChart extends StatelessWidget {
                 isSquare: true,
                 size: 12,
               ),
+              finished != null
+                  ? Row(
+                      children: const [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Indicator(
+                          color: Colors.blue,
+                          text: 'Finished',
+                          isSquare: true,
+                          size: 12,
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
             ],
           ),
           const SizedBox(
@@ -78,11 +99,11 @@ class AttendancePieChart extends StatelessWidget {
   List<PieChartSectionData> showingSections(List<double> data) {
     const radius = 40.0;
     const fontSize = 16.0;
-    return [
+    final pieChartSectionData = [
       PieChartSectionData(
         color: Colors.green[500],
         value: data[0],
-        title: data[1] > 0 ? data[0].toStringAsFixed(0) : '',
+        title: (data[1] > 0 || data[2] > 0) ? data[0].toStringAsFixed(0) : '',
         radius: radius,
         titleStyle: const TextStyle(
           fontSize: fontSize,
@@ -92,13 +113,26 @@ class AttendancePieChart extends StatelessWidget {
       PieChartSectionData(
         color: Colors.red[500],
         value: data[1],
-        title: data[0] > 0 ? data[1].toStringAsFixed(0) : '',
+        title: (data[0] > 0 || data[2] > 0) ? data[1].toStringAsFixed(0) : '',
         radius: radius,
         titleStyle: const TextStyle(
           fontSize: fontSize,
           color: Colors.white,
         ),
-      )
+      ),
     ];
+    if (finished != null) {
+      pieChartSectionData.add(PieChartSectionData(
+        color: Colors.blue,
+        value: data[2],
+        title: (data[0] > 0 || data[1] > 0) ? data[2].toStringAsFixed(0) : '',
+        radius: radius,
+        titleStyle: const TextStyle(
+          fontSize: fontSize,
+          color: Colors.white,
+        ),
+      ));
+    }
+    return pieChartSectionData;
   }
 }
