@@ -108,6 +108,7 @@ class AttendanceScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     itemBuilder: (context, index) {
                       final attendance = examRoom.attendances[index];
+                      final examinee = attendance.subjectExaminee.examinee;
                       final isFinished = attendance.finishTime != null &&
                           attendance.startTime != null;
                       return Slidable(
@@ -124,7 +125,7 @@ class AttendanceScreen extends StatelessWidget {
                                             AttendanceAction.finish,
                                           );
                                         },
-                                        backgroundColor: Colors.teal,
+                                        backgroundColor: Colors.blue,
                                         foregroundColor: Colors.white,
                                         icon: Icons.done,
                                         label: 'Finish',
@@ -167,10 +168,8 @@ class AttendanceScreen extends StatelessWidget {
                                       ],
                               ),
                         child: ListTile(
-                          title: Text(
-                              attendance.subjectExaminee.examinee.fullName),
-                          subtitle: Text(
-                              attendance.subjectExaminee.examinee.companyId),
+                          title: Text(examinee.fullName),
+                          subtitle: Text(examinee.companyId),
                           leading: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -181,9 +180,10 @@ class AttendanceScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 10),
                               CachedCircleAvatar(
-                                imageUrl: attendance
-                                        .subjectExaminee.examinee.imageUrl ??
-                                    'https://i.stack.imgur.com/34AD2.jpg',
+                                imageUrl: examinee.imageUrl != null &&
+                                        examinee.imageUrl!.isNotEmpty
+                                    ? examinee.imageUrl.toString()
+                                    : 'https://i.stack.imgur.com/34AD2.jpg',
                                 radius: 24,
                               ),
                             ],

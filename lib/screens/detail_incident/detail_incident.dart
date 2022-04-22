@@ -8,6 +8,7 @@ import 'package:valua_camera/models/modal_bottom_sheet_item.dart';
 import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/screens/detail_incident/detail_incident_controller.dart';
 import 'package:valua_camera/widgets/round_button.dart';
+import 'package:valua_camera/widgets/text_field_validator.dart';
 
 final pickImageTypes = [
   ModalBottomSheetItem(
@@ -160,7 +161,10 @@ class DetailIncidentScreen extends StatelessWidget {
                         validator: MultiValidator([
                           RequiredValidator(
                             errorText: "Description is required",
-                          )
+                          ),
+                          NoWhiteSpaceStringValidator(
+                            errorText: "Description is required",
+                          ),
                         ]),
                       ),
                       const SizedBox(

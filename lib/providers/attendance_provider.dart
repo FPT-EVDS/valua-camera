@@ -8,7 +8,8 @@ class AttendanceProvider extends BaseProvider implements AttendanceRepository {
   @override
   Future<dynamic> checkAttendance(
       String attendanceId, FormData formData) async {
-    final response = await post("/attendances/check/$attendanceId", formData);
+    final response = await post("/attendances/check/$attendanceId", formData)
+        .timeout(const Duration(seconds: 60));
     if (response.status.hasError) {
       throw (response.body);
     }

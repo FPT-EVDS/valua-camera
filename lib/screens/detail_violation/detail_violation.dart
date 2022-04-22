@@ -11,6 +11,7 @@ import 'package:valua_camera/models/report.dart';
 import 'package:valua_camera/screens/detail_violation/detail_violation_controller.dart';
 import 'package:valua_camera/widgets/cached_circle_avatar.dart';
 import 'package:valua_camera/widgets/round_button.dart';
+import 'package:valua_camera/widgets/text_field_validator.dart';
 
 final pickImageTypes = [
   ModalBottomSheetItem(
@@ -118,6 +119,7 @@ class DetailViolationScreen extends StatelessWidget {
 
   Widget _buildPopupItem(
       BuildContext context, Attendance? attendance, bool isSelected) {
+    final examinee = attendance?.subjectExaminee.examinee;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: !isSelected
@@ -129,11 +131,12 @@ class DetailViolationScreen extends StatelessWidget {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(attendance?.subjectExaminee.examinee.fullName ?? ''),
-        subtitle: Text(attendance?.subjectExaminee.examinee.companyId ?? ''),
+        title: Text(examinee?.fullName ?? ''),
+        subtitle: Text(examinee?.companyId ?? ''),
         leading: CachedCircleAvatar(
-          imageUrl: attendance?.subjectExaminee.examinee.imageUrl ??
-              'https://i.stack.imgur.com/34AD2.jpg',
+          imageUrl: examinee?.imageUrl != null && examinee!.imageUrl!.isNotEmpty
+              ? examinee.imageUrl!.toString()
+              : 'https://i.stack.imgur.com/34AD2.jpg',
           radius: 22,
         ),
       ),
@@ -228,7 +231,10 @@ class DetailViolationScreen extends StatelessWidget {
                         ),
                         validator: MultiValidator([
                           RequiredValidator(
-                              errorText: "Description is required")
+                              errorText: "Description is required"),
+                          NoWhiteSpaceStringValidator(
+                            errorText: "Description is required",
+                          ),
                         ]),
                       ),
                       const SizedBox(

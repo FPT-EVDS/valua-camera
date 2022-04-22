@@ -226,14 +226,13 @@ class CheckInController extends GetxController
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            radius: 96,
-            backgroundImage: Image.network(
+          ClipRect(
+            child: Image.network(
               attendance.currentAttendance.attempts.last.imageUrl,
-              fit: BoxFit.cover,
-            ).image,
+              fit: BoxFit.contain,
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Text(examinee.fullName),
           const SizedBox(height: 10),
           RichTextItem(
