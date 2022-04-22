@@ -230,6 +230,8 @@ class CheckInController extends GetxController
             child: Image.network(
               attendance.currentAttendance.attempts.last.imageUrl,
               fit: BoxFit.contain,
+              width: 256,
+              height: 256,
             ),
           ),
           const SizedBox(height: 10),
