@@ -11,6 +11,6 @@ class NoWhiteSpaceStringValidator extends TextFieldValidator {
 
   @override
   bool isValid(String? value) {
-    return !RegExp(r"\s").hasMatch(value.toString());
+    return value != null && value.trim().isNotEmpty;
   }
 }
