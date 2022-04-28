@@ -15,7 +15,7 @@ class BaseProvider extends GetConnect {
     //Autenticator will be called 1 times if HttpStatus is
     //HttpStatus.unauthorized
     httpClient.maxAuthRetries = 1;
-    httpClient.timeout = const Duration(seconds: 15);
+    httpClient.timeout = const Duration(seconds: 30);
 
     httpClient.addRequestModifier<dynamic>((request) async {
       String? token = _storage.read(AppConstant.accessToken);

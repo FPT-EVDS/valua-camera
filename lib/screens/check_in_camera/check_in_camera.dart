@@ -13,7 +13,15 @@ class CheckInCameraScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Stack(children: [
-          Center(child: CameraPreview(_controller.cameraController)),
+          Center(
+            child: Obx(
+              () => _controller.cameraController.value != null
+                  ? CameraPreview(_controller.cameraController.value!)
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
+          ),
           Center(
             child: Obx(
               () => Text(

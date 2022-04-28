@@ -49,6 +49,7 @@ class CheckInController extends GetxController
     const Tab(text: ("QR check-in"))
   ];
   late TabController tabController;
+  late final initializeControllerFuture = Future<void>.value().obs;
 
   Future<CameraDescription> getCamera(CameraLensDirection direction) async {
     return await availableCameras().then(
@@ -76,11 +77,11 @@ class CheckInController extends GetxController
           await getCamera(CameraLensDirection.front);
       cameraController = CameraController(
         cameraDescription,
-        ResolutionPreset.veryHigh,
+        ResolutionPreset.medium,
         enableAudio: false,
       );
       try {
-        await cameraController.initialize();
+        initializeControllerFuture.value = cameraController.initialize();
       } catch (error) {
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -181,7 +182,7 @@ class CheckInController extends GetxController
           attendedAttendances.value += 1;
           _mainController.assignedExamRoom.value =
               Future.value(currentExamRoom);
-          showAttendanceDialog(currentAttendance);
+          showAttendanceDialog(currentAttendance, imageFile);
         } else if (data['lastAttempt'] != null) {
           showDialog(
             "Failed",
@@ -203,15 +204,10 @@ class CheckInController extends GetxController
           false,
         );
       });
-    } else {
-      Fluttertoast.showToast(
-        msg: "You haven't take your picture yet",
-        backgroundColor: Colors.grey.shade700,
-      );
     }
   }
 
-  showAttendanceDialog(CurrentAttendance attendance) {
+  showAttendanceDialog(CurrentAttendance attendance, File imageFile) {
     final examinee = attendance.currentAttendance.subjectExaminee.examinee;
     // auto close duration
     final Timer _timer = Timer(const Duration(seconds: 8), () {
@@ -227,8 +223,8 @@ class CheckInController extends GetxController
         mainAxisSize: MainAxisSize.min,
         children: [
           ClipRect(
-            child: Image.network(
-              attendance.currentAttendance.attempts.last.imageUrl,
+            child: Image.file(
+              imageFile,
               fit: BoxFit.contain,
               width: 256,
               height: 256,
@@ -241,7 +237,7 @@ class CheckInController extends GetxController
             title: "Attended at: ",
             content: attendance.currentAttendance.startTime != null
                 ? DateFormat('dd/MM/yyyy HH:mm').format(
-                    attendance.currentAttendance.startTime!,
+                    attendance.currentAttendance.startTime!.toLocal(),
                   )
                 : '',
           ),

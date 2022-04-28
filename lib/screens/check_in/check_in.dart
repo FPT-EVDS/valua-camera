@@ -70,11 +70,23 @@ class CheckInScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  QrImage(
-                    data: _controller.examRoom.currentRoom.roomId,
-                    version: QrVersions.auto,
-                    padding: const EdgeInsets.all(32.0),
-                    size: MediaQuery.of(context).size.height / 2,
+                  Obx(
+                    () => FutureBuilder<void>(
+                      future: _controller.initializeControllerFuture.value,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return QrImage(
+                            data: _controller.examRoom.currentRoom.roomId,
+                            version: QrVersions.auto,
+                            padding: const EdgeInsets.all(32.0),
+                            size: MediaQuery.of(context).size.height / 2,
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
                   ),
                   const Text(
                     "Scan QR with Examinee app to check in",
