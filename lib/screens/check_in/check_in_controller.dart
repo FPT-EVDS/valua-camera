@@ -198,11 +198,19 @@ class CheckInController extends GetxController
         }
       }).catchError((error) {
         Get.back();
-        showDialog(
-          "Failed",
-          error.toString(),
-          false,
-        );
+        if (error.toString().startsWith("Throw of null")) {
+          showDialog(
+            "Failed",
+            "Connection timeout! Please try again",
+            false,
+          );
+        } else {
+          showDialog(
+            "Failed",
+            error.toString(),
+            false,
+          );
+        }
       });
     }
   }
