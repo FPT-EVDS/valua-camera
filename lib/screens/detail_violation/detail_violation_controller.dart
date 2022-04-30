@@ -28,7 +28,7 @@ class DetailViolationController extends GetxController {
   final DashboardController dashboardController =
       Get.find<DashboardController>();
   final ReportRepository _provider = Get.find<ReportProvider>();
-  late final List<Attendance> attendances;
+  final attendances = RxList<Attendance>();
 
   void pickImage(int index) async {
     ImageSource source = index == 0 ? ImageSource.gallery : ImageSource.camera;
@@ -45,10 +45,9 @@ class DetailViolationController extends GetxController {
     examRoomNameController = TextEditingController();
     descriptionController = TextEditingController();
     noteController = TextEditingController();
-    attendances = dashboardController.assignedExamRoom.value!.examRooms
+    attendances.value = dashboardController.assignedExamRoom.value!.examRooms
         .map((e) => e.attendances)
         .expand((element) => element)
-        .where((element) => element.startTime != null)
         .toList();
     super.onInit();
   }
@@ -129,6 +128,11 @@ class DetailViolationController extends GetxController {
             element.subjectExaminee.examinee.appUserId ==
             report.reportedUser?.appUserId);
         selectedAttendance.value = attendance;
+        attendances.value = attendances
+            .where((element) =>
+                element.startTime != null ||
+                element.attendanceId == selectedAttendance.value!.attendanceId)
+            .toList();
         descriptionController.text = report.description;
         noteController.text = report.note ?? '';
         examRoomIdController.text = report.examRoom.examRoomId;
