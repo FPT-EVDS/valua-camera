@@ -7,10 +7,13 @@ import 'package:valua_camera/providers/attendance_provider.dart';
 import 'package:valua_camera/providers/exam_room_provider.dart';
 import 'package:valua_camera/repository/attendance_repository.dart';
 import 'package:valua_camera/repository/exam_room_repository.dart';
+import 'package:valua_camera/screens/dashboard/dashboard_controller.dart';
 
 class AttendanceController extends GetxController {
   final assignedExamRoom = Future<AssignedExamRoom?>.value().obs;
   final ExamRoomRepository _examRoomProvider = Get.find<ExamRoomProvider>();
+  final DashboardController _dashboardController =
+      Get.find<DashboardController>();
   final AttendanceRepository _attendanceProvider =
       Get.find<AttendanceProvider>();
   final attendedAttendances = 0.obs;
@@ -43,6 +46,7 @@ class AttendanceController extends GetxController {
             attendedAttendances - finishedAttendances;
         this.finishedAttendances.value = finishedAttendances;
         value.examRooms = tempExamRooms;
+        _dashboardController.assignedExamRoom.value = value;
         return value;
       });
       assignedExamRoom.value = data;
@@ -94,6 +98,7 @@ class AttendanceController extends GetxController {
           attendedAttendances - finishedAttendances;
       this.finishedAttendances.value = finishedAttendances;
       assignedExamRoom.value = Future.value(currentExamRoom);
+      _dashboardController.assignedExamRoom.value = currentExamRoom;
       Fluttertoast.showToast(
         msg: "Update attendance successfully",
         backgroundColor: Colors.grey.shade700,

@@ -48,6 +48,7 @@ class DetailViolationController extends GetxController {
     attendances = dashboardController.assignedExamRoom.value!.examRooms
         .map((e) => e.attendances)
         .expand((element) => element)
+        .where((element) => element.startTime != null)
         .toList();
     super.onInit();
   }

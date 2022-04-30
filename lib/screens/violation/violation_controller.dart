@@ -43,6 +43,7 @@ class ViolationController extends GetxController {
     attendances = examRoom.examRooms
         .map((e) => e.attendances)
         .expand((element) => element)
+        .where((element) => element.startTime != null)
         .toList();
     super.onInit();
   }
